@@ -18,7 +18,8 @@
 #' @examples
 #'
 #' l.out <- gld_get_lattes_data(id.vec = 'K4713546D3',
-#'                              field.qualis = 'ECONOMIA')
+#'                              field.qualis = 'ECONOMIA',
+#'                              folder.dl = 'lattes files')
 #' print(l.out$tpesq)
 gld_get_lattes_data <- function(id.vec,
                                 field.qualis = NULL,

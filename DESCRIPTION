@@ -3,7 +3,7 @@ Title: Reading bibliometric data from Lattes platform
 Version: 0.5
 Date: 2017-09-03
 Authors@R: person("Marcelo", "Perlin", email = "marceloperlin@gmail.com", role = c("aut", "cre"))
-Description: A simple API for downloading and reading xml data from Lattes <http://lattes.cnpq.br/>.
+Description: A simple API for downloading and reading xml data directly from Lattes <http://lattes.cnpq.br/>.
 Depends:
     R (>= 3.3.0)
 Imports: stringr,XML, dplyr, readr, stringdist
