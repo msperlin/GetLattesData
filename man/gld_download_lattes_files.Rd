@@ -4,7 +4,7 @@
 \alias{gld_download_lattes_files}
 \title{Downloads data from Lattes}
 \usage{
-gld_download_lattes_files(id, folder.dl)
+gld_download_lattes_files(id, folder.dl = tempdir())
 }
 \arguments{
 \item{id}{Id symbol from Lattes (see gld_get_lattes_data)}

@@ -27,7 +27,6 @@ This function downloads xml data directly from Lattes and reads the resulting fi
 \examples{
 
 l.out <- gld_get_lattes_data(id.vec = 'K4713546D3',
-                             field.qualis = 'ECONOMIA',
-                             folder.dl = 'lattes files')
+                             field.qualis = 'ECONOMIA')
 print(l.out$tpesq)
 }

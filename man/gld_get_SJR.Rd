@@ -10,7 +10,7 @@ gld_get_SJR()
 A dataframe with SJR table
 }
 \description{
-Reads localy available SJR table. Original data provided as an excel file in \url{http://scimagojr.com/journalrank.php}
+Reads localy available SJR table. Original data provided as an excel file in \url{http://scimagojr.com/journalrank.php}.
 }
 \details{
 Latest SJR: 2016 | Latest update: 2017-09-04

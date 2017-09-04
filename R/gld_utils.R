@@ -1,6 +1,6 @@
 #' Reads Qualis table
 #'
-#' This function will read Qualis data available within the package. The original data is available in
+#' Read Qualis data available within the package. The original data is downloaded from
 #' \url{https://sucupira.capes.gov.br/sucupira/public/index.xhtml}
 #'
 #' Latest Qualis: 2013-2016 | Latest Qualis update: 2017-09-04
@@ -52,7 +52,7 @@ gld_get_qualis <- function(field.qualis = 'ALL') {
 
 #' Reads SJR table
 #'
-#' Reads localy available SJR table. Original data provided as an excel file in \url{http://scimagojr.com/journalrank.php}
+#' Reads localy available SJR table. Original data provided as an excel file in \url{http://scimagojr.com/journalrank.php}.
 #'
 #' Latest SJR: 2016 | Latest update: 2017-09-04
 #'
@@ -98,14 +98,14 @@ gld_get_SJR <- function(){
 #' file.out <- gld_download_lattes_files(id = 'K4723925J2')
 #' }
 #'
-gld_download_lattes_files <- function(id, folder.dl) {
+gld_download_lattes_files <- function(id, folder.dl = tempdir()) {
 
   # set link
   base.link <- 'http://buscacv.cnpq.br/buscacv/rest/download/curriculo/'
   my.link <- paste0(base.link,id)
 
   # set destination file by indexing by date
-  dest.file <- paste0(folder.dl, '/',id,'_',Sys.Date(), '.zip')
+  dest.file <- file.path(folder.dl, paste0(id,'_',Sys.Date(), '.zip') )
 
   # check file
   if (file.exists(dest.file)) {

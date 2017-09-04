@@ -18,8 +18,7 @@
 #' @examples
 #'
 #' l.out <- gld_get_lattes_data(id.vec = 'K4713546D3',
-#'                              field.qualis = 'ECONOMIA',
-#'                              folder.dl = 'lattes files')
+#'                              field.qualis = 'ECONOMIA')
 #' print(l.out$tpesq)
 gld_get_lattes_data <- function(id.vec,
                                 field.qualis = NULL,
@@ -31,12 +30,18 @@ gld_get_lattes_data <- function(id.vec,
   n.char <- nchar(id.vec)
 
   if (any(n.char!=10)) {
-    stop('All ids should have 10 characters. Check your input for id.vec.')
+    stop('All ids should be 10 character long. Check your input for id.vec.')
   }
 
   if (!dir.exists(folder.dl)) {
     cat('Folder ', folder.dl, 'does not exists. Creating it..')
     dir.create(folder.dl)
+  }
+
+  # check internet
+
+  if (!curl::has_internet()) {
+    stop('You need an internet connection to download files from Lattes.')
   }
 
   # download files

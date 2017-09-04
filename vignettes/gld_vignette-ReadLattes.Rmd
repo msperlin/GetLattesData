@@ -34,8 +34,8 @@ Now, based on the two sets of information, vector of ids and field of Qualis, we
 library(GetLattesData)
 
 # ids from EA-UFRGS
-my.ids <- c('K4713546D3',  'K4123414D0', 'K4765099U6', 'K4440252H7', 'K4783858A0',
-            'K4769290Y6', 'K4723925J2', 'K4763474Y5')
+my.ids <- c('K4713546D3', 'K4440252H7', 
+            'K4783858A0', 'K4723925J2')
 
 # qualis for the field of management
 field.qualis = 'ADMINISTRAÇÃO PÚBLICA E DE EMPRESAS, CIÊNCIAS CONTÁBEIS E TURISMO'
@@ -76,3 +76,18 @@ p <- ggplot(tpublic, aes(x = qualis)) +
 print(p)
 ```
 
+We can also use `dplyr` to do some simple assessment of of productivity:
+
+```{r}
+library(dplyr)
+
+my.tab <- tpublic %>%
+  group_by(name) %>%
+  summarise(n.papers = n(),
+            max.SJR = max(SJR, na.rm = T),
+            mean.SJR = mean(SJR, na.rm = T),
+            n.A1.qualis = sum(qualis == 'A1', na.rm = T),
+            n.A2.qualis = sum(qualis == 'A2', na.rm = T))
+
+knitr::kable(my.tab)
+```

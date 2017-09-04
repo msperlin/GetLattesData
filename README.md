@@ -21,4 +21,18 @@ devtools::install_github('msperlin/GetLattesData')
 
 # Examples of usage 
 
-You can find examples of usage in the [vignette](TODOLINK in CRAN).
+```
+library(GetLattesData)
+
+# ids from EA-UFRGS
+my.ids <- c('K4713546D3', 'K4440252H7', 
+            'K4783858A0', 'K4723925J2')
+
+# qualis for the field of management
+field.qualis = 'ADMINISTRAÇÃO PÚBLICA E DE EMPRESAS, CIÊNCIAS CONTÁBEIS E TURISMO'
+
+l.out <- gld_get_lattes_data(id.vec = my.ids, field.qualis = field.qualis)
+
+tpublic <- l.out$tpublic
+str(tpublic)
+```

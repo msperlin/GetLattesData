@@ -33,7 +33,7 @@ gld_read_zip <- function(zip.in){
   utils::unzip(zip.in, exdir = my.tempdir)
 
   # start reading files using XML
-  my.l <- XML::xmlToList(XML::xmlParse(paste0(my.tempdir,'/curriculo.xml')))
+  my.l <- XML::xmlToList(XML::xmlParse(file.path(my.tempdir, 'curriculo.xml')))
 
   # Do RESEARCHERS
 

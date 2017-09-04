@@ -13,7 +13,7 @@ gld_get_qualis(field.qualis = "ALL")
 A dataframe with Qualis table, including columns for ISSN, field and ranking
 }
 \description{
-This function will read Qualis data available within the package. The original data is available in
+Read Qualis data available within the package. The original data is downloaded from
 \url{https://sucupira.capes.gov.br/sucupira/public/index.xhtml}
 }
 \details{
