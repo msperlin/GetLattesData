@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta charset="utf-8" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<meta name="author" content="Marcelo Perlin" />
+
+<meta name="date" content="2017-09-04" />
+
+<title>How to use GetLattesData</title>
+
+
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+div.sourceCode { overflow-x: auto; }
+table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode {
+  margin: 0; padding: 0; vertical-align: baseline; border: none; }
+table.sourceCode { width: 100%; line-height: 100%; }
+td.lineNumbers { text-align: right; padding-right: 4px; padding-left: 4px; color: #aaaaaa; border-right: 1px solid #aaaaaa; }
+td.sourceCode { padding-left: 5px; }
+code > span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code > span.dt { color: #902000; } /* DataType */
+code > span.dv { color: #40a070; } /* DecVal */
+code > span.bn { color: #40a070; } /* BaseN */
+code > span.fl { color: #40a070; } /* Float */
+code > span.ch { color: #4070a0; } /* Char */
+code > span.st { color: #4070a0; } /* String */
+code > span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code > span.ot { color: #007020; } /* Other */
+code > span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code > span.fu { color: #06287e; } /* Function */
+code > span.er { color: #ff0000; font-weight: bold; } /* Error */
+code > span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+code > span.cn { color: #880000; } /* Constant */
+code > span.sc { color: #4070a0; } /* SpecialChar */
+code > span.vs { color: #4070a0; } /* VerbatimString */
+code > span.ss { color: #bb6688; } /* SpecialString */
+code > span.im { } /* Import */
+code > span.va { color: #19177c; } /* Variable */
+code > span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code > span.op { color: #666666; } /* Operator */
+code > span.bu { } /* BuiltIn */
+code > span.ex { } /* Extension */
+code > span.pp { color: #bc7a00; } /* Preprocessor */
+code > span.at { color: #7d9029; } /* Attribute */
+code > span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code > span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code > span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+</style>
+
+
+
+<link href="data:text/css;charset=utf-8,body%20%7B%0Abackground%2Dcolor%3A%20%23fff%3B%0Amargin%3A%201em%20auto%3B%0Amax%2Dwidth%3A%20700px%3B%0Aoverflow%3A%20visible%3B%0Apadding%2Dleft%3A%202em%3B%0Apadding%2Dright%3A%202em%3B%0Afont%2Dfamily%3A%20%22Open%20Sans%22%2C%20%22Helvetica%20Neue%22%2C%20Helvetica%2C%20Arial%2C%20sans%2Dserif%3B%0Afont%2Dsize%3A%2014px%3B%0Aline%2Dheight%3A%201%2E35%3B%0A%7D%0A%23header%20%7B%0Atext%2Dalign%3A%20center%3B%0A%7D%0A%23TOC%20%7B%0Aclear%3A%20both%3B%0Amargin%3A%200%200%2010px%2010px%3B%0Apadding%3A%204px%3B%0Awidth%3A%20400px%3B%0Aborder%3A%201px%20solid%20%23CCCCCC%3B%0Aborder%2Dradius%3A%205px%3B%0Abackground%2Dcolor%3A%20%23f6f6f6%3B%0Afont%2Dsize%3A%2013px%3B%0Aline%2Dheight%3A%201%2E3%3B%0A%7D%0A%23TOC%20%2Etoctitle%20%7B%0Afont%2Dweight%3A%20bold%3B%0Afont%2Dsize%3A%2015px%3B%0Amargin%2Dleft%3A%205px%3B%0A%7D%0A%23TOC%20ul%20%7B%0Apadding%2Dleft%3A%2040px%3B%0Amargin%2Dleft%3A%20%2D1%2E5em%3B%0Amargin%2Dtop%3A%205px%3B%0Amargin%2Dbottom%3A%205px%3B%0A%7D%0A%23TOC%20ul%20ul%20%7B%0Amargin%2Dleft%3A%20%2D2em%3B%0A%7D%0A%23TOC%20li%20%7B%0Aline%2Dheight%3A%2016px%3B%0A%7D%0Atable%20%7B%0Amargin%3A%201em%20auto%3B%0Aborder%2Dwidth%3A%201px%3B%0Aborder%2Dcolor%3A%20%23DDDDDD%3B%0Aborder%2Dstyle%3A%20outset%3B%0Aborder%2Dcollapse%3A%20collapse%3B%0A%7D%0Atable%20th%20%7B%0Aborder%2Dwidth%3A%202px%3B%0Apadding%3A%205px%3B%0Aborder%2Dstyle%3A%20inset%3B%0A%7D%0Atable%20td%20%7B%0Aborder%2Dwidth%3A%201px%3B%0Aborder%2Dstyle%3A%20inset%3B%0Aline%2Dheight%3A%2018px%3B%0Apadding%3A%205px%205px%3B%0A%7D%0Atable%2C%20table%20th%2C%20table%20td%20%7B%0Aborder%2Dleft%2Dstyle%3A%20none%3B%0Aborder%2Dright%2Dstyle%3A%20none%3B%0A%7D%0Atable%20thead%2C%20table%20tr%2Eeven%20%7B%0Abackground%2Dcolor%3A%20%23f7f7f7%3B%0A%7D%0Ap%20%7B%0Amargin%3A%200%2E5em%200%3B%0A%7D%0Ablockquote%20%7B%0Abackground%2Dcolor%3A%20%23f6f6f6%3B%0Apadding%3A%200%2E25em%200%2E75em%3B%0A%7D%0Ahr%20%7B%0Aborder%2Dstyle%3A%20solid%3B%0Aborder%3A%20none%3B%0Aborder%2Dtop%3A%201px%20solid%20%23777%3B%0Amargin%3A%2028px%200%3B%0A%7D%0Adl%20%7B%0Amargin%2Dleft%3A%200%3B%0A%7D%0Adl%20dd%20%7B%0Amargin%2Dbottom%3A%2013px%3B%0Amargin%2Dleft%3A%2013px%3B%0A%7D%0Adl%20dt%20%7B%0Afont%2Dweight%3A%20bold%3B%0A%7D%0Aul%20%7B%0Amargin%2Dtop%3A%200%3B%0A%7D%0Aul%20li%20%7B%0Alist%2Dstyle%3A%20circle%20outside%3B%0A%7D%0Aul%20ul%20%7B%0Amargin%2Dbottom%3A%200%3B%0A%7D%0Apre%2C%20code%20%7B%0Abackground%2Dcolor%3A%20%23f7f7f7%3B%0Aborder%2Dradius%3A%203px%3B%0Acolor%3A%20%23333%3B%0Awhite%2Dspace%3A%20pre%2Dwrap%3B%20%0A%7D%0Apre%20%7B%0Aborder%2Dradius%3A%203px%3B%0Amargin%3A%205px%200px%2010px%200px%3B%0Apadding%3A%2010px%3B%0A%7D%0Apre%3Anot%28%5Bclass%5D%29%20%7B%0Abackground%2Dcolor%3A%20%23f7f7f7%3B%0A%7D%0Acode%20%7B%0Afont%2Dfamily%3A%20Consolas%2C%20Monaco%2C%20%27Courier%20New%27%2C%20monospace%3B%0Afont%2Dsize%3A%2085%25%3B%0A%7D%0Ap%20%3E%20code%2C%20li%20%3E%20code%20%7B%0Apadding%3A%202px%200px%3B%0A%7D%0Adiv%2Efigure%20%7B%0Atext%2Dalign%3A%20center%3B%0A%7D%0Aimg%20%7B%0Abackground%2Dcolor%3A%20%23FFFFFF%3B%0Apadding%3A%202px%3B%0Aborder%3A%201px%20solid%20%23DDDDDD%3B%0Aborder%2Dradius%3A%203px%3B%0Aborder%3A%201px%20solid%20%23CCCCCC%3B%0Amargin%3A%200%205px%3B%0A%7D%0Ah1%20%7B%0Amargin%2Dtop%3A%200%3B%0Afont%2Dsize%3A%2035px%3B%0Aline%2Dheight%3A%2040px%3B%0A%7D%0Ah2%20%7B%0Aborder%2Dbottom%3A%204px%20solid%20%23f7f7f7%3B%0Apadding%2Dtop%3A%2010px%3B%0Apadding%2Dbottom%3A%202px%3B%0Afont%2Dsize%3A%20145%25%3B%0A%7D%0Ah3%20%7B%0Aborder%2Dbottom%3A%202px%20solid%20%23f7f7f7%3B%0Apadding%2Dtop%3A%2010px%3B%0Afont%2Dsize%3A%20120%25%3B%0A%7D%0Ah4%20%7B%0Aborder%2Dbottom%3A%201px%20solid%20%23f7f7f7%3B%0Amargin%2Dleft%3A%208px%3B%0Afont%2Dsize%3A%20105%25%3B%0A%7D%0Ah5%2C%20h6%20%7B%0Aborder%2Dbottom%3A%201px%20solid%20%23ccc%3B%0Afont%2Dsize%3A%20105%25%3B%0A%7D%0Aa%20%7B%0Acolor%3A%20%230033dd%3B%0Atext%2Ddecoration%3A%20none%3B%0A%7D%0Aa%3Ahover%20%7B%0Acolor%3A%20%236666ff%3B%20%7D%0Aa%3Avisited%20%7B%0Acolor%3A%20%23800080%3B%20%7D%0Aa%3Avisited%3Ahover%20%7B%0Acolor%3A%20%23BB00BB%3B%20%7D%0Aa%5Bhref%5E%3D%22http%3A%22%5D%20%7B%0Atext%2Ddecoration%3A%20underline%3B%20%7D%0Aa%5Bhref%5E%3D%22https%3A%22%5D%20%7B%0Atext%2Ddecoration%3A%20underline%3B%20%7D%0A%0Acode%20%3E%20span%2Ekw%20%7B%20color%3A%20%23555%3B%20font%2Dweight%3A%20bold%3B%20%7D%20%0Acode%20%3E%20span%2Edt%20%7B%20color%3A%20%23902000%3B%20%7D%20%0Acode%20%3E%20span%2Edv%20%7B%20color%3A%20%2340a070%3B%20%7D%20%0Acode%20%3E%20span%2Ebn%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Efl%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Ech%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Est%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Eco%20%7B%20color%3A%20%23888888%3B%20font%2Dstyle%3A%20italic%3B%20%7D%20%0Acode%20%3E%20span%2Eot%20%7B%20color%3A%20%23007020%3B%20%7D%20%0Acode%20%3E%20span%2Eal%20%7B%20color%3A%20%23ff0000%3B%20font%2Dweight%3A%20bold%3B%20%7D%20%0Acode%20%3E%20span%2Efu%20%7B%20color%3A%20%23900%3B%20font%2Dweight%3A%20bold%3B%20%7D%20%20code%20%3E%20span%2Eer%20%7B%20color%3A%20%23a61717%3B%20background%2Dcolor%3A%20%23e3d2d2%3B%20%7D%20%0A" rel="stylesheet" type="text/css" />
+
+</head>
+
+<body>
+
+
+
+
+<h1 class="title toc-ignore">How to use GetLattesData</h1>
+<h4 class="author"><em>Marcelo Perlin</em></h4>
+<h4 class="date"><em>2017-09-04</em></h4>
+
+
+
+<div id="introduction" class="section level1">
+<h1>Introduction</h1>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(GetLattesData)
+<span class="kw">library</span>(ggplot2)
+
+<span class="co"># new PPG (PO-FIN)</span>
+my.ids &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">'K4713546D3'</span>, <span class="st">'K4796143H6'</span>, <span class="st">'K4123414D0'</span>, <span class="st">'K4735956T7'</span>,
+            <span class="st">'K4781462D3'</span>, <span class="st">'K4765099U6'</span>, <span class="st">'K4440252H7'</span>, <span class="st">'K4783858A0'</span>,
+            <span class="st">'K4769290Y6'</span>, <span class="st">'K4723925J2'</span>, <span class="st">'K4763474Y5'</span>, <span class="st">'K4466733D0'</span>, 
+            <span class="st">'K4768258E6'</span>)
+
+area.qualis =<span class="st"> 'ADMINISTRAÇÃO PÚBLICA E DE EMPRESAS, CIÊNCIAS CONTÁBEIS E TURISMO'</span>
+
+l.out &lt;-<span class="st"> </span><span class="kw">gld_get_lattes_data</span>(<span class="dt">id.vec =</span> my.ids, <span class="dt">area.qualis =</span> area.qualis )</code></pre></div>
+<pre><code>## 
+## Downloading files 
+## Downloading file  /tmp/RtmpHDTNHh/K4713546D3_2017-09-04.zip
+## Downloading file  /tmp/RtmpHDTNHh/K4796143H6_2017-09-04.zip
+## Downloading file  /tmp/RtmpHDTNHh/K4123414D0_2017-09-04.zip
+## Downloading file  /tmp/RtmpHDTNHh/K4735956T7_2017-09-04.zip
+## Downloading file  /tmp/RtmpHDTNHh/K4781462D3_2017-09-04.zip
+## Downloading file  /tmp/RtmpHDTNHh/K4765099U6_2017-09-04.zip
+## Downloading file  /tmp/RtmpHDTNHh/K4440252H7_2017-09-04.zip
+## Downloading file  /tmp/RtmpHDTNHh/K4783858A0_2017-09-04.zip
+## Downloading file  /tmp/RtmpHDTNHh/K4769290Y6_2017-09-04.zip
+## Downloading file  /tmp/RtmpHDTNHh/K4723925J2_2017-09-04.zip
+## Downloading file  /tmp/RtmpHDTNHh/K4763474Y5_2017-09-04.zip
+## Downloading file  /tmp/RtmpHDTNHh/K4466733D0_2017-09-04.zip
+## Downloading file  /tmp/RtmpHDTNHh/K4768258E6_2017-09-04.zip-------------</code></pre>
+<pre><code>## Warning in bind_rows_(x, .id): Unequal factor levels: coercing to character</code></pre>
+<pre><code>## Warning in bind_rows_(x, .id): binding character and factor vector,
+## coercing into character vector
+
+## Warning in bind_rows_(x, .id): binding character and factor vector,
+## coercing into character vector</code></pre>
+<pre><code>## Warning in bind_rows_(x, .id): Unequal factor levels: coercing to character</code></pre>
+<pre><code>## Warning in bind_rows_(x, .id): binding character and factor vector,
+## coercing into character vector
+
+## Warning in bind_rows_(x, .id): binding character and factor vector,
+## coercing into character vector</code></pre>
+<pre><code>## Warning in bind_rows_(x, .id): Unequal factor levels: coercing to character</code></pre>
+<pre><code>## Warning in bind_rows_(x, .id): binding character and factor vector,
+## coercing into character vector
+
+## Warning in bind_rows_(x, .id): binding character and factor vector,
+## coercing into character vector</code></pre>
+<pre><code>## Warning in bind_rows_(x, .id): Unequal factor levels: coercing to character</code></pre>
+<pre><code>## Warning in bind_rows_(x, .id): binding character and factor vector,
+## coercing into character vector
+
+## Warning in bind_rows_(x, .id): binding character and factor vector,
+## coercing into character vector</code></pre>
+<pre><code>## Warning in bind_rows_(x, .id): Unequal factor levels: coercing to character</code></pre>
+<pre><code>## Warning in bind_rows_(x, .id): binding character and factor vector,
+## coercing into character vector
+
+## Warning in bind_rows_(x, .id): binding character and factor vector,
+## coercing into character vector</code></pre>
+<pre><code>## Warning in bind_rows_(x, .id): Unequal factor levels: coercing to character</code></pre>
+<pre><code>## Warning in bind_rows_(x, .id): binding character and factor vector,
+## coercing into character vector
+
+## Warning in bind_rows_(x, .id): binding character and factor vector,
+## coercing into character vector
+
+## Warning in bind_rows_(x, .id): binding character and factor vector,
+## coercing into character vector
+
+## Warning in bind_rows_(x, .id): binding character and factor vector,
+## coercing into character vector
+
+## Warning in bind_rows_(x, .id): binding character and factor vector,
+## coercing into character vector</code></pre>
+<pre><code>## Warning in bind_rows_(x, .id): Unequal factor levels: coercing to character</code></pre>
+<pre><code>## Warning in bind_rows_(x, .id): binding character and factor vector,
+## coercing into character vector
+
+## Warning in bind_rows_(x, .id): binding character and factor vector,
+## coercing into character vector
+
+## Warning in bind_rows_(x, .id): binding character and factor vector,
+## coercing into character vector
+
+## Warning in bind_rows_(x, .id): binding character and factor vector,
+## coercing into character vector
+
+## Warning in bind_rows_(x, .id): binding character and factor vector,
+## coercing into character vector
+
+## Warning in bind_rows_(x, .id): binding character and factor vector,
+## coercing into character vector
+
+## Warning in bind_rows_(x, .id): binding character and factor vector,
+## coercing into character vector
+
+## Warning in bind_rows_(x, .id): binding character and factor vector,
+## coercing into character vector
+
+## Warning in bind_rows_(x, .id): binding character and factor vector,
+## coercing into character vector
+
+## Warning in bind_rows_(x, .id): binding character and factor vector,
+## coercing into character vector
+
+## Warning in bind_rows_(x, .id): binding character and factor vector,
+## coercing into character vector
+
+## Warning in bind_rows_(x, .id): binding character and factor vector,
+## coercing into character vector
+
+## Warning in bind_rows_(x, .id): binding character and factor vector,
+## coercing into character vector
+
+## Warning in bind_rows_(x, .id): binding character and factor vector,
+## coercing into character vector
+
+## Warning in bind_rows_(x, .id): binding character and factor vector,
+## coercing into character vector
+
+## Warning in bind_rows_(x, .id): binding character and factor vector,
+## coercing into character vector
+
+## Warning in bind_rows_(x, .id): binding character and factor vector,
+## coercing into character vector
+
+## Warning in bind_rows_(x, .id): binding character and factor vector,
+## coercing into character vector
+
+## Warning in bind_rows_(x, .id): binding character and factor vector,
+## coercing into character vector
+
+## Warning in bind_rows_(x, .id): binding character and factor vector,
+## coercing into character vector
+
+## Warning in bind_rows_(x, .id): binding character and factor vector,
+## coercing into character vector
+
+## Warning in bind_rows_(x, .id): binding character and factor vector,
+## coercing into character vector
+
+## Warning in bind_rows_(x, .id): binding character and factor vector,
+## coercing into character vector
+
+## Warning in bind_rows_(x, .id): binding character and factor vector,
+## coercing into character vector
+
+## Warning in bind_rows_(x, .id): binding character and factor vector,
+## coercing into character vector
+
+## Warning in bind_rows_(x, .id): binding character and factor vector,
+## coercing into character vector
+
+## Warning in bind_rows_(x, .id): binding character and factor vector,
+## coercing into character vector
+
+## Warning in bind_rows_(x, .id): binding character and factor vector,
+## coercing into character vector
+
+## Warning in bind_rows_(x, .id): binding character and factor vector,
+## coercing into character vector
+
+## Warning in bind_rows_(x, .id): binding character and factor vector,
+## coercing into character vector
+
+## Warning in bind_rows_(x, .id): binding character and factor vector,
+## coercing into character vector
+
+## Warning in bind_rows_(x, .id): binding character and factor vector,
+## coercing into character vector
+
+## Warning in bind_rows_(x, .id): binding character and factor vector,
+## coercing into character vector
+
+## Warning in bind_rows_(x, .id): binding character and factor vector,
+## coercing into character vector
+
+## Warning in bind_rows_(x, .id): binding character and factor vector,
+## coercing into character vector
+
+## Warning in bind_rows_(x, .id): binding character and factor vector,
+## coercing into character vector
+
+## Warning in bind_rows_(x, .id): binding character and factor vector,
+## coercing into character vector
+
+## Warning in bind_rows_(x, .id): binding character and factor vector,
+## coercing into character vector
+
+## Warning in bind_rows_(x, .id): binding character and factor vector,
+## coercing into character vector
+
+## Warning in bind_rows_(x, .id): binding character and factor vector,
+## coercing into character vector
+
+## Warning in bind_rows_(x, .id): binding character and factor vector,
+## coercing into character vector
+
+## Warning in bind_rows_(x, .id): binding character and factor vector,
+## coercing into character vector
+
+## Warning in bind_rows_(x, .id): binding character and factor vector,
+## coercing into character vector
+
+## Warning in bind_rows_(x, .id): binding character and factor vector,
+## coercing into character vector
+
+## Warning in bind_rows_(x, .id): binding character and factor vector,
+## coercing into character vector
+
+## Warning in bind_rows_(x, .id): binding character and factor vector,
+## coercing into character vector
+
+## Warning in bind_rows_(x, .id): binding character and factor vector,
+## coercing into character vector
+
+## Warning in bind_rows_(x, .id): binding character and factor vector,
+## coercing into character vector
+
+## Warning in bind_rows_(x, .id): binding character and factor vector,
+## coercing into character vector
+
+## Warning in bind_rows_(x, .id): binding character and factor vector,
+## coercing into character vector
+
+## Warning in bind_rows_(x, .id): binding character and factor vector,
+## coercing into character vector
+
+## Warning in bind_rows_(x, .id): binding character and factor vector,
+## coercing into character vector
+
+## Warning in bind_rows_(x, .id): binding character and factor vector,
+## coercing into character vector
+
+## Warning in bind_rows_(x, .id): binding character and factor vector,
+## coercing into character vector
+
+## Warning in bind_rows_(x, .id): binding character and factor vector,
+## coercing into character vector
+
+## Warning in bind_rows_(x, .id): binding character and factor vector,
+## coercing into character vector
+
+## Warning in bind_rows_(x, .id): binding character and factor vector,
+## coercing into character vector
+
+## Warning in bind_rows_(x, .id): binding character and factor vector,
+## coercing into character vector
+
+## Warning in bind_rows_(x, .id): binding character and factor vector,
+## coercing into character vector
+
+## Warning in bind_rows_(x, .id): binding character and factor vector,
+## coercing into character vector
+
+## Warning in bind_rows_(x, .id): binding character and factor vector,
+## coercing into character vector
+
+## Warning in bind_rows_(x, .id): binding character and factor vector,
+## coercing into character vector
+
+## Warning in bind_rows_(x, .id): binding character and factor vector,
+## coercing into character vector
+
+## Warning in bind_rows_(x, .id): binding character and factor vector,
+## coercing into character vector
+
+## Warning in bind_rows_(x, .id): binding character and factor vector,
+## coercing into character vector
+
+## Warning in bind_rows_(x, .id): binding character and factor vector,
+## coercing into character vector
+
+## Warning in bind_rows_(x, .id): binding character and factor vector,
+## coercing into character vector
+
+## Warning in bind_rows_(x, .id): binding character and factor vector,
+## coercing into character vector
+
+## Warning in bind_rows_(x, .id): binding character and factor vector,
+## coercing into character vector
+
+## Warning in bind_rows_(x, .id): binding character and factor vector,
+## coercing into character vector
+
+## Warning in bind_rows_(x, .id): binding character and factor vector,
+## coercing into character vector
+
+## Warning in bind_rows_(x, .id): binding character and factor vector,
+## coercing into character vector
+
+## Warning in bind_rows_(x, .id): binding character and factor vector,
+## coercing into character vector
+
+## Warning in bind_rows_(x, .id): binding character and factor vector,
+## coercing into character vector
+
+## Warning in bind_rows_(x, .id): binding character and factor vector,
+## coercing into character vector</code></pre>
+<pre><code>## Warning in bind_rows_(x, .id): Unequal factor levels: coercing to character</code></pre>
+<pre><code>## Warning in bind_rows_(x, .id): binding character and factor vector,
+## coercing into character vector
+
+## Warning in bind_rows_(x, .id): binding character and factor vector,
+## coercing into character vector
+
+## Warning in bind_rows_(x, .id): binding character and factor vector,
+## coercing into character vector
+
+## Warning in bind_rows_(x, .id): binding character and factor vector,
+## coercing into character vector
+
+## Warning in bind_rows_(x, .id): binding character and factor vector,
+## coercing into character vector
+
+## Warning in bind_rows_(x, .id): binding character and factor vector,
+## coercing into character vector
+
+## Warning in bind_rows_(x, .id): binding character and factor vector,
+## coercing into character vector
+
+## Warning in bind_rows_(x, .id): binding character and factor vector,
+## coercing into character vector
+
+## Warning in bind_rows_(x, .id): binding character and factor vector,
+## coercing into character vector
+
+## Warning in bind_rows_(x, .id): binding character and factor vector,
+## coercing into character vector
+
+## Warning in bind_rows_(x, .id): binding character and factor vector,
+## coercing into character vector
+
+## Warning in bind_rows_(x, .id): binding character and factor vector,
+## coercing into character vector
+
+## Warning in bind_rows_(x, .id): binding character and factor vector,
+## coercing into character vector</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">tpesq &lt;-<span class="st"> </span>l.out<span class="op">$</span>tpesq
+tpublic &lt;-<span class="st"> </span>l.out<span class="op">$</span>tpublic
+
+p &lt;-<span class="st"> </span><span class="kw">ggplot</span>(tpublic, <span class="kw">aes</span>(<span class="dt">x =</span> qualis)) <span class="op">+</span>
+<span class="st">  </span><span class="kw">geom_bar</span>(<span class="dt">position =</span> <span class="st">'identity'</span>) <span class="op">+</span><span class="st"> </span><span class="kw">facet_wrap</span>(<span class="op">~</span>NOME.COMPLETO) <span class="op">+</span>
+<span class="st">  </span><span class="kw">labs</span>(<span class="dt">x =</span> <span class="kw">paste0</span>(<span class="st">'Qualis: '</span>,area.qualis))
+<span class="kw">print</span>(p)</code></pre></div>
+<p><img src="data:image/png;base64,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" /><!-- --></p>
+</div>
+
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>
