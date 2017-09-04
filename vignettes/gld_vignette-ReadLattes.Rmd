@@ -9,24 +9,26 @@ vignette: >
   %\VignetteEncoding{UTF-8}
 ---
 
-# Introduction
-
-[Lattes](http://lattes.cnpq.br/) in the largest and unique platform for academic curriculumns. In there you can find information about the academic work of **ALL** Brazilian scholars. It is an unique and reliable source of information for bibliometric studies. 
+[Lattes](http://lattes.cnpq.br/) is the largest and unique platform for academic curriculumns. There you can find information about the academic work of **ALL** Brazilian scholars. It includes institution of PhD, current employer, field of work, all publications metadata and many more. It is an unique and reliable source of information for bibliometric studies. 
 
 I've been working with Lattes data for some time. Here I present a short list of papers that have used this data.
 
 -  [The Brazilian scientific output published in journals: A study based on a large CV database](http://www.sciencedirect.com/science/article/pii/S1751157716301559)
-- Predatory publications in the Brazilian academic system: an empirical analysis (Working paper)
+
 - [The researchers, the publications and the journals of Finance in Brazil: An analysis based on resumes from the Lattes platform](http://bibliotecadigital.fgv.br/ojs/index.php/rbfin/article/view/47157)    
+
 - [Análise do Perfil dos Acadêmicos e de suas Publicações Científicas em Administração (in Portuguese)](http://www.scielo.br/scielo.php?script=sci_arttext&pid=S1415-65552017000100062)
 
-Package `GetLattesData` is a wrap up of the functions that I've been using for acessing this dataset. It's main innovation is the possibility of downloading data directly from Lattes, without any kind of manual work. 
+- Predatory publications in the Brazilian academic system: an empirical analysis (Working paper)
+
+Package `GetLattesData` is a wrap up of the functions that I've been using for acessing the dataset. It's main innovation is the possibility of downloading data directly from Lattes, without any kind of manual work. 
+
 
 # Example of usage
 
 Let's consider a simple example of downloading information for a group of scholars. I selected a couple of coleagues at my university. Their Lattes id can be easilly found in [Lattes website](http://lattes.cnpq.br/). After searching for a name, notice the internet address of the resulting CV, such as [http://buscatextual.cnpq.br/buscatextual/visualizacv.do?id=K4713546D3](http://buscatextual.cnpq.br/buscatextual/visualizacv.do?id=K4713546D3). Lattes ID is the final 10 digit code of this address. In our case, it is  `'K4713546D3'`.
 
-Since we all work in the business department of the university, the quality of our publications is set by the Qualis rankings of field  `'ADMINISTRAÇÃO PÚBLICA E DE EMPRESAS, CIÊNCIAS CONTÁBEIS E TURISMO'`. Qualis is the local journal ranking in Brazil. You can read more about Qualis in [Wikipedia](https://en.wikipedia.org/wiki/Qualis_(CAPES)) and [here](http://www.sciencedirect.com/science/article/pii/S1751157716301559)
+Since we all work in the business department of UFRGS, the quality of our publications is locally set by the Qualis ranking of field  `'ADMINISTRAÇÃO PÚBLICA E DE EMPRESAS, CIÊNCIAS CONTÁBEIS E TURISMO'`. Qualis is the local journal ranking in Brazil. You can read more about Qualis in [Wikipedia](https://en.wikipedia.org/wiki/Qualis_(CAPES)) and [here](http://www.sciencedirect.com/science/article/pii/S1751157716301559)
 
 Now, based on the two sets of information, vector of ids and field of Qualis, we can use `GetLattesData` to download all up to date information about the researchers:
 
@@ -65,7 +67,7 @@ str(tpublic)
 
 ## An application of  `GetLattesData`
 
-Based on `GetLattesData` and other packages, it is easy to create academic reports such as the one provided next, where we plot the number of publication for each researcher, conditioning on Qualis ranking.
+Based on `GetLattesData` and other packages, it is easy to create academic reports for a large number of researchers. See next, where we plot the number of publications for each researcher, conditioning on Qualis ranking.
 
 ```{r}
 library(ggplot2)
@@ -76,7 +78,7 @@ p <- ggplot(tpublic, aes(x = qualis)) +
 print(p)
 ```
 
-We can also use `dplyr` to do some simple assessment of of productivity:
+We can also use `dplyr` to do some simple assessment of academic productivity:
 
 ```{r}
 library(dplyr)
@@ -87,7 +89,8 @@ my.tab <- tpublic %>%
             max.SJR = max(SJR, na.rm = T),
             mean.SJR = mean(SJR, na.rm = T),
             n.A1.qualis = sum(qualis == 'A1', na.rm = T),
-            n.A2.qualis = sum(qualis == 'A2', na.rm = T))
+            n.A2.qualis = sum(qualis == 'A2', na.rm = T),
+            median.authorship = median(as.numeric(order.aut), na.rm = T ))
 
 knitr::kable(my.tab)
 ```
