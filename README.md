@@ -1,6 +1,6 @@
 # Package GetLattesData
 
-[Lattes](http://lattes.cnpq.br/) in the largest and unique platform for academic curriculumns. In there you can find information about the academic work of **ALL** Brazilian scholars. It is an unique and reliable source of information for bibliometric studies. 
+[Lattes](http://lattes.cnpq.br/) is the largest and unique platform for academic curriculumns. There you can find information about the academic work of **ALL** Brazilian scholars. It includes institution of PhD, current employer, field of work, all publications metadata and many more. It is an unique and reliable source of information for bibliometric studies. 
 
 I've been working with Lattes data for some time. Here I present a short list of papers that have used this data.
 
