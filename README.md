@@ -16,7 +16,13 @@ Package `GetLattesData` is a wrap up of the functions that I've been using for a
 
 # Installation
 
-The package is not yeat in CRAN. In the meanwhile, you can install it using devtools.
+The package is available in CRAN:
+
+```
+install.packages('GetLattesData')
+```
+  
+You can also install the development version from Github:
 
 ```
 #install.packages('devtools')
@@ -24,6 +30,8 @@ devtools::install_github('msperlin/GetLattesData')
 ```
 
 # Example of usage 
+
+See [vignette for more examples](https://cran.r-project.org/web/packages/GetLattesData/vignettes/gld_vignette-ReadLattes.html).
 
 ```
 library(GetLattesData)
