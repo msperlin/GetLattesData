@@ -114,7 +114,8 @@ gld_download_lattes_files <- function(id, folder.dl = tempdir()) {
     cat('\nDownloading file ', dest.file)
 
     # download file
-    utils::download.file(url = my.link,destfile = dest.file, mode = 'a',quiet = T)
+    utils::download.file(url = my.link,destfile = dest.file,
+                         quiet = T, mode = 'wb', method = 'internal')
   }
 
   if (!file.exists(dest.file)) {
