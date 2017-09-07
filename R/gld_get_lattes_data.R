@@ -23,57 +23,72 @@
 gld_get_lattes_data <- function(id.vec,
                                 field.qualis = NULL,
                                 folder.dl = tempdir()) {
-
-
+  
+  
   # check args
   id.vec <- as.character(id.vec)
   n.char <- nchar(id.vec)
-
+  
   if (any(n.char!=10)) {
     stop('All ids should be 10 character long. Check your input for id.vec.')
   }
-
+  
   if (!dir.exists(folder.dl)) {
     cat('Folder ', folder.dl, 'does not exists. Creating it..')
     dir.create(folder.dl)
   }
-
+  
   # check internet
-
+  
   if (!curl::has_internet()) {
     stop('You need an internet connection to download files from Lattes.')
   }
-
+  
   # download files
   zip.out <- sapply(X = id.vec,
                     FUN = gld_download_lattes_files, folder.dl = folder.dl)
-
+  
   # read files
   my.l <- lapply(zip.out, gld_read_zip)
-
+  
   # save tpesq (quietly, please)
   suppressWarnings({
     tpesq   <- do.call(args = lapply(my.l, function(x) x$tpesq)  , what = dplyr::bind_rows)
     tpublic <- do.call(args = lapply(my.l, function(x) x$tpublic), what = dplyr::bind_rows)
   })
-
+  
   # do Qualis
   if (!(is.null(field.qualis ))) {
     df.qualis <- gld_get_qualis(field.qualis = field.qualis)
     idx <- match(tpublic$ISSN, df.qualis$issn)
-
+    
     tpublic$qualis <- df.qualis$ranking[idx]
   }
-
+  
   # do sjr
   df.sjr <- gld_get_SJR()
-
+  
   idx <- match(tpublic$ISSN, df.sjr$Issn)
   tpublic$SJR <- df.sjr$SJR[idx]
   tpublic$H.SJR <- df.sjr$`H index`[idx]
-
+  
+  # fix datatypes
+  
+  suppressWarnings({  
+    tpesq$phd.start.year <- as.numeric(tpesq$phd.start.year)
+    tpesq$phd.end.year   <- as.numeric(tpesq$phd.end.year)
+    tpesq$major.field    <- as.factor(tpesq$major.field)
+    tpesq$minor.field    <- as.factor(tpesq$minor.field)
+    
+    tpublic$year <- as.numeric(tpublic$year)
+    tpublic$language <- as.factor(tpublic$language)
+    tpublic$start.page <- as.numeric(tpublic$start.page)
+    tpublic$end.page <- as.numeric(tpublic$end.page)
+    tpublic$order.aut <- as.numeric(tpublic$order.aut)
+    tpublic$n.authors <- as.numeric(tpublic$n.authors)
+  })
   # return data
   l.out <- list(tpesq = tpesq, tpublic = tpublic)
   return(l.out)
-
+  
 }

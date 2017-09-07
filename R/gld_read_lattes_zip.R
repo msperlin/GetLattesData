@@ -76,7 +76,7 @@ gld_read_zip <- function(zip.in){
 
   # fix names to eng
   names(data.tpesq) <- c('name', 'last.update', 'phd.institution', 'phd.start.year', 'phd.end.year',
-                         'country.origin', 'Major Field', 'Minor Field')
+                         'country.origin', 'major.field', 'minor.field')
 
   # clean data
   data.tpesq$last.update <- as.Date(data.tpesq$last.update, '%d%m%Y')
