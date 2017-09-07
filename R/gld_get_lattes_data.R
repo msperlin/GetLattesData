@@ -87,6 +87,7 @@ gld_get_lattes_data <- function(id.vec,
     tpublic$order.aut <- as.numeric(tpublic$order.aut)
     tpublic$n.authors <- as.numeric(tpublic$n.authors)
   })
+  
   # return data
   l.out <- list(tpesq = tpesq, tpublic = tpublic)
   return(l.out)
