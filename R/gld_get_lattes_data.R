@@ -74,18 +74,20 @@ gld_get_lattes_data <- function(id.vec,
   
   # fix datatypes
   
-  suppressWarnings({  
+  suppressWarnings({
+    tpesq$name           <- as.character(tpesq$name)
     tpesq$phd.start.year <- as.numeric(tpesq$phd.start.year)
     tpesq$phd.end.year   <- as.numeric(tpesq$phd.end.year)
     tpesq$major.field    <- as.factor(tpesq$major.field)
-    tpesq$minor.field    <- as.factor(tpesq$minor.field)
+    tpesq$minor.field    <- as.character(tpesq$minor.field)
     
-    tpublic$year <- as.numeric(tpublic$year)
-    tpublic$language <- as.factor(tpublic$language)
-    tpublic$start.page <- as.numeric(tpublic$start.page)
-    tpublic$end.page <- as.numeric(tpublic$end.page)
-    tpublic$order.aut <- as.numeric(tpublic$order.aut)
-    tpublic$n.authors <- as.numeric(tpublic$n.authors)
+    tpublic$name         <- as.character(tpublic$name)
+    tpublic$year         <- as.numeric(tpublic$year)
+    tpublic$language     <- as.character(tpublic$language)
+    tpublic$start.page   <- as.numeric(tpublic$start.page)
+    tpublic$end.page     <- as.numeric(tpublic$end.page)
+    tpublic$order.aut    <- as.numeric(tpublic$order.aut)
+    tpublic$n.authors    <- as.numeric(tpublic$n.authors)
   })
   
   # force utf-8
@@ -94,8 +96,8 @@ gld_get_lattes_data <- function(id.vec,
     return(x)
   }
   
-  tpesq <- as.data.frame(lapply(tpesq, my.enc.fct))
-  tpublic <- as.data.frame(lapply(tpublic, my.enc.fct))
+  tpesq <- as.data.frame(lapply(tpesq, my.enc.fct), stringsAsFactors = F)
+  tpublic <- as.data.frame(lapply(tpublic, my.enc.fct), stringsAsFactors = F)
   
   # return data
   l.out <- list(tpesq = tpesq, tpublic = tpublic)

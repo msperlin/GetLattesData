@@ -84,7 +84,9 @@ gld_read_zip <- function(zip.in){
   data.tpesq$id.file <- basename(zip.in)
 
   # PAPERS
-  cat(' - ', as.character(data.tpesq$name) )
+  my.name <- as.character(data.tpesq$name)
+  Encoding(my.name) <- 'UTF-8'
+  cat(' - ', my.name)
 
   papers <- my.l$`PRODUCAO-BIBLIOGRAFICA`$`ARTIGOS-PUBLICADOS`
 
