@@ -151,6 +151,7 @@ gld_read_zip <- function(zip.in){
   data.tpublic$ISSN <- paste0(stringr::str_sub(data.tpublic$ISSN, 1,4),
                               '-',
                               stringr::str_sub(data.tpublic$ISSN, 5,8) )
+  
 
   # output
   my.l <- list(tpesq = data.tpesq,

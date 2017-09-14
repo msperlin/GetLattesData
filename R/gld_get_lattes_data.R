@@ -88,6 +88,15 @@ gld_get_lattes_data <- function(id.vec,
     tpublic$n.authors <- as.numeric(tpublic$n.authors)
   })
   
+  # force utf-8
+  my.enc.fct <- function(x){
+    if (is.character(x)) Encoding(x) <- 'UTF-8' 
+    return(x)
+  }
+  
+  tpesq <- as.data.frame(lapply(tpesq, my.enc.fct))
+  tpublic <- as.data.frame(lapply(tpublic, my.enc.fct))
+  
   # return data
   l.out <- list(tpesq = tpesq, tpublic = tpublic)
   return(l.out)
