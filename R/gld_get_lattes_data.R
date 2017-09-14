@@ -78,8 +78,9 @@ gld_get_lattes_data <- function(id.vec,
     tpesq$name           <- as.character(tpesq$name)
     tpesq$phd.start.year <- as.numeric(tpesq$phd.start.year)
     tpesq$phd.end.year   <- as.numeric(tpesq$phd.end.year)
-    tpesq$major.field    <- as.factor(tpesq$major.field)
+    tpesq$major.field    <- as.character(tpesq$major.field)
     tpesq$minor.field    <- as.character(tpesq$minor.field)
+    tpesq$country.origin <- as.character(tpesq$country.origin)
     
     tpublic$name         <- as.character(tpublic$name)
     tpublic$year         <- as.numeric(tpublic$year)
@@ -96,8 +97,11 @@ gld_get_lattes_data <- function(id.vec,
     return(x)
   }
   
-  tpesq <- as.data.frame(lapply(tpesq, my.enc.fct), stringsAsFactors = F)
-  tpublic <- as.data.frame(lapply(tpublic, my.enc.fct), stringsAsFactors = F)
+  tpesq <- as.data.frame(lapply(tpesq, my.enc.fct), 
+                         stringsAsFactors = F)
+  
+  tpublic <- as.data.frame(lapply(tpublic, my.enc.fct), 
+                           stringsAsFactors = F)
   
   # return data
   l.out <- list(tpesq = tpesq, tpublic = tpublic)
