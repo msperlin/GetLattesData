@@ -18,11 +18,12 @@ Returns a list with two components:
  \describe{
   \item{tpesq}{A dataframe with information about researchers}
   \item{tpublic}{A dataframe with information about publications}
+  \item{tsupervisions}{A dataframe with information about all supervisions}
 }
 }
 \description{
-This function downloads xml data directly from Lattes and reads the resulting file, giving as output two dataframes
-, one with the description of researchers and the second with several information about all publications
+This function downloads xml data directly from Lattes and reads the resulting file, giving as output three dataframes
+, a table with description of researchers, list of all publications and a table with completed supervisions
 }
 \examples{
 

@@ -9,7 +9,7 @@ vignette: >
   %\VignetteEncoding{UTF-8}
 ---
 
-[Lattes](http://lattes.cnpq.br/) is the largest and unique platform for academic curriculumns. There you can find information about the academic work of **ALL** Brazilian scholars. It includes institution of PhD, current employer, field of work, all publications metadata and many more. It is an unique and reliable source of information for bibliometric studies. 
+[Lattes](http://lattes.cnpq.br/) is an unique and largest platform for academic curriculumns. There you can find information about the academic work of **all** Brazilian scholars. It includes institution of PhD, current employer, field of work, all publications metadata and more. It is an unique and reliable source of information for bibliometric studies. 
 
 I've been working with Lattes data for some time. Here I present a short list of papers that have used this data.
 
@@ -21,14 +21,14 @@ I've been working with Lattes data for some time. Here I present a short list of
 
 - Predatory publications in the Brazilian academic system: an empirical analysis (Working paper)
 
-Package `GetLattesData` is a wrap up of the functions that I've been using for acessing the dataset. It's main innovation is the possibility of downloading data directly from Lattes, without any kind of manual work. 
+Package `GetLattesData` is a wrap up of the functions that I've been using for acessing the dataset. It's main innovation is the possibility of downloading data directly from Lattes, without any manual work or captcha solving. 
 
 
 # Example of usage
 
 Let's consider a simple example of downloading information for a group of scholars. I selected a couple of coleagues at my university. Their Lattes id can be easilly found in [Lattes website](http://lattes.cnpq.br/). After searching for a name, notice the internet address of the resulting CV, such as [http://buscatextual.cnpq.br/buscatextual/visualizacv.do?id=K4713546D3](http://buscatextual.cnpq.br/buscatextual/visualizacv.do?id=K4713546D3). Lattes ID is the final 10 digit code of this address. In our case, it is  `'K4713546D3'`.
 
-Since we all work in the business department of UFRGS, the quality of our publications is locally set by the Qualis ranking of field  `'ADMINISTRAÇÃO PÚBLICA E DE EMPRESAS, CIÊNCIAS CONTÁBEIS E TURISMO'`. Qualis is the local journal ranking in Brazil. You can read more about Qualis in [Wikipedia](https://en.wikipedia.org/wiki/Qualis_(CAPES)) and [here](http://www.sciencedirect.com/science/article/pii/S1751157716301559)
+Since we all work in the business department of UFRGS, the impact of our publications is localy set by the Qualis ranking of Management, Accounting and Tourism (`'ADMINISTRAÇÃO PÚBLICA E DE EMPRESAS, CIÊNCIAS CONTÁBEIS E TURISMO'`). Qualis is the local journal ranking in Brazil. You can read more about Qualis in [Wikipedia](https://en.wikipedia.org/wiki/Qualis_(CAPES)) and [here](http://www.sciencedirect.com/science/article/pii/S1751157716301559)
 
 Now, based on the two sets of information, vector of ids and field of Qualis, we can use `GetLattesData` to download all up to date information about the researchers:
 
@@ -45,7 +45,7 @@ field.qualis = 'ADMINISTRAÇÃO PÚBLICA E DE EMPRESAS, CIÊNCIAS CONTÁBEIS E T
 l.out <- gld_get_lattes_data(id.vec = my.ids, field.qualis = field.qualis)
 ```
 
-The output `my.l` is a list with two items:
+The output `my.l` is a list with three items:
 
 ```{r}
 names(l.out)
@@ -58,11 +58,18 @@ tpesq <- l.out$tpesq
 str(tpesq)
 ```
 
-and the second dataframe containing information about all publications, including Qualis and SJR:
+The second dataframe contains information about all publications, including Qualis and SJR:
 
 ```{r}
 tpublic <- l.out$tpublic
 str(tpublic)
+```
+
+The third element of the list provides information about all academic supervisions of each researcher:
+
+```{r}
+tsupervisions <- l.out$tsupervisions
+str(tsupervisions)
 ```
 
 ## An application of  `GetLattesData`

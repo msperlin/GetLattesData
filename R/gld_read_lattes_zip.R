@@ -153,11 +153,42 @@ gld_read_zip <- function(zip.in){
   data.tpublic$ISSN <- paste0(stringr::str_sub(data.tpublic$ISSN, 1,4),
                               '-',
                               stringr::str_sub(data.tpublic$ISSN, 5,8) )
-  
+
+  # SUPERVISIONS
+  ORIENTACOES.MSC <- my.l$`OUTRA-PRODUCAO`$`ORIENTACOES-CONCLUIDAS`$`ORIENTACOES-CONCLUIDAS-PARA-MESTRADO`
+  ORIENTACOES.PHD <- my.l$`OUTRA-PRODUCAO`$`ORIENTACOES-CONCLUIDAS`$`ORIENTACOES-CONCLUIDAS-PARA-DOUTORADO`
+  ORIENTACOES <- my.l$`OUTRA-PRODUCAO`$`ORIENTACOES-CONCLUIDAS`
+
+  if (!is.null(ORIENTACOES)) {
+
+    data.supervisions <- data.frame()
+    for (i.orient in ORIENTACOES) {
+      i.orient[[1]]
+      i.orient[[2]]
+      course <- i.orient[[1]]['NATUREZA']
+      type.course <- i.orient[[1]]['TIPO']
+      std.name <- i.orient[[2]]['NOME-DO-ORIENTADO']
+      year.supervision <- as.numeric(i.orient[[1]]['ANO'])
+
+      temp.df <- data.frame(id = basename(zip.in),
+                            name = data.tpesq$name,
+                            type.course,
+                            course,
+                            std.name,
+                            year.supervision)
+
+      rownames(temp.df) <-  NULL
+
+      data.supervisions <- rbind(data.supervisions, temp.df)
+
+    }
+
+  }
 
   # output
   my.l <- list(tpesq = data.tpesq,
-               tpublic=data.tpublic)
+               tpublic=data.tpublic,
+               tsupervisions = data.supervisions)
   return(my.l)
 
 }
