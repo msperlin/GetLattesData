@@ -155,13 +155,12 @@ gld_read_zip <- function(zip.in){
                               stringr::str_sub(data.tpublic$ISSN, 5,8) )
 
   # SUPERVISIONS
-  ORIENTACOES.MSC <- my.l$`OUTRA-PRODUCAO`$`ORIENTACOES-CONCLUIDAS`$`ORIENTACOES-CONCLUIDAS-PARA-MESTRADO`
-  ORIENTACOES.PHD <- my.l$`OUTRA-PRODUCAO`$`ORIENTACOES-CONCLUIDAS`$`ORIENTACOES-CONCLUIDAS-PARA-DOUTORADO`
   ORIENTACOES <- my.l$`OUTRA-PRODUCAO`$`ORIENTACOES-CONCLUIDAS`
+  ORIENTACOES.active <- my.l$`DADOS-COMPLEMENTARES`$`ORIENTACOES-EM-ANDAMENTO`
 
+  data.supervisions <- data.frame()
   if (!is.null(ORIENTACOES)) {
 
-    data.supervisions <- data.frame()
     for (i.orient in ORIENTACOES) {
       i.orient[[1]]
       i.orient[[2]]
@@ -172,6 +171,7 @@ gld_read_zip <- function(zip.in){
 
       temp.df <- data.frame(id = basename(zip.in),
                             name = data.tpesq$name,
+                            situation = 'CONCLUIDA',
                             type.course,
                             course,
                             std.name,
@@ -182,6 +182,35 @@ gld_read_zip <- function(zip.in){
       data.supervisions <- rbind(data.supervisions, temp.df)
 
     }
+  }
+
+  data.supervisions.active <- data.frame()
+  if (!is.null(ORIENTACOES.active)) {
+
+    for (i.orient in ORIENTACOES.active) {
+      i.orient[[1]]
+      i.orient[[2]]
+      course <- i.orient[[1]]['NATUREZA']
+      type.course <- i.orient[[1]]['TIPO']
+      std.name <- i.orient[[2]]['NOME-DO-ORIENTANDO']
+      year.supervision <- as.numeric(i.orient[[1]]['ANO'])
+
+      temp.df <- data.frame(id = basename(zip.in),
+                            name = data.tpesq$name,
+                            situation = 'EM ANDAMENTO',
+                            type.course,
+                            course,
+                            std.name,
+                            year.supervision)
+
+      rownames(temp.df) <-  NULL
+
+      data.supervisions.active <- rbind(data.supervisions.active, temp.df)
+
+    }
+
+    data.supervisions <- rbind(data.supervisions, data.supervisions.active)
+
 
   }
 
