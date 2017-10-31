@@ -147,7 +147,7 @@ gld_read_zip <- function(zip.in){
 
   }
 
-  cat('\t found',n.papers, ' papers')
+  cat(paste0('\n\tFound ',n.papers, ' published papers'))
   # fix issn
 
   data.tpublic$ISSN <- paste0(stringr::str_sub(data.tpublic$ISSN, 1,4),
@@ -157,6 +157,8 @@ gld_read_zip <- function(zip.in){
   # SUPERVISIONS
   ORIENTACOES <- my.l$`OUTRA-PRODUCAO`$`ORIENTACOES-CONCLUIDAS`
   ORIENTACOES.active <- my.l$`DADOS-COMPLEMENTARES`$`ORIENTACOES-EM-ANDAMENTO`
+
+  cat(paste0('\n\tFound ', length(ORIENTACOES), ' supervisions'))
 
   data.supervisions <- data.frame()
   if (!is.null(ORIENTACOES)) {
@@ -188,8 +190,7 @@ gld_read_zip <- function(zip.in){
   if (!is.null(ORIENTACOES.active)) {
 
     for (i.orient in ORIENTACOES.active) {
-      i.orient[[1]]
-      i.orient[[2]]
+
       course <- i.orient[[1]]['NATUREZA']
       type.course <- i.orient[[1]]['TIPO']
       std.name <- i.orient[[2]]['NOME-DO-ORIENTANDO']
@@ -214,10 +215,70 @@ gld_read_zip <- function(zip.in){
 
   }
 
+  # books
+  LIVROS.PUBLICADOS <- my.l$`PRODUCAO-BIBLIOGRAFICA`$`LIVROS-E-CAPITULOS`$`LIVROS-PUBLICADOS-OU-ORGANIZADOS`
+
+  cat(paste0('\n\tFound ',length(LIVROS.PUBLICADOS), ' published books'))
+
+  data.books.published <- data.frame()
+  if (!is.null(LIVROS.PUBLICADOS)) {
+
+    for (i.book in LIVROS.PUBLICADOS) {
+
+      temp.df <- data.frame(id = basename(zip.in),
+                            name = data.tpesq$name,
+                            book.title = i.book$`DADOS-BASICOS-DO-LIVRO`['TITULO-DO-LIVRO'],
+                            book.year = i.book$`DADOS-BASICOS-DO-LIVRO`['ANO'],
+                            book.type = i.book$`DADOS-BASICOS-DO-LIVRO`['TIPO'],
+                            book.lan  = i.book$`DADOS-BASICOS-DO-LIVRO`['IDIOMA'],
+                            book.issn = i.book$`DETALHAMENTO-DO-LIVRO`['ISBN'],
+                            book.npages = i.book$`DETALHAMENTO-DO-LIVRO`['NUMERO-DE-PAGINAS'],
+                            book.edition = i.book$`DETALHAMENTO-DO-LIVRO`['NUMERO-DA-EDICAO-REVISAO'],
+                            book.editor = i.book$`DETALHAMENTO-DO-LIVRO`['NOME-DA-EDITORA'], stringsAsFactors = F)
+
+      rownames(temp.df) <-  NULL
+
+      data.books.published <- rbind(data.books.published, temp.df)
+
+    }
+  }
+
+  # books chapters
+  LIVROS.CAPITULOS <- my.l$`PRODUCAO-BIBLIOGRAFICA`$`LIVROS-E-CAPITULOS`$`CAPITULOS-DE-LIVROS-PUBLICADOS`
+
+  cat(paste0('\n\tFound ',length(LIVROS.CAPITULOS), ' book chapters'))
+
+  data.books.chapters <- data.frame()
+  if (!is.null(LIVROS.CAPITULOS)) {
+
+    for (i.book in LIVROS.CAPITULOS) {
+
+      temp.df <- data.frame(id = basename(zip.in),
+                            name = data.tpesq$name,
+                            book.title = i.book$`DETALHAMENTO-DO-CAPITULO`['TITULO-DO-LIVRO'],
+                            book.chapter = i.book$`DADOS-BASICOS-DO-CAPITULO`['TITULO-DO-CAPITULO-DO-LIVRO'],
+                            book.year  = i.book$`DADOS-BASICOS-DO-CAPITULO`['ANO'],
+                            book.type  = i.book$`DADOS-BASICOS-DO-CAPITULO`['TIPO'],
+                            book.lan   = i.book$`DADOS-BASICOS-DO-CAPITULO`['IDIOMA'],
+                            book.issn = i.book$`DETALHAMENTO-DO-CAPITULO`['ISBN'],
+                            book.edition = i.book$`DETALHAMENTO-DO-CAPITULO`['NUMERO-DA-EDICAO-REVISAO'],
+                            book.editor = i.book$`DETALHAMENTO-DO-CAPITULO`['NOME-DA-EDITORA'], stringsAsFactors = F)
+
+      rownames(temp.df) <-  NULL
+
+      data.books.chapters <- rbind(data.books.chapters, temp.df)
+
+    }
+  }
+
+  data.books <- dplyr::bind_rows(data.books.published, data.books.chapters)
+
   # output
   my.l <- list(tpesq = data.tpesq,
                tpublic=data.tpublic,
-               tsupervisions = data.supervisions)
+               tsupervisions = data.supervisions,
+               tbooks = data.books)
+
   return(my.l)
 
 }
