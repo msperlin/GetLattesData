@@ -58,7 +58,6 @@ gld_get_lattes_data <- function(id.vec,
     tpublic <- do.call(args = lapply(my.l, function(x) x$tpublic), what = dplyr::bind_rows)
     tsupervisions <- do.call(args = lapply(my.l, function(x) x$tsupervisions), what = dplyr::bind_rows)
     tbooks <- do.call(args = lapply(my.l, function(x) x$tbooks), what = dplyr::bind_rows)
-    tbooks.chapters <- do.call(args = lapply(my.l, function(x) x$tbooks.chapters), what = dplyr::bind_rows)
   })
 
   # do Qualis
