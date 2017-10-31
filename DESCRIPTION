@@ -1,7 +1,7 @@
 Package: GetLattesData
 Title: Reading Bibliometric Data from Lattes Platform
-Version: 0.6
-Date: 2017-10-14
+Version: 0.7
+Date: 2017-10-31
 Authors@R: person("Marcelo", "Perlin", email = "marceloperlin@gmail.com", role = c("aut", "cre"))
 Description: A simple API for downloading and reading xml data directly from Lattes <http://lattes.cnpq.br/>.
 Depends:

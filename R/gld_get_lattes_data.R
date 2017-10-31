@@ -115,14 +115,10 @@ gld_get_lattes_data <- function(id.vec,
   tbooks <- as.data.frame(lapply(tbooks, my.enc.fct),
                                  stringsAsFactors = F)
 
-  tbooks.chapters <- as.data.frame(lapply(tbooks.chapters, my.enc.fct),
-                          stringsAsFactors = F)
-
   # return data
   l.out <- list(tpesq = tpesq, tpublic = tpublic,
                 tsupervisions = tsupervisions,
-                tbooks = tbooks,
-                tbooks.chapters = tbooks.chapters)
+                tbooks = tbooks)
   return(l.out)
 
 }
