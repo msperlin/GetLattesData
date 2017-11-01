@@ -273,11 +273,42 @@ gld_read_zip <- function(zip.in){
 
   data.books <- dplyr::bind_rows(data.books.published, data.books.chapters)
 
+  # conferences
+
+
+  CONFERENCES <- my.l$`PRODUCAO-BIBLIOGRAFICA`$`TRABALHOS-EM-EVENTOS`
+
+  cat(paste0('\n\tFound ',length(CONFERENCES), ' conference papers'))
+
+  data.conferences <- data.frame()
+  if (!is.null(CONFERENCES)) {
+
+    for (i.conf in CONFERENCES) {
+
+      temp.df <- data.frame(id = basename(zip.in),
+                            name = data.tpesq$name,
+                            article.title = i.conf$`DADOS-BASICOS-DO-TRABALHO`['TITULO-DO-TRABALHO'],
+                            article.year = i.conf$`DADOS-BASICOS-DO-TRABALHO`['ANO-DO-TRABALHO'],
+                            event.classification = i.conf$`DETALHAMENTO-DO-TRABALHO`['CLASSIFICACAO-DO-EVENTO'],
+                            event.name = i.conf$`DETALHAMENTO-DO-TRABALHO`['NOME-DO-EVENTO'],
+                            event.isbn = i.conf$`DETALHAMENTO-DO-TRABALHO`['ISBN'],
+                            event.city = i.conf$`DETALHAMENTO-DO-TRABALHO`['CIDADE-DO-EVENTO'],
+                            stringsAsFactors = F)
+
+      rownames(temp.df) <-  NULL
+
+      data.conferences <- rbind(data.conferences, temp.df)
+
+    }
+  }
+
   # output
+
   my.l <- list(tpesq = data.tpesq,
                tpublic=data.tpublic,
                tsupervisions = data.supervisions,
-               tbooks = data.books)
+               tbooks = data.books,
+               tconferences = data.conferences)
 
   return(my.l)
 

@@ -58,6 +58,7 @@ gld_get_lattes_data <- function(id.vec,
     tpublic <- do.call(args = lapply(my.l, function(x) x$tpublic), what = dplyr::bind_rows)
     tsupervisions <- do.call(args = lapply(my.l, function(x) x$tsupervisions), what = dplyr::bind_rows)
     tbooks <- do.call(args = lapply(my.l, function(x) x$tbooks), what = dplyr::bind_rows)
+    tconferences <- do.call(args = lapply(my.l, function(x) x$tconferences), what = dplyr::bind_rows)
   })
 
   # do Qualis
@@ -114,10 +115,15 @@ gld_get_lattes_data <- function(id.vec,
   tbooks <- as.data.frame(lapply(tbooks, my.enc.fct),
                                  stringsAsFactors = F)
 
+  tconferences <- as.data.frame(lapply(tconferences, my.enc.fct),
+                             stringsAsFactors = F)
+
   # return data
   l.out <- list(tpesq = tpesq, tpublic = tpublic,
                 tsupervisions = tsupervisions,
-                tbooks = tbooks)
+                tbooks = tbooks,
+                tconferences = tconferences)
+
   return(l.out)
 
 }
