@@ -70,13 +70,15 @@ gld_read_zip <- function(zip.in){
                     "ANO.DE.INICIO","ANO.DE.CONCLUSAO",  "PAIS.DE.NACIONALIDADE",
                     'GArea','AArea')
 
+  # set cols to change name
+  better.names <- c('name', 'last.update', 'phd.institution', 'phd.start.year', 'phd.end.year',
+                    'country.origin', 'major.field', 'minor.field')
 
   idx <- cols.to.keep %in% names(data.tpesq)
   data.tpesq <- data.tpesq[, cols.to.keep[idx]]
 
   # fix names to eng
-  names(data.tpesq) <- c('name', 'last.update', 'phd.institution', 'phd.start.year', 'phd.end.year',
-                         'country.origin', 'major.field', 'minor.field')
+  names(data.tpesq) <- better.names[idx]
 
   # clean data
   data.tpesq$last.update <- as.Date(data.tpesq$last.update, '%d%m%Y')
