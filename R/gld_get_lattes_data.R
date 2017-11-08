@@ -30,7 +30,11 @@ gld_get_lattes_data <- function(id.vec,
   id.vec <- as.character(id.vec)
   n.char <- nchar(id.vec)
 
+  # Check length id
   if (any(n.char!=10)) {
+    cat(paste0('You have ids with less or more than 10 characters. ',
+               'You should check for the corresponding 10 char id in the _new_ Lattes website(http://lattes.cnpq.br/)',
+               '. Just search for the name of the scholar. Exiting now..') )
     stop('All ids should be 10 character long. Check your input for id.vec.')
   }
 
