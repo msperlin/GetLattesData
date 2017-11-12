@@ -5,7 +5,7 @@
 #'
 #' @param id.vec A vector of Lattes ids (e.g. id.vec <- c('K4723925J2', 'K4713546D3') )
 #' @param field.qualis Area of Qualis to get Qualis journal rankings (default equals NULL). Eg. area.qualis <- 'ECONOMIA'
-#' @param folder.dl Name of folder where to store xml files (default = tempdir())
+#'@param folder.dl Name of folder where to store xml files (default = tempdir())
 #'
 #' @return Returns a list with two components:
 #'  \describe{
@@ -60,6 +60,7 @@ gld_get_lattes_data <- function(id.vec,
   suppressWarnings({
     tpesq   <- do.call(args = lapply(my.l, function(x) x$tpesq)  , what = dplyr::bind_rows)
     tpublic <- do.call(args = lapply(my.l, function(x) x$tpublic), what = dplyr::bind_rows)
+    accpublic <- do.call(args = lapply(my.l, function(x) x$accpublic), what = dplyr::bind_rows)
     tsupervisions <- do.call(args = lapply(my.l, function(x) x$tsupervisions), what = dplyr::bind_rows)
     tbooks <- do.call(args = lapply(my.l, function(x) x$tbooks), what = dplyr::bind_rows)
     tconferences <- do.call(args = lapply(my.l, function(x) x$tconferences), what = dplyr::bind_rows)
@@ -68,9 +69,12 @@ gld_get_lattes_data <- function(id.vec,
   # do Qualis
   if (!(is.null(field.qualis ))) {
     df.qualis <- gld_get_qualis(field.qualis = field.qualis)
-    idx <- match(tpublic$ISSN, df.qualis$issn)
 
+    idx <- match(tpublic$ISSN, df.qualis$issn)
     tpublic$qualis <- df.qualis$ranking[idx]
+
+    idx_acc <- match(accpublic$ISSN, df.qualis$issn)
+    accpublic$qualis <- df.qualis$ranking[idx_acc]
   }
 
   # do sjr
@@ -79,6 +83,10 @@ gld_get_lattes_data <- function(id.vec,
   idx <- match(tpublic$ISSN, df.sjr$Issn)
   tpublic$SJR <- df.sjr$SJR[idx]
   tpublic$H.SJR <- df.sjr$`H index`[idx]
+
+  idx_acc <- match(accpublic$ISSN, df.sjr$Issn)
+  accpublic$SJR <- df.sjr$SJR[idx_acc]
+  accpublic$H.SJR <- df.sjr$`H index`[idx_acc]
 
   # fix datatypes
 
@@ -98,6 +106,12 @@ gld_get_lattes_data <- function(id.vec,
     tpublic$order.aut    <- as.numeric(tpublic$order.aut)
     tpublic$n.authors    <- as.numeric(tpublic$n.authors)
 
+    accpublic$name         <- as.character(accpublic$name)
+    accpublic$year         <- as.numeric(accpublic$year)
+    accpublic$language     <- as.character(accpublic$language)
+    accpublic$order.aut    <- as.numeric(accpublic$order.aut)
+    accpublic$n.authors    <- as.numeric(accpublic$n.authors)
+
 
   })
 
@@ -113,6 +127,9 @@ gld_get_lattes_data <- function(id.vec,
   tpublic <- as.data.frame(lapply(tpublic, my.enc.fct),
                            stringsAsFactors = F)
 
+  accpublic <- as.data.frame(lapply(accpublic, my.enc.fct),
+                             stringsAsFactors = F)
+
   tsupervisions <- as.data.frame(lapply(tsupervisions, my.enc.fct),
                            stringsAsFactors = F)
 
@@ -123,7 +140,7 @@ gld_get_lattes_data <- function(id.vec,
                              stringsAsFactors = F)
 
   # return data
-  l.out <- list(tpesq = tpesq, tpublic = tpublic,
+  l.out <- list(tpesq = tpesq, tpublic = tpublic, accpublic = accpublic,
                 tsupervisions = tsupervisions,
                 tbooks = tbooks,
                 tconferences = tconferences)

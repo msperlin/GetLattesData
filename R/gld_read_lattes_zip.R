@@ -156,6 +156,78 @@ gld_read_zip <- function(zip.in){
                               '-',
                               stringr::str_sub(data.tpublic$ISSN, 5,8) )
 
+  # ACCEPTED PAPERS
+  accpt_papers <- my.l$`PRODUCAO-BIBLIOGRAFICA`$`ARTIGOS-ACEITOS-PARA-PUBLICACAO`
+
+  data.accpublic <- data.frame()
+  if (!is.null(accpt_papers)) { # if data is found for papers
+
+    n.accpt_papers <- length(accpt_papers)
+
+    for (i.l in accpt_papers){
+
+      info <- do.call(c,list(i.l$`DADOS-BASICOS-DO-ARTIGO`,
+                             i.l$`DETALHAMENTO-DO-ARTIGO`))
+
+      # find order of authorship
+
+      idx <- names(i.l) == 'AUTORES'
+      coauthors <- do.call(rbind, i.l[idx])
+
+      idx <- stringdist::amatch(as.character(data.tpesq$name),
+                                as.character(coauthors[, 1]),
+                                maxDist = Inf)
+
+      if ( (length(idx)!=0)&(!is.na(idx) ) ){
+        info['order.aut'] <- unlist(coauthors[idx, 3])
+        info['n.aut'] <- nrow(coauthors)
+
+      } else {
+        info['order.aut'] <- NA
+        info['n.aut'] <- NA
+
+      }
+
+      # supress warnings (change of col classes)
+      suppressWarnings(
+        data.accpublic <- dplyr::bind_rows(data.accpublic, data.frame(t(info)) )
+      )
+
+    }
+
+
+    if (n.accpt_papers!=0){
+      data.accpublic$id <- rep(basename(zip.in), n.accpt_papers)
+      data.accpublic$name <- data.tpesq$name
+
+      cols.to.keep <- c('name','TITULO.DO.ARTIGO','ANO.DO.ARTIGO','IDIOMA',
+                        "TITULO.DO.PERIODICO.OU.REVISTA",
+                        'PAIS-DE-PUBLICACAO','ISSN',
+                        'order.aut', 'n.aut')
+
+
+      idx <- cols.to.keep %in% names(data.accpublic)
+      data.accpublic <- data.accpublic[ , cols.to.keep[idx]]
+
+      names(data.accpublic) <- c('name', 'article.title', 'year', 'language','journal.title', 'contry.publication',
+                               'ISSN', 'order.aut', 'n.authors')[idx]
+
+    }
+    
+    cat(paste0('\n\tFound ',n.accpt_papers, ' accepted papers'))
+    # fix issn
+
+    data.accpublic$ISSN <- paste0(stringr::str_sub(data.accpublic$ISSN, 1,4),
+                                  '-',
+                                  stringr::str_sub(data.accpublic$ISSN, 5,8) )
+
+  } else {
+
+    cat(paste0('\n\tFound 0 accepted papers'))
+
+  }
+
+
   # SUPERVISIONS
   ORIENTACOES <- my.l$`OUTRA-PRODUCAO`$`ORIENTACOES-CONCLUIDAS`
   ORIENTACOES.active <- my.l$`DADOS-COMPLEMENTARES`$`ORIENTACOES-EM-ANDAMENTO`
@@ -308,6 +380,7 @@ gld_read_zip <- function(zip.in){
 
   my.l <- list(tpesq = data.tpesq,
                tpublic=data.tpublic,
+               accpublic=data.accpublic,
                tsupervisions = data.supervisions,
                tbooks = data.books,
                tconferences = data.conferences)
