@@ -1,6 +1,6 @@
 # Package GetLattesData
 
-[![](http://cranlogs.r-pkg.org/badges/GetTDData)](http://cran.rstudio.com/web/packages/GetTDData/index.html)
+[![](http://cranlogs.r-pkg.org/badges/GetTDData)](https://cran.r-project.org/web/packages/GetTDData/index.html)
 
 [Lattes](http://lattes.cnpq.br/) is an unique and largest platform for academic curriculumns. There you can find information about the academic work of **all** Brazilian scholars. It includes institution of PhD, current employer, field of work, all publications metadata and more. It is an unique and reliable source of information for bibliometric studies. 
 
@@ -33,7 +33,7 @@ devtools::install_github('msperlin/GetLattesData')
 
 # Example of usage 
 
-See [vignette for more examples](https://CRAN.R-project.org/package=GetLattesData).
+See [vignette for more examples](https://cran.r-project.org/web/packages/GetTDData/index.html).
 
 ```
 library(GetLattesData)
