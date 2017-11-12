@@ -59,8 +59,8 @@ gld_get_lattes_data <- function(id.vec,
   # save tpesq (quietly, please)
   suppressWarnings({
     tpesq   <- do.call(args = lapply(my.l, function(x) x$tpesq)  , what = dplyr::bind_rows)
-    tpublic <- do.call(args = lapply(my.l, function(x) x$tpublic), what = dplyr::bind_rows)
-    accpublic <- do.call(args = lapply(my.l, function(x) x$accpublic), what = dplyr::bind_rows)
+    tpublic.published <- do.call(args = lapply(my.l, function(x) x$tpublic.published), what = dplyr::bind_rows)
+    tpublic.accepted <- do.call(args = lapply(my.l, function(x) x$tpublic.accepted), what = dplyr::bind_rows)
     tsupervisions <- do.call(args = lapply(my.l, function(x) x$tsupervisions), what = dplyr::bind_rows)
     tbooks <- do.call(args = lapply(my.l, function(x) x$tbooks), what = dplyr::bind_rows)
     tconferences <- do.call(args = lapply(my.l, function(x) x$tconferences), what = dplyr::bind_rows)
@@ -70,23 +70,23 @@ gld_get_lattes_data <- function(id.vec,
   if (!(is.null(field.qualis ))) {
     df.qualis <- gld_get_qualis(field.qualis = field.qualis)
 
-    idx <- match(tpublic$ISSN, df.qualis$issn)
-    tpublic$qualis <- df.qualis$ranking[idx]
+    idx <- match(tpublic.published$ISSN, df.qualis$issn)
+    tpublic.published$qualis <- df.qualis$ranking[idx]
 
-    idx_acc <- match(accpublic$ISSN, df.qualis$issn)
-    accpublic$qualis <- df.qualis$ranking[idx_acc]
+    idx <- match(tpublic.accepted$ISSN, df.qualis$issn)
+    tpublic.accepted$qualis <- df.qualis$ranking[idx]
   }
 
   # do sjr
   df.sjr <- gld_get_SJR()
 
-  idx <- match(tpublic$ISSN, df.sjr$Issn)
-  tpublic$SJR <- df.sjr$SJR[idx]
-  tpublic$H.SJR <- df.sjr$`H index`[idx]
+  idx <- match(tpublic.published$ISSN, df.sjr$Issn)
+  tpublic.published$SJR <- df.sjr$SJR[idx]
+  tpublic.published$H.SJR <- df.sjr$`H index`[idx]
 
-  idx_acc <- match(accpublic$ISSN, df.sjr$Issn)
-  accpublic$SJR <- df.sjr$SJR[idx_acc]
-  accpublic$H.SJR <- df.sjr$`H index`[idx_acc]
+  idx <- match(tpublic.accepted$ISSN, df.sjr$Issn)
+  tpublic.accepted$SJR <- df.sjr$SJR[idx]
+  tpublic.accepted$H.SJR <- df.sjr$`H index`[idx]
 
   # fix datatypes
 
@@ -98,19 +98,19 @@ gld_get_lattes_data <- function(id.vec,
     tpesq$minor.field    <- as.character(tpesq$minor.field)
     tpesq$country.origin <- as.character(tpesq$country.origin)
 
-    tpublic$name         <- as.character(tpublic$name)
-    tpublic$year         <- as.numeric(tpublic$year)
-    tpublic$language     <- as.character(tpublic$language)
-    tpublic$start.page   <- as.numeric(tpublic$start.page)
-    tpublic$end.page     <- as.numeric(tpublic$end.page)
-    tpublic$order.aut    <- as.numeric(tpublic$order.aut)
-    tpublic$n.authors    <- as.numeric(tpublic$n.authors)
+    tpublic.published$name         <- as.character(tpublic.published$name)
+    tpublic.published$year         <- as.numeric(tpublic.published$year)
+    tpublic.published$language     <- as.character(tpublic.published$language)
+    #tpublic.published$start.page   <- as.numeric(tpublic.published$start.page)
+    #tpublic.published$end.page     <- as.numeric(tpublic.published$end.page)
+    tpublic.published$order.aut    <- as.numeric(tpublic.published$order.aut)
+    tpublic.published$n.authors    <- as.numeric(tpublic.published$n.authors)
 
-    accpublic$name         <- as.character(accpublic$name)
-    accpublic$year         <- as.numeric(accpublic$year)
-    accpublic$language     <- as.character(accpublic$language)
-    accpublic$order.aut    <- as.numeric(accpublic$order.aut)
-    accpublic$n.authors    <- as.numeric(accpublic$n.authors)
+    tpublic.accepted$name         <- as.character(tpublic.accepted$name)
+    tpublic.accepted$year         <- as.numeric(tpublic.accepted$year)
+    tpublic.accepted$language     <- as.character(tpublic.accepted$language)
+    tpublic.accepted$order.aut    <- as.numeric(tpublic.accepted$order.aut)
+    tpublic.accepted$n.authors    <- as.numeric(tpublic.accepted$n.authors)
 
 
   })
@@ -124,10 +124,10 @@ gld_get_lattes_data <- function(id.vec,
   tpesq <- as.data.frame(lapply(tpesq, my.enc.fct),
                          stringsAsFactors = F)
 
-  tpublic <- as.data.frame(lapply(tpublic, my.enc.fct),
+  tpublic.published <- as.data.frame(lapply(tpublic.published, my.enc.fct),
                            stringsAsFactors = F)
 
-  accpublic <- as.data.frame(lapply(accpublic, my.enc.fct),
+  tpublic.accepted <- as.data.frame(lapply(tpublic.accepted, my.enc.fct),
                              stringsAsFactors = F)
 
   tsupervisions <- as.data.frame(lapply(tsupervisions, my.enc.fct),
@@ -140,7 +140,9 @@ gld_get_lattes_data <- function(id.vec,
                              stringsAsFactors = F)
 
   # return data
-  l.out <- list(tpesq = tpesq, tpublic = tpublic, accpublic = accpublic,
+  l.out <- list(tpesq = tpesq,
+                tpublic.published = tpublic.published,
+                tpublic.accepted = tpublic.accepted,
                 tsupervisions = tsupervisions,
                 tbooks = tbooks,
                 tconferences = tconferences)

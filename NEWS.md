@@ -1,3 +1,8 @@
+### Version 0.8 (2017-11-12)
+
+- Now with support for conferences and accepted articles
+- Added a function for finding information about accepted and published papers
+
 ### Version 0.7 (2017-10-31)
 
 - Added support for books and books chapters
