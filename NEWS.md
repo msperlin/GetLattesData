@@ -1,3 +1,9 @@
+### Version 0.9 (2017-11-27)
+
+Lattes website is offline. Online downloading of xml files is no longer possible.
+
+- Added comments at main function, which now returns empty df, and vignettes.
+
 ### Version 0.8 (2017-11-12)
 
 - Now with support for conferences and accepted articles

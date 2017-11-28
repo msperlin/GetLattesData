@@ -26,6 +26,17 @@ gld_get_lattes_data <- function(id.vec,
                                 folder.dl = tempdir()) {
 
 
+  my.message <- paste0('\n\n:(\n\nSadly, the Lattes address where the xml files were found and downloaded ',
+'without a captcha wall is not online for a couple of weeks now.  Difficult to say why is that. ',
+'I hope, and will keep track of, if a new site is published.',
+'In the meanwhile, the features of GetLattesData are relegated to offline files.',
+'\nMarcelo Perlin, 2017-11-28 ')
+
+  cat(my.message)
+
+  cat('\n\nReturning an empty dataframe..')
+  return(data.frame())
+
   # check args
   id.vec <- as.character(id.vec)
   n.char <- nchar(id.vec)
