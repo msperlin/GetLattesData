@@ -9,11 +9,8 @@ vignette: >
   %\VignetteEncoding{UTF-8}
 ---
 
-
-**ATTENTION: The package is not working as of 2017-11-26. The Lattes website, where the xml files were available, is down. **
-
 ```{r, echo=FALSE}
-knitr::opts_chunk$set(eval=FALSE)
+#knitr::opts_chunk$set(eval=FALSE)
 ```
 
 
@@ -40,7 +37,7 @@ Since we all work in the business department of UFRGS, the impact of our publica
 
 Now, based on the two sets of information, vector of ids and field of Qualis, we use `GetLattesData` to download all up to date information available in Lattes:
 
-```{r, eval=FALSE}
+```{r}
 library(GetLattesData)
 
 # ids from EA-UFRGS

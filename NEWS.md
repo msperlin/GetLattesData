@@ -1,3 +1,9 @@
+### Version 1.0 (2017-11-27)
+
+Lattes website is back ONLINE! 
+
+- removed comments and other changes due to offline 
+
 ### Version 0.9 (2017-11-27)
 
 Lattes website is offline. Online downloading of xml files is no longer possible.
