@@ -18,22 +18,23 @@ vignette: >
 
 I've been working with Lattes data for some time. Here I present a short list of papers that have used this data.
 
--  [The Brazilian scientific output published in journals: A study based on a large CV database](http://www.sciencedirect.com/science/article/pii/S1751157716301559)
-
-- [The researchers, the publications and the journals of Finance in Brazil: An analysis based on resumes from the Lattes platform](http://bibliotecadigital.fgv.br/ojs/index.php/rbfin/article/view/47157)    
-
-- [Análise do Perfil dos Acadêmicos e de suas Publicações Científicas em Administração (in Portuguese)](http://www.scielo.br/scielo.php?script=sci_arttext&pid=S1415-65552017000100062)
-
 - Is predatory publishing a real threat? Evidence from a large database study. [Scientometrics](https://link.springer.com/article/10.1007/s11192-018-2750-6)
 
-Package `GetLattesData` is a wrap up of functions I've been using for accessing the dataset. It's main innovation is the possibility of downloading data directly from Lattes, without any manual work or captcha solving. 
+-  The Brazilian scientific output published in journals: A study based on a large CV database. [Journal of Informetrics](http://www.sciencedirect.com/science/article/pii/S1751157716301559)
+
+- The researchers, the publications and the journals of Finance in Brazil: An analysis based on resumes from the Lattes platform. [Brazilian Review of Finance](http://bibliotecadigital.fgv.br/ojs/index.php/rbfin/article/view/47157)    
+
+- Análise do Perfil dos Acadêmicos e de suas Publicações Científicas em Administração (in Portuguese. [RAC](http://www.scielo.br/scielo.php?script=sci_arttext&pid=S1415-65552017000100062)
+
+
+Package `GetLattesData` is a wrap up of functions I've been using for accessing the data. The main innovation is the possibility of downloading data directly from Lattes, without any manual work or captcha solving. 
 
 
 # Example of usage
 
 Let's consider a simple example of downloading information for a group of scholars. I selected a couple of coleagues at my university. Their Lattes id can be easilly found in [Lattes website](http://lattes.cnpq.br/). After searching for a name, notice the internet address of the resulting CV, such as [http://buscatextual.cnpq.br/buscatextual/visualizacv.do?id=K4713546D3](http://buscatextual.cnpq.br/buscatextual/visualizacv.do?id=K4713546D3). Lattes ID is the final 10 digit code of this address. In our example, it is  `'K4713546D3'`.
 
-Since we all work in the business department of UFRGS, the impact of our publications is localy set by the Qualis ranking of Management, Accounting and Tourism (`'ADMINISTRAÇÃO PÚBLICA E DE EMPRESAS, CIÊNCIAS CONTÁBEIS E TURISMO'`). Qualis is the local journal ranking in Brazil. You can read more about Qualis in [Wikipedia](https://en.wikipedia.org/wiki/Qualis_(CAPES)) and [here](http://www.sciencedirect.com/science/article/pii/S1751157716301559)
+Since we all work in the business department of UFRGS, the impact of our publications is localy set by the Qualis ranking of Management, Accounting and Tourism (`'ADMINISTRAÇÃO PÚBLICA E DE EMPRESAS, CIÊNCIAS CONTÁBEIS E TURISMO'`). Qualis is the local journal ranking in Brazil. You can read more about Qualis in [Wikipedia](https://en.wikipedia.org/wiki/Qualis_(CAPES)) and [here](http://www.sciencedirect.com/science/article/pii/S1751157716301559).
 
 Now, based on the two sets of information, vector of ids and field of Qualis, we use `GetLattesData` to download all up to date information available in Lattes:
 
