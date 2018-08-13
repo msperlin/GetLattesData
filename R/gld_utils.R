@@ -79,9 +79,10 @@ gld_get_SJR <- function(){
 
   # fix issn
   df.sjr$Issn <- stringr::str_replace(df.sjr$Issn, 'ISSN ', '')
-  df.sjr$Issn <- paste0(stringr::str_sub(df.sjr$Issn, 1, 4),
-                        '-',
-                        stringr::str_sub(df.sjr$Issn, 5, 8))
+  #df.sjr$Issn <- paste0(stringr::str_sub(df.sjr$Issn, 1, 4),
+  #                      '-',
+  #                      stringr::str_sub(df.sjr$Issn, 5, 8))
+
   return(df.sjr)
 }
 

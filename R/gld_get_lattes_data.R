@@ -91,11 +91,35 @@ gld_get_lattes_data <- function(id.vec,
   # do sjr
   df.sjr <- gld_get_SJR()
 
-  idx <- match(tpublic.published$ISSN, df.sjr$Issn)
+  #idx <- match(tpublic.published$ISSN, df.sjr$Issn)
+  # fix for multiple issn (https://github.com/msperlin/GetLattesData/issues/6#issuecomment-412626175)
+  idx <- unlist(sapply(stringr::str_replace_all(tpublic.published$ISSN, "-", "" ),
+                       function(i, x){
+                         r <- grep(i, x)
+                         if(length(r) == 0){
+                           r <- NA
+                         }
+                         return(r)
+                       } ,
+                       df.sjr$Issn,
+                       USE.NAMES=F))
+
+
   tpublic.published$SJR <- df.sjr$SJR[idx]
   tpublic.published$H.SJR <- df.sjr$`H index`[idx]
 
-  idx <- match(tpublic.accepted$ISSN, df.sjr$Issn)
+  #idx <- match(tpublic.accepted$ISSN, df.sjr$Issn)
+  # fix for multiple issn (https://github.com/msperlin/GetLattesData/issues/6#issuecomment-412626175)
+  idx <- unlist(sapply(stringr::str_replace_all(tpublic.accepted$ISSN, "-", "" ),
+                       function(i, x){
+                         r <- grep(i, x)
+                         if(length(r) == 0){
+                           r <- NA
+                         }
+                         return(r)
+                       } ,
+                       df.sjr$Issn,
+                       USE.NAMES=F))
   tpublic.accepted$SJR <- df.sjr$SJR[idx]
   tpublic.accepted$H.SJR <- df.sjr$`H index`[idx]
 
