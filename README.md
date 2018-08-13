@@ -2,19 +2,17 @@
 
 [![](http://cranlogs.r-pkg.org/badges/GetLattesData)](https://CRAN.R-project.org/package=GetLattesData)
 
-**ATTENTION: The package is not working as of 2017-11-26. The Lattes website, where the xml files were available, is offline. ** 
-
 [Lattes](http://lattes.cnpq.br/) is an unique and largest platform for academic curriculumns. There you can find information about the academic work of **all** Brazilian scholars. It includes institution of PhD, current employer, field of work, all publications metadata and more. It is an unique and reliable source of information for bibliometric studies. 
 
 I've been working with Lattes data for some time. Here I present a short list of papers that have used this data.
 
--  [The Brazilian scientific output published in journals: A study based on a large CV database](http://www.sciencedirect.com/science/article/pii/S1751157716301559)
+- Is predatory publishing a real threat? Evidence from a large database study. [Scientometrics](https://link.springer.com/article/10.1007/s11192-018-2750-6)
 
-- [The researchers, the publications and the journals of Finance in Brazil: An analysis based on resumes from the Lattes platform](http://bibliotecadigital.fgv.br/ojs/index.php/rbfin/article/view/47157)    
+-  The Brazilian scientific output published in journals: A study based on a large CV database. [Journal of Informetrics](http://www.sciencedirect.com/science/article/pii/S1751157716301559)
 
-- [Análise do Perfil dos Acadêmicos e de suas Publicações Científicas em Administração (in Portuguese)](http://www.scielo.br/scielo.php?script=sci_arttext&pid=S1415-65552017000100062)
+- The researchers, the publications and the journals of Finance in Brazil: An analysis based on resumes from the Lattes platform. [Brazilian Review of Finance](http://bibliotecadigital.fgv.br/ojs/index.php/rbfin/article/view/47157)    
 
-- Is predatory publishing a real threat? Evidence from a large database study. [Working paper](https://www.dropbox.com/s/9xcuc8z64fntxob/PredatoryPublishing_v2.pdf?dl=0)
+- Análise do Perfil dos Acadêmicos e de suas Publicações Científicas em Administração (in Portuguese. [RAC](http://www.scielo.br/scielo.php?script=sci_arttext&pid=S1415-65552017000100062)
 
 Package `GetLattesData` is a wrap up of functions I've been using for accessing the dataset. It's main innovation is the possibility of downloading data directly from Lattes, without any manual work or captcha solving. 
 
@@ -49,6 +47,6 @@ field.qualis = 'ADMINISTRAÇÃO PÚBLICA E DE EMPRESAS, CIÊNCIAS CONTÁBEIS E T
 
 l.out <- gld_get_lattes_data(id.vec = my.ids, field.qualis = field.qualis)
 
-tpublic <- l.out$tpublic
+tpublic <- l.out$tpublic.published
 dplyr::glimpse(tpublic)
 ```
