@@ -1,6 +1,8 @@
 ### Version 1.0 (2018-08-13)
 
-Lattes website is back ONLINE! 
+- Lattes website is back ONLINE! 
+
+- fixed multiple issn in SJR
 
 - removed comments and other changes due to offline 
 

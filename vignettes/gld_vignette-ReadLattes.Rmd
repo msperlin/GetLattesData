@@ -24,7 +24,7 @@ I've been working with Lattes data for some time. Here I present a short list of
 
 - [Análise do Perfil dos Acadêmicos e de suas Publicações Científicas em Administração (in Portuguese)](http://www.scielo.br/scielo.php?script=sci_arttext&pid=S1415-65552017000100062)
 
-- Is predatory publishing a real threat? Evidence from a large database study. [Working paper](https://www.dropbox.com/s/9xcuc8z64fntxob/PredatoryPublishing_v2.pdf?dl=0)
+- Is predatory publishing a real threat? Evidence from a large database study. [Scientometrics](https://link.springer.com/article/10.1007/s11192-018-2750-6)
 
 Package `GetLattesData` is a wrap up of functions I've been using for accessing the dataset. It's main innovation is the possibility of downloading data directly from Lattes, without any manual work or captcha solving. 
 

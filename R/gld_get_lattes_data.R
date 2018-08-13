@@ -94,14 +94,17 @@ gld_get_lattes_data <- function(id.vec,
   #idx <- match(tpublic.published$ISSN, df.sjr$Issn)
   # fix for multiple issn (https://github.com/msperlin/GetLattesData/issues/6#issuecomment-412626175)
   idx <- unlist(sapply(stringr::str_replace_all(tpublic.published$ISSN, "-", "" ),
-                       function(i, x){
-                         r <- grep(i, x)
-                         if(length(r) == 0){
-                           r <- NA
+                       function(issn.in, df.sjr){
+                         temp.idx <- which(stringr::str_detect( df.sjr$Issn,issn.in))
+
+                         if (stringr::str_trim(issn.in) == '') return(NA)
+
+                         if(length(temp.idx) == 0){
+                           temp.idx <- NA
                          }
-                         return(r)
+                         return(temp.idx[1])
                        } ,
-                       df.sjr$Issn,
+                       df.sjr = df.sjr,
                        USE.NAMES=F))
 
 
@@ -111,14 +114,17 @@ gld_get_lattes_data <- function(id.vec,
   #idx <- match(tpublic.accepted$ISSN, df.sjr$Issn)
   # fix for multiple issn (https://github.com/msperlin/GetLattesData/issues/6#issuecomment-412626175)
   idx <- unlist(sapply(stringr::str_replace_all(tpublic.accepted$ISSN, "-", "" ),
-                       function(i, x){
-                         r <- grep(i, x)
-                         if(length(r) == 0){
-                           r <- NA
+                       function(issn.in, df.sjr){
+                         temp.idx <- which(stringr::str_detect(df.sjr$Issn, issn.in ))
+
+                         if (stringr::str_trim(issn.in) == '') return(NA)
+
+                         if(length(temp.idx) == 0){
+                           temp.idx <- NA
                          }
-                         return(r)
+                         return(temp.idx[1])
                        } ,
-                       df.sjr$Issn,
+                       df.sjr = df.sjr,
                        USE.NAMES=F))
   tpublic.accepted$SJR <- df.sjr$SJR[idx]
   tpublic.accepted$H.SJR <- df.sjr$`H index`[idx]
