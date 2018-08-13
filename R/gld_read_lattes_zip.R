@@ -33,13 +33,17 @@ gld_read_zip <- function(zip.in){
   utils::unzip(zip.in, exdir = my.tempdir)
 
   # start reading files using XML
-
-  my.l <- XML::xmlToList(XML::xmlParse(file.path(my.tempdir, 'curriculo.xml'), encoding = 'UTF-8') )
+  my.l <- XML::xmlToList(XML::xmlParse(file.path(my.tempdir, 'curriculo.xml'), encoding = 'ISO-8859-1') )
 
   # Do RESEARCHERS
-
   LATTES.LOG <- do.call(c,list(my.l$.attrs))
-  DOUTORADO <- do.call(c,list(my.l$`DADOS-GERAIS`$`FORMACAO-ACADEMICA-TITULACAO`$DOUTORADO$.attrs))
+  
+  if (!is.list(my.l$`DADOS-GERAIS`$`FORMACAO-ACADEMICA-TITULACAO`$DOUTORADO)) {
+    DOUTORADO <- do.call(c,list(my.l$`DADOS-GERAIS`$`FORMACAO-ACADEMICA-TITULACAO`$DOUTORADO))
+  } else {
+    DOUTORADO <- do.call(c,list(my.l$`DADOS-GERAIS`$`FORMACAO-ACADEMICA-TITULACAO`$DOUTORADO$.attrs))
+  }
+  
   DADOS.GERAIS <- do.call(c, list(my.l$`DADOS-GERAIS`$.attrs))
   AREAS <- do.call(c, list(my.l$`DADOS-GERAIS`$`AREAS-DE-ATUACAO`))
 

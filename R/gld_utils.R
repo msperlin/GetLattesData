@@ -100,9 +100,16 @@ gld_get_SJR <- function(){
 #'
 gld_download_lattes_files <- function(id, folder.dl = tempdir()) {
 
-  # set link
-  base.link <- 'http://buscacv.cnpq.br/buscacv/rest/download/curriculo/'
-  my.link <- paste0(base.link,id)
+  # set link and find id cnpq
+
+  my.html <- readLines(paste0('http://buscatextual.cnpq.br/buscatextual/visualizacv.do?id=', id))
+
+  temp <- my.html[stringr::str_detect(my.html, 'idcnpq=')]
+
+  cnpq.id <- stringr::str_match_all(temp[1], pattern = 'idcnpq=(\\d+)')[[1]][1,2]
+
+  base.link <- 'http://buscatextual.cnpq.br/buscatextual/download.do?metodo=apresentar&idcnpq='
+  my.link <- paste0(base.link,cnpq.id)
 
   # set destination file by indexing by date
   dest.file <- file.path(folder.dl, paste0(id,'_',Sys.Date(), '.zip') )

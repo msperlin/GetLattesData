@@ -41,7 +41,7 @@ Now, based on the two sets of information, vector of ids and field of Qualis, we
 library(GetLattesData)
 
 # ids from EA-UFRGS
-my.ids <- c('K4713546D3', 'K4440252H7', 'K4723925J2')
+my.ids <- c('K4713546D3','K4723925J2')
 
 # qualis for the field of management
 field.qualis = 'ADMINISTRAÇÃO PÚBLICA E DE EMPRESAS, CIÊNCIAS CONTÁBEIS E TURISMO'

@@ -100,7 +100,6 @@ gld_get_lattes_data <- function(id.vec,
   tpublic.accepted$H.SJR <- df.sjr$`H index`[idx]
 
   # fix datatypes
-
   suppressWarnings({
     tpesq$name           <- as.character(tpesq$name)
     tpesq$phd.start.year <- as.numeric(tpesq$phd.start.year)
