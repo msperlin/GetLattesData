@@ -1,3 +1,9 @@
+### Version 1.1 (2018-08-19)
+
+Sadly, lattes website is once again using captcha. This version removes the code needed to build the package, so that it can be hosted in CRAN. 
+
+Once again, I'll keep checking Lattes over time and see whether any solution comes to life.
+
 ### Version 1.0 (2018-08-13)
 
 Lattes website is back without captcha! The new version of GetLattesData is a bit slower than the old one, but it works.
