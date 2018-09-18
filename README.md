@@ -2,6 +2,8 @@
 
 [![](http://cranlogs.r-pkg.org/badges/GetLattesData)](https://CRAN.R-project.org/package=GetLattesData)
 
+**The code is currently NOT working due to the return of the captcha page**
+
 [Lattes](http://lattes.cnpq.br/) is an unique and largest platform for academic curriculumns. There you can find information about the academic work of **all** Brazilian scholars. It includes institution of PhD, current employer, field of work, all publications metadata and more. It is an unique and reliable source of information for bibliometric studies. 
 
 I've been working with Lattes data for some time. Here I present a short list of papers that have used this data.
