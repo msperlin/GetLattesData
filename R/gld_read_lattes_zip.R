@@ -37,13 +37,13 @@ gld_read_zip <- function(zip.in){
 
   # Do RESEARCHERS
   LATTES.LOG <- do.call(c,list(my.l$.attrs))
-  
+
   if (!is.list(my.l$`DADOS-GERAIS`$`FORMACAO-ACADEMICA-TITULACAO`$DOUTORADO)) {
     DOUTORADO <- do.call(c,list(my.l$`DADOS-GERAIS`$`FORMACAO-ACADEMICA-TITULACAO`$DOUTORADO))
   } else {
     DOUTORADO <- do.call(c,list(my.l$`DADOS-GERAIS`$`FORMACAO-ACADEMICA-TITULACAO`$DOUTORADO$.attrs))
   }
-  
+
   DADOS.GERAIS <- do.call(c, list(my.l$`DADOS-GERAIS`$.attrs))
   AREAS <- do.call(c, list(my.l$`DADOS-GERAIS`$`AREAS-DE-ATUACAO`))
 
@@ -127,7 +127,7 @@ gld_read_zip <- function(zip.in){
       std.name <- i.orient[[2]]['NOME-DO-ORIENTADO']
       year.supervision <- as.numeric(i.orient[[1]]['ANO'])
 
-      temp.df <- data.frame(id = basename(zip.in),
+      temp.df <- data.frame(id.file = basename(zip.in),
                             name = data.tpesq$name,
                             situation = 'CONCLUIDA',
                             type.course,
@@ -152,7 +152,7 @@ gld_read_zip <- function(zip.in){
       std.name <- i.orient[[2]]['NOME-DO-ORIENTANDO']
       year.supervision <- as.numeric(i.orient[[1]]['ANO'])
 
-      temp.df <- data.frame(id = basename(zip.in),
+      temp.df <- data.frame(id.file = basename(zip.in),
                             name = data.tpesq$name,
                             situation = 'EM ANDAMENTO',
                             type.course,
@@ -181,7 +181,7 @@ gld_read_zip <- function(zip.in){
 
     for (i.book in LIVROS.PUBLICADOS) {
 
-      temp.df <- data.frame(id = basename(zip.in),
+      temp.df <- data.frame(id.file = basename(zip.in),
                             name = data.tpesq$name,
                             book.title = i.book$`DADOS-BASICOS-DO-LIVRO`['TITULO-DO-LIVRO'],
                             book.year = i.book$`DADOS-BASICOS-DO-LIVRO`['ANO'],
@@ -209,7 +209,7 @@ gld_read_zip <- function(zip.in){
 
     for (i.book in LIVROS.CAPITULOS) {
 
-      temp.df <- data.frame(id = basename(zip.in),
+      temp.df <- data.frame(id.file = basename(zip.in),
                             name = data.tpesq$name,
                             book.title = i.book$`DETALHAMENTO-DO-CAPITULO`['TITULO-DO-LIVRO'],
                             book.chapter = i.book$`DADOS-BASICOS-DO-CAPITULO`['TITULO-DO-CAPITULO-DO-LIVRO'],
@@ -241,7 +241,7 @@ gld_read_zip <- function(zip.in){
 
     for (i.conf in CONFERENCES) {
 
-      temp.df <- data.frame(id = basename(zip.in),
+      temp.df <- data.frame(id.file = basename(zip.in),
                             name = data.tpesq$name,
                             article.title = i.conf$`DADOS-BASICOS-DO-TRABALHO`['TITULO-DO-TRABALHO'],
                             article.year = i.conf$`DADOS-BASICOS-DO-TRABALHO`['ANO-DO-TRABALHO'],
