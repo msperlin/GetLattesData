@@ -11,7 +11,7 @@
 #'
 #' @examples
 #'
-#' f.in <- system.file('extdata/K4440252H7_2017-09-04.zip', package = 'GetLattesData')
+#' f.in <- system.file('extdata/3262699324398819.zip', package = 'GetLattesData')
 #' my.l <- gld_read_zip(f.in)
 #' my.l
 gld_read_zip <- function(zip.in){

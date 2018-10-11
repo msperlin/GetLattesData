@@ -1,23 +1,51 @@
+## ---- echo=FALSE---------------------------------------------------------
+knitr::opts_chunk$set(eval=FALSE)
+
 ## ------------------------------------------------------------------------
-library(GetLattesData)
-library(ggplot2)
+#  library(GetLattesData)
+#  
+#  # get files from pkg (you can download from other researchers in lattes website)
+#  f.in <- system.file('extdata/3262699324398819.zip', package = 'GetLattesData')
+#  
+#  # set qualis
+#  field.qualis = 'ADMINISTRAÇÃO PÚBLICA E DE EMPRESAS, CIÊNCIAS CONTÁBEIS E TURISMO'
+#  
+#  # get data
+#  l.out <- gld_get_lattes_data_from_zip(f.in,
+#                                        field.qualis = field.qualis )
+#  
 
-# new PPG (PO-FIN)
-my.ids <- c('K4713546D3', 'K4796143H6', 'K4123414D0', 'K4735956T7',
-            'K4781462D3', 'K4765099U6', 'K4440252H7', 'K4783858A0',
-            'K4769290Y6', 'K4723925J2', 'K4763474Y5', 'K4466733D0', 
-            'K4768258E6')
+## ------------------------------------------------------------------------
+#  names(l.out)
 
-area.qualis = 'ADMINISTRAÇÃO PÚBLICA E DE EMPRESAS, CIÊNCIAS CONTÁBEIS E TURISMO'
+## ------------------------------------------------------------------------
+#  tpesq <- l.out$tpesq
+#  str(tpesq)
 
-l.out <- gld_get_lattes_data(id.vec = my.ids, area.qualis = area.qualis )
+## ------------------------------------------------------------------------
+#  dplyr::glimpse(l.out$tpublic.published)
 
-tpesq <- l.out$tpesq
-tpublic <- l.out$tpublic
+## ------------------------------------------------------------------------
+#  tpublic.published <- l.out$tpublic.published
+#  
+#  library(ggplot2)
+#  
+#  p <- ggplot(tpublic.published, aes(x = qualis)) +
+#    geom_bar(position = 'identity') + facet_wrap(~name) +
+#    labs(x = paste0('Qualis: ', field.qualis))
+#  print(p)
 
-p <- ggplot(tpublic, aes(x = qualis)) +
-  geom_bar(position = 'identity') + facet_wrap(~NOME.COMPLETO) +
-  labs(x = paste0('Qualis: ',area.qualis))
-print(p)
-
+## ------------------------------------------------------------------------
+#  library(dplyr)
+#  
+#  my.tab <- tpublic.published %>%
+#    group_by(name) %>%
+#    summarise(n.papers = n(),
+#              max.SJR = max(SJR, na.rm = T),
+#              mean.SJR = mean(SJR, na.rm = T),
+#              n.A1.qualis = sum(qualis == 'A1', na.rm = T),
+#              n.A2.qualis = sum(qualis == 'A2', na.rm = T),
+#              median.authorship = median(as.numeric(order.aut), na.rm = T ))
+#  
+#  knitr::kable(my.tab)
 

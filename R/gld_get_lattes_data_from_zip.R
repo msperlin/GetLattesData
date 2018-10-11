@@ -1,13 +1,9 @@
-#' Downloads and reads Lattes data based on a vector of Lattes ids
+#' Reads zip files from Lattes
 #'
-#' DEPRECATED. Please use function gld_get_lattes_data_from_zip to read the files
+#' This function reads zipped files from Lattes, giving as output a list with several dataframes
 #'
-#' This function downloads xml data directly from Lattes and reads the resulting file, giving as output three dataframes
-#' , a table with description of researchers, list of all publications and a table with completed supervisions
-#'
-#' @param id.vec A vector of Lattes ids (e.g. id.vec <- c('K4723925J2', 'K4713546D3') )
+#' @param zip.files A vector with location of zip files downloaded from Lattes website
 #' @param field.qualis Area of Qualis to get Qualis journal rankings (default equals NULL). Eg. area.qualis <- 'ECONOMIA'
-#'@param folder.dl Name of folder where to store xml files (default = tempdir())
 #'
 #' @return Returns a list with two components:
 #'  \describe{
@@ -21,65 +17,34 @@
 #' @examples
 #'
 #' \dontrun{
-#' l.out <- gld_get_lattes_data(id.vec = 'K4713546D3',
-#'                              field.qualis = 'ECONOMIA')
+#' # get files from pkg (you can download from other researchers in lattes website)
+#' f.in <- system.file('extdata/3262699324398819.zip', package = 'GetLattesData')
+#'
+#' # set qualis
+#' field.qualis = 'ECONOMIA'
+#'
+#' # get data
+#' l.out <- gld_get_lattes_data_from_zip(f.in, field.qualis = field.qualis )
+#'
+#' # print it
 #' print(l.out$tpesq)
+#' print(l.out$tpublic.published)
 #' }
-gld_get_lattes_data <- function(id.vec,
-                                field.qualis = NULL,
-                                folder.dl = tempdir()) {
-
-#   my.message <- paste0('\n\n:(\n\nSadly, the Lattes address where the xml files were found and downloaded ',
-# 'without a captcha wall is not online for a couple of weeks now.  Difficult to say why is that. ',
-# 'I hope, and will keep track of, if a new site is published.',
-# 'In the meanwhile, the features of GetLattesData are relegated to offline files.',
-# '\nMarcelo Perlin, 2017-11-28 ')
-#
-#   cat(my.message)
-#
-#   cat('\n\nReturning an empty dataframe..')
-#   return(data.frame())
-
-  # deprecations message
-  my.message <- paste0('Function gld_get_lattes_data is deprecated.',
-                       '\n\nDue to changes in lattes website, the automatic download of xml files no longer works without captcha. ',
-                       '\nIn order to use the package, you must  download the xml zip files individually (see XML button on top right of lattes page) and use ',
-                       'function gld_get_lattes_data_from_zip to read all the data',
-                       '\n\nExiting Now..')
-
-  cat(my.message)
-
-  return(FALSE)
+gld_get_lattes_data_from_zip <- function(zip.files,
+                                         field.qualis = NULL) {
 
   # check args
-  id.vec <- as.character(id.vec)
-  n.char <- nchar(id.vec)
+  zip.files <- as.character(zip.files)
 
-  # Check length id
-  if (any(n.char!=10)) {
-    cat(paste0('You have ids with less or more than 10 characters. ',
-               'You should check for the corresponding 10 char id in the _new_ Lattes website(http://lattes.cnpq.br/)',
-               '. Just search for the name of the scholar. Exiting now..') )
-    stop('All ids should be 10 character long. Check your input for id.vec.')
+  # Check extension
+  my.extensions <- tools::file_ext(zip.files)
+
+  if (any(my.extensions != 'zip')) {
+    stop('All files in zip.files input should be with .zip extension. Check your inputs..')
   }
-
-  if (!dir.exists(folder.dl)) {
-    cat('Folder ', folder.dl, 'does not exists. Creating it..')
-    dir.create(folder.dl)
-  }
-
-  # check internet
-
-  if (!curl::has_internet()) {
-    stop('You need an internet connection to download files from Lattes.')
-  }
-
-  # download files
-  zip.out <- sapply(X = id.vec,
-                    FUN = gld_download_lattes_files, folder.dl = folder.dl)
 
   # read files
-  my.l <- lapply(zip.out, gld_read_zip)
+  my.l <- lapply(zip.files, gld_read_zip)
 
   # save tpesq (quietly, please)
   suppressWarnings({
@@ -179,19 +144,19 @@ gld_get_lattes_data <- function(id.vec,
                          stringsAsFactors = F)
 
   tpublic.published <- as.data.frame(lapply(tpublic.published, my.enc.fct),
-                           stringsAsFactors = F)
+                                     stringsAsFactors = F)
 
   tpublic.accepted <- as.data.frame(lapply(tpublic.accepted, my.enc.fct),
-                             stringsAsFactors = F)
+                                    stringsAsFactors = F)
 
   tsupervisions <- as.data.frame(lapply(tsupervisions, my.enc.fct),
-                           stringsAsFactors = F)
-
-  tbooks <- as.data.frame(lapply(tbooks, my.enc.fct),
                                  stringsAsFactors = F)
 
+  tbooks <- as.data.frame(lapply(tbooks, my.enc.fct),
+                          stringsAsFactors = F)
+
   tconferences <- as.data.frame(lapply(tconferences, my.enc.fct),
-                             stringsAsFactors = F)
+                                stringsAsFactors = F)
 
   # return data
   l.out <- list(tpesq = tpesq,

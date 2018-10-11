@@ -22,6 +22,9 @@ Returns a list with two components:
 }
 }
 \description{
+DEPRECATED. Please use function gld_get_lattes_data_from_zip to read the files
+}
+\details{
 This function downloads xml data directly from Lattes and reads the resulting file, giving as output three dataframes
 , a table with description of researchers, list of all publications and a table with completed supervisions
 }

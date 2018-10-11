@@ -10,7 +10,7 @@ vignette: >
 ---
 
 ```{r, echo=FALSE}
-knitr::opts_chunk$set(eval=FALSE)
+knitr::opts_chunk$set(eval=TRUE)
 ```
 
 
@@ -27,27 +27,31 @@ I've been working with Lattes data for some time. Here I present a short list of
 - Análise do Perfil dos Acadêmicos e de suas Publicações Científicas em Administração (in Portuguese. [RAC](http://www.scielo.br/scielo.php?script=sci_arttext&pid=S1415-65552017000100062)
 
 
-Package `GetLattesData` is a wrap up of functions I've been using for accessing the data. The main innovation is the possibility of downloading data directly from Lattes, without any manual work or captcha solving. 
+Package `GetLattesData` is a wrap up of functions I've been using for accessing the data. In the past, one could download the data directly, without any manual work. Currently, `r Sys.Date()`, a manual captcha break is necessary. Therefore, using this package requires the manual download of the zip files with the xml data.
 
 
 # Example of usage
 
-Let's consider a simple example of downloading information for a group of scholars. I selected a couple of coleagues at my university. Their Lattes id can be easilly found in [Lattes website](http://lattes.cnpq.br/). After searching for a name, notice the internet address of the resulting CV, such as [http://buscatextual.cnpq.br/buscatextual/visualizacv.do?id=K4713546D3](http://buscatextual.cnpq.br/buscatextual/visualizacv.do?id=K4713546D3). Lattes ID is the final 10 digit code of this address. In our example, it is  `'K4713546D3'`.
+Let's consider a simple example of accessing information about my academic CV and a coleague. Both zip files are available within the package as an example. 
 
-Since we all work in the business department of UFRGS, the impact of our publications is localy set by the Qualis ranking of Management, Accounting and Tourism (`'ADMINISTRAÇÃO PÚBLICA E DE EMPRESAS, CIÊNCIAS CONTÁBEIS E TURISMO'`). Qualis is the local journal ranking in Brazil. You can read more about Qualis in [Wikipedia](https://en.wikipedia.org/wiki/Qualis_(CAPES)) and [here](http://www.sciencedirect.com/science/article/pii/S1751157716301559).
+Since I work in the business department of UFRGS, the impact of my publications is localy set by the Qualis ranking of Management, Accounting and Tourism (`'ADMINISTRAÇÃO PÚBLICA E DE EMPRESAS, CIÊNCIAS CONTÁBEIS E TURISMO'`). Qualis is the local journal ranking in Brazil. You can read more about Qualis in [Wikipedia](https://en.wikipedia.org/wiki/Qualis_(CAPES)) and [here](http://www.sciencedirect.com/science/article/pii/S1751157716301559).
 
-Now, based on the two sets of information, vector of ids and field of Qualis, we use `GetLattesData` to download all up to date information available in Lattes:
+Now, based on the zip file locations and field of Qualis, we use `GetLattesData` to access information available in Lattes:
 
 ```{r}
 library(GetLattesData)
 
-# ids from EA-UFRGS
-my.ids <- c('K4713546D3','K4723925J2')
+# get files from pkg (you can download from other researchers in lattes website)
+f.in <- c(system.file('extdata/3262699324398819.zip', package = 'GetLattesData'),
+          system.file('extdata/8373564643000623.zip', package = 'GetLattesData'))
 
-# qualis for the field of management
+# set qualis
 field.qualis = 'ADMINISTRAÇÃO PÚBLICA E DE EMPRESAS, CIÊNCIAS CONTÁBEIS E TURISMO'
 
-l.out <- gld_get_lattes_data(id.vec = my.ids, field.qualis = field.qualis)
+# get data
+l.out <- gld_get_lattes_data_from_zip(f.in, 
+                                      field.qualis = field.qualis )
+
 ```
 
 The output `my.l` is a list with the following dataframes:
