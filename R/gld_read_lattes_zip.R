@@ -23,7 +23,7 @@ gld_read_zip <- function(zip.in){
   }
 
   if (!file.exists(zip.in)) {
-    stop('File ', zip.in, 'does not exists..')
+    stop('File ', zip.in, ' does not exists..')
   }
 
   cat('\nReading ', basename(zip.in))
@@ -88,6 +88,13 @@ gld_read_zip <- function(zip.in){
   data.tpesq$last.update <- as.Date(data.tpesq$last.update, '%d%m%Y')
   rownames(data.tpesq) <- NULL
   data.tpesq$id.file <- basename(zip.in)
+
+  # fix issue with no PhD
+  if (is.null(data.tpesq$phd.institution)){
+    data.tpesq$phd.institution <- NA
+    data.tpesq$phd.start.year <- NA
+    data.tpesq$phd.end.year <- NA
+  }
 
   # PUBLISHED PAPERS
   my.name <- as.character(data.tpesq$name)
