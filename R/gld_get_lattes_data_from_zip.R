@@ -86,9 +86,13 @@ gld_get_lattes_data_from_zip <- function(zip.files,
                        df.sjr = df.sjr,
                        USE.NAMES=F))
 
-
-  tpublic.published$SJR <- df.sjr$SJR[idx]
-  tpublic.published$H.SJR <- df.sjr$`H index`[idx]
+  if (!all(is.na(idx))) {
+    tpublic.published$SJR <- df.sjr$SJR[idx]
+    tpublic.published$H.SJR <- df.sjr$`H index`[idx]
+  } else {
+    tpublic.published$SJR <- NA
+    tpublic.published$H.SJR <- NA
+  }
 
   #idx <- match(tpublic.accepted$ISSN, df.sjr$Issn)
   # fix for multiple issn (https://github.com/msperlin/GetLattesData/issues/6#issuecomment-412626175)
@@ -105,11 +109,19 @@ gld_get_lattes_data_from_zip <- function(zip.files,
                        } ,
                        df.sjr = df.sjr,
                        USE.NAMES=F))
-  tpublic.accepted$SJR <- df.sjr$SJR[idx]
-  tpublic.accepted$H.SJR <- df.sjr$`H index`[idx]
+
+  if (!all(is.na(idx))) {
+    tpublic.accepted$SJR <- df.sjr$SJR[idx]
+    tpublic.accepted$H.SJR <- df.sjr$`H index`[idx]
+
+  } else {
+    tpublic.accepted$SJR <- NA
+    tpublic.accepted$H.SJR <- NA
+  }
 
   # fix datatypes
   suppressWarnings({
+
     tpesq$name           <- as.character(tpesq$name)
     tpesq$phd.start.year <- as.numeric(tpesq$phd.start.year)
     tpesq$phd.end.year   <- as.numeric(tpesq$phd.end.year)
