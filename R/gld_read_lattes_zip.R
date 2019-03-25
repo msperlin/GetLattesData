@@ -44,10 +44,21 @@ gld_read_zip <- function(zip.in){
     DOUTORADO <- do.call(c,list(my.l$`DADOS-GERAIS`$`FORMACAO-ACADEMICA-TITULACAO`$DOUTORADO$.attrs))
   }
 
+  if (!is.list(my.l$`DADOS-GERAIS`$`FORMACAO-ACADEMICA-TITULACAO`$MESTRADO)) {
+    MESTRADO <- do.call(c,list(my.l$`DADOS-GERAIS`$`FORMACAO-ACADEMICA-TITULACAO`$MESTRADO))
+  } else {
+    MESTRADO <- do.call(c,list(my.l$`DADOS-GERAIS`$`FORMACAO-ACADEMICA-TITULACAO`$MESTRADO$.attrs))
+  }
+
+  #fix names
+  names(MESTRADO) <- paste0('MSC-', names(MESTRADO))
+  names(DOUTORADO) <- paste0('DOC-', names(DOUTORADO))
+
   DADOS.GERAIS <- do.call(c, list(my.l$`DADOS-GERAIS`$.attrs))
   AREAS <- do.call(c, list(my.l$`DADOS-GERAIS`$`AREAS-DE-ATUACAO`))
 
-  if (is.null(DOUTORADO)) DOUTORADO <- c(NO.DOC=TRUE)
+  if (is.null(DOUTORADO)) DOUTORADO <- c(NO.DOC = TRUE)
+  if (is.null(MESTRADO)) MESTRADO <- c(NO.MSC = TRUE)
 
   GArea <- my.l$`DADOS-GERAIS`$`AREAS-DE-ATUACAO`[[1]][2]
   AArea <- my.l$`DADOS-GERAIS`$`AREAS-DE-ATUACAO`[[1]][3]
@@ -58,6 +69,7 @@ gld_read_zip <- function(zip.in){
   if (is.null(AArea)) AArea <- NA
 
   data.tpesq <- cbind(data.frame(t(LATTES.LOG)),
+                      data.frame(t(MESTRADO)),
                       data.frame(t(DOUTORADO)),
                       data.frame(t(DADOS.GERAIS)),
                       data.frame(GArea = GArea),
@@ -70,12 +82,15 @@ gld_read_zip <- function(zip.in){
                     "CODIGO.INSTITUICAO.SANDUICHE","PERMISSAO.DE.DIVULGACAO",'GArea','AArea')
 
   # those to keep
-  cols.to.keep <- c("NOME.COMPLETO" ,"DATA.ATUALIZACAO", "NOME.INSTITUICAO" ,
-                    "ANO.DE.INICIO","ANO.DE.CONCLUSAO",  "PAIS.DE.NACIONALIDADE",
-                    'GArea','AArea')
+  cols.to.keep <- c("NOME.COMPLETO" ,"DATA.ATUALIZACAO",
+                    "MSC.NOME.INSTITUICAO","MSC.ANO.DE.INICIO", "MSC.ANO.DE.CONCLUSAO",
+                    "DOC.NOME.INSTITUICAO" ,"DOC.ANO.DE.INICIO","DOC.ANO.DE.CONCLUSAO",
+                    "PAIS.DE.NACIONALIDADE", 'GArea','AArea')
 
   # set cols to change name
-  better.names <- c('name', 'last.update', 'phd.institution', 'phd.start.year', 'phd.end.year',
+  better.names <- c('name', 'last.update',
+                    'msc.institution', 'msc.start.year', 'msc.end.year',
+                    'phd.institution', 'phd.start.year', 'phd.end.year',
                     'country.origin', 'major.field', 'minor.field')
 
   idx <- cols.to.keep %in% names(data.tpesq)
