@@ -32,9 +32,11 @@ Package `GetLattesData` is a wrap up of functions I've been using for accessing 
 
 # Example of usage
 
-Let's consider a simple example of accessing information about my academic CV and a coleague. Both zip files are available within the package as an example. 
+Let's consider a simple example of accessing information about my academic CV and a coleague. Both zip files are available locally within the package as an example. If you want to run this example for other scholars, you will have to download their xml zip files from Lattes. After opening the Lattes website (see an example [here](http://buscatextual.cnpq.br/buscatextual/visualizacv.do?metodo=apresentar&id=K4713546D3)), click in the XML buttom in the top righ corner. Once the captcha is once again solved, you will download a zip file with the xml content.
 
 Since I work in the business department of UFRGS, the impact of my publications is localy set by the Qualis ranking of Management, Accounting and Tourism (`'ADMINISTRAÇÃO PÚBLICA E DE EMPRESAS, CIÊNCIAS CONTÁBEIS E TURISMO'`). Qualis is the local journal ranking in Brazil. You can read more about Qualis in [Wikipedia](https://en.wikipedia.org/wiki/Qualis_(CAPES)) and [here](http://www.sciencedirect.com/science/article/pii/S1751157716301559).
+
+
 
 Now, based on the zip file locations and field of Qualis, we use `GetLattesData` to access information available in Lattes:
 
