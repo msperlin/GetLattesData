@@ -32,8 +32,17 @@ gld_read_zip <- function(zip.in){
   my.tempdir <- tempdir()
   utils::unzip(zip.in, exdir = my.tempdir)
 
+  # check enconding of file (pick highest prob)
+  # DOESNT WORK (leave it for reference)
+  #my.encoding <- stringi::stri_enc_detect(file.path(my.tempdir, 'curriculo.xml'))
+  #my.encoding <- my.encoding[[1]]$Encoding[1]
+
   # start reading files using XML
-  my.l <- XML::xmlToList(XML::xmlParse(file.path(my.tempdir, 'curriculo.xml'), encoding = 'ISO-8859-1') )
+  my.encoding <- 'ISO-8859-1'
+  my.l <- XML::xmlToList(XML::xmlParse(file.path(my.tempdir, 'curriculo.xml'),
+                                       encoding = my.encoding) )
+
+  my.l$`DADOS-GERAIS`$`FORMACAO-ACADEMICA-TITULACAO`$GRADUACAO
 
   # Do RESEARCHERS
   LATTES.LOG <- do.call(c,list(my.l$.attrs))
@@ -50,15 +59,23 @@ gld_read_zip <- function(zip.in){
     MESTRADO <- do.call(c,list(my.l$`DADOS-GERAIS`$`FORMACAO-ACADEMICA-TITULACAO`$MESTRADO$.attrs))
   }
 
+  if (!is.list(my.l$`DADOS-GERAIS`$`FORMACAO-ACADEMICA-TITULACAO`$GRADUACAO)) {
+    GRAD <- do.call(c,list(my.l$`DADOS-GERAIS`$`FORMACAO-ACADEMICA-TITULACAO`$GRADUACAO))
+  } else {
+    GRAD <- do.call(c,list(my.l$`DADOS-GERAIS`$`FORMACAO-ACADEMICA-TITULACAO`$GRADUACAO$.attrs))
+  }
+
   #fix names
   names(MESTRADO) <- paste0('MSC-', names(MESTRADO))
   names(DOUTORADO) <- paste0('DOC-', names(DOUTORADO))
+  names(GRAD) <- paste0('GRAD-', names(GRAD))
 
   DADOS.GERAIS <- do.call(c, list(my.l$`DADOS-GERAIS`$.attrs))
   AREAS <- do.call(c, list(my.l$`DADOS-GERAIS`$`AREAS-DE-ATUACAO`))
 
   if (is.null(DOUTORADO)) DOUTORADO <- c(NO.DOC = TRUE)
   if (is.null(MESTRADO)) MESTRADO <- c(NO.MSC = TRUE)
+  if (is.null(GRAD)) GRAD <- c(NO.GRAD = TRUE)
 
   GArea <- my.l$`DADOS-GERAIS`$`AREAS-DE-ATUACAO`[[1]][2]
   AArea <- my.l$`DADOS-GERAIS`$`AREAS-DE-ATUACAO`[[1]][3]
@@ -69,13 +86,14 @@ gld_read_zip <- function(zip.in){
   if (is.null(AArea)) AArea <- NA
 
   data.tpesq <- cbind(data.frame(t(LATTES.LOG)),
+                      data.frame(t(GRAD)),
                       data.frame(t(MESTRADO)),
                       data.frame(t(DOUTORADO)),
                       data.frame(t(DADOS.GERAIS)),
                       data.frame(GArea = GArea),
                       data.frame(AArea= AArea))
 
-  # all cols
+  # all cols (just for reference)
   cols.to.keep <- c("NOME.COMPLETO" ,"NUMERO.IDENTIFICADOR","DATA.ATUALIZACAO","CODIGO.INSTITUICAO","NOME.INSTITUICAO" ,
                     "ANO.DE.INICIO","ANO.DE.CONCLUSAO","FLAG.BOLSA","NOME.COMPLETO.DO.ORIENTADOR" ,
                     "NUMERO.ID.ORIENTADOR", "CODIGO.INSTITUICAO.DOUT", "NOME.INSTITUICAO.DOUT", "PAIS.DE.NACIONALIDADE",
@@ -83,15 +101,18 @@ gld_read_zip <- function(zip.in){
 
   # those to keep
   cols.to.keep <- c("NOME.COMPLETO" ,"DATA.ATUALIZACAO",
+                    "GRAD.NOME.INSTITUICAO", "GRAD.ANO.DE.INICIO", "GRAD.ANO.DE.CONCLUSAO", "GRAD.NOME.CURSO",
                     "MSC.NOME.INSTITUICAO","MSC.ANO.DE.INICIO", "MSC.ANO.DE.CONCLUSAO",
                     "DOC.NOME.INSTITUICAO" ,"DOC.ANO.DE.INICIO","DOC.ANO.DE.CONCLUSAO",
                     "PAIS.DE.NACIONALIDADE", 'GArea','AArea')
 
   # set cols to change name
   better.names <- c('name', 'last.update',
+                    'bsc.institution', 'bsc.start.year', 'bsc.end.year', 'bsc.course',
                     'msc.institution', 'msc.start.year', 'msc.end.year',
                     'phd.institution', 'phd.start.year', 'phd.end.year',
                     'country.origin', 'major.field', 'minor.field')
+
 
   idx <- cols.to.keep %in% names(data.tpesq)
   data.tpesq <- data.tpesq[, cols.to.keep[idx]]
