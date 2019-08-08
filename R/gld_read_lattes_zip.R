@@ -7,7 +7,7 @@
 #'   \item{tpesq}{A dataframe with information about researchers}
 #'   \item{tpublic}{A dataframe with information about publications}
 #' }
-#' @exportsdaQ
+#' @export
 #' @examples
 #'
 #' f.in <- system.file('extdata/3262699324398819.zip', package = 'GetLattesData')
