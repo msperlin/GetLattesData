@@ -94,6 +94,8 @@ gld_get_lattes_data_from_zip <- function(zip.files,
     tpublic.published$H.SJR <- NA
   }
 
+
+
   #idx <- match(tpublic.accepted$ISSN, df.sjr$Issn)
   # fix for multiple issn (https://github.com/msperlin/GetLattesData/issues/6#issuecomment-412626175)
   idx <- unlist(sapply(stringr::str_replace_all(tpublic.accepted$ISSN, "-", "" ),
@@ -111,13 +113,20 @@ gld_get_lattes_data_from_zip <- function(zip.files,
                        USE.NAMES=F))
 
   if (!all(is.na(idx))) {
+
     tpublic.accepted$SJR <- df.sjr$SJR[idx]
     tpublic.accepted$H.SJR <- df.sjr$`H index`[idx]
 
   } else {
-    tpublic.accepted$SJR <- NA
-    tpublic.accepted$H.SJR <- NA
+
+    if (nrow(tpublic.accepted) != 0) {
+      tpublic.accepted$SJR <- NA
+      tpublic.accepted$H.SJR <- NA
+    }
+
   }
+
+  #browser()
 
   # fix datatypes
   suppressWarnings({
