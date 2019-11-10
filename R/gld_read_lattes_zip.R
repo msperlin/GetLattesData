@@ -67,6 +67,7 @@ gld_read_zip <- function(zip.in){
   #fix names
   if (is.null(DOUTORADO)) DOUTORADO <- c(NO.DOC = TRUE)
   if (is.null(MESTRADO)) MESTRADO <- c(NO.MSC = TRUE)
+  if (is.null(GRAD)) GRAD <- c(NO.GRAD = TRUE)
 
   names(MESTRADO) <- paste0('MSC-', names(MESTRADO))
   names(DOUTORADO) <- paste0('DOC-', names(DOUTORADO))
@@ -75,13 +76,6 @@ gld_read_zip <- function(zip.in){
   DADOS.GERAIS <- do.call(c, list(my.l$`DADOS-GERAIS`$.attrs))
   AREAS <- do.call(c, list(my.l$`DADOS-GERAIS`$`AREAS-DE-ATUACAO`))
 
-<<<<<<< HEAD
-=======
-  if (is.null(DOUTORADO)) DOUTORADO <- c(NO.DOC = TRUE)
-  if (is.null(MESTRADO)) MESTRADO <- c(NO.MSC = TRUE)
-  if (is.null(GRAD)) GRAD <- c(NO.GRAD = TRUE)
-
->>>>>>> 060c8701796d497abc17acb90f2fd04e65c81455
   GArea <- my.l$`DADOS-GERAIS`$`AREAS-DE-ATUACAO`[[1]][2]
   AArea <- my.l$`DADOS-GERAIS`$`AREAS-DE-ATUACAO`[[1]][3]
 
@@ -145,7 +139,7 @@ gld_read_zip <- function(zip.in){
   published.papers <- my.l$`PRODUCAO-BIBLIOGRAFICA`$`ARTIGOS-PUBLICADOS`
 
   data.tpublic.published <- gld.get.papers.info(published.papers, name.author = data.tpesq$name,
-                                         id.author = basename(zip.in))
+                                                id.author = basename(zip.in))
 
   cat(paste0('\n\tFound ',nrow(data.tpublic.published), ' published papers'))
 
@@ -153,7 +147,7 @@ gld_read_zip <- function(zip.in){
   accpt.papers <- my.l$`PRODUCAO-BIBLIOGRAFICA`$`ARTIGOS-ACEITOS-PARA-PUBLICACAO`
 
   data.tpublic.accepted <- gld.get.papers.info(accpt.papers, name.author = data.tpesq$name,
-                                         id.author = basename(zip.in))
+                                               id.author = basename(zip.in))
 
 
   cat(paste0('\n\tFound ', nrow(data.tpublic.accepted), ' accepted paper(s)'))
