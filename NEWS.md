@@ -1,3 +1,8 @@
+## Version 1.3.1 (2019-09-07)
+
+- Added bsc information to output
+- Fixed bug in df.tpublic$accepted.papers (see [issue 11](https://github.com/msperlin/GetLattesData/issues/11))
+
 ## Version 1.3 (2019-03-25)
 
 - Added Msc titles to output
