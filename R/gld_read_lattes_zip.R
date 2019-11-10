@@ -51,14 +51,14 @@ gld_read_zip <- function(zip.in){
   }
 
   #fix names
+  if (is.null(DOUTORADO)) DOUTORADO <- c(NO.DOC = TRUE)
+  if (is.null(MESTRADO)) MESTRADO <- c(NO.MSC = TRUE)
+
   names(MESTRADO) <- paste0('MSC-', names(MESTRADO))
   names(DOUTORADO) <- paste0('DOC-', names(DOUTORADO))
 
   DADOS.GERAIS <- do.call(c, list(my.l$`DADOS-GERAIS`$.attrs))
   AREAS <- do.call(c, list(my.l$`DADOS-GERAIS`$`AREAS-DE-ATUACAO`))
-
-  if (is.null(DOUTORADO)) DOUTORADO <- c(NO.DOC = TRUE)
-  if (is.null(MESTRADO)) MESTRADO <- c(NO.MSC = TRUE)
 
   GArea <- my.l$`DADOS-GERAIS`$`AREAS-DE-ATUACAO`[[1]][2]
   AArea <- my.l$`DADOS-GERAIS`$`AREAS-DE-ATUACAO`[[1]][3]

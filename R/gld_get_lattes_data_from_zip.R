@@ -89,7 +89,7 @@ gld_get_lattes_data_from_zip <- function(zip.files,
   if (!all(is.na(idx))) {
     tpublic.published$SJR <- df.sjr$SJR[idx]
     tpublic.published$H.SJR <- df.sjr$`H index`[idx]
-  } else {
+  } else if (nrow(tpublic.published)!=0) {
     tpublic.published$SJR <- NA
     tpublic.published$H.SJR <- NA
   }
@@ -114,7 +114,7 @@ gld_get_lattes_data_from_zip <- function(zip.files,
     tpublic.accepted$SJR <- df.sjr$SJR[idx]
     tpublic.accepted$H.SJR <- df.sjr$`H index`[idx]
 
-  } else {
+  } else if (nrow(tpublic.accepted) != 0){
     tpublic.accepted$SJR <- NA
     tpublic.accepted$H.SJR <- NA
   }

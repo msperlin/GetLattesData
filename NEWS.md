@@ -5,7 +5,7 @@
 
 ## Version 1.2 (2018-10-11)
 
-- Changes to the Lattes website seems to be permanent and stable. The main change is that in order to download  xml zip files, one must mannualy break a captcha. Based on this change, the package no longer works by downloading the files, but acessing it from locally (yes, you must download all files manualy). This update fix [Github issue 10](https://github.com/msperlin/GetLattesData/issues/10) and [Github issue 09](https://github.com/msperlin/GetLattesData/issues/09).
+- Changes to the Lattes website seems to be permanent and stable. The main change is that in order to download  xml zip files, one must manualy break a captcha. Based on this change, the package no longer works by downloading the files, but acessing it from locally (yes, you must download all files manualy). This update fix [Github issue 10](https://github.com/msperlin/GetLattesData/issues/10) and [Github issue 09](https://github.com/msperlin/GetLattesData/issues/09).
 
 
 ## Version 1.0 (2018-08-13)
