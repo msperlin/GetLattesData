@@ -1,3 +1,7 @@
+## Version 1.3.2 (2019-11-10)
+
+- Fixed another bug in df.tpublic$accepted.papers when CV had no paper.
+
 ## Version 1.3.1 (2019-09-07)
 
 - Added bsc information to output
