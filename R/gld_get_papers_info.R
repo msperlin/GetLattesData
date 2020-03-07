@@ -16,7 +16,7 @@
 #'
 gld.get.papers.info <- function(l.papers, name.author, id.author) {
 
-  data.public <- data.frame()
+  data.public <- dplyr::tibble()
 
   # return empty df for NULL data.public
   if (is.null(l.papers)) return(data.public)
@@ -50,7 +50,7 @@ gld.get.papers.info <- function(l.papers, name.author, id.author) {
 
     # supress warnings (change of col classes)
     suppressWarnings(
-      data.public <- dplyr::bind_rows(data.public, data.frame(t(info)) )
+      data.public <- dplyr::bind_rows(data.public, dplyr::as_tibble(t(info)) )
     )
 
   }
@@ -59,8 +59,8 @@ gld.get.papers.info <- function(l.papers, name.author, id.author) {
     data.public$id.file <- rep(id.author, n.papers)
     data.public$name <- name.author
 
-    cols.to.keep <- c('id.file', 'name','TITULO.DO.ARTIGO','ANO.DO.ARTIGO','IDIOMA',
-                      "TITULO.DO.PERIODICO.OU.REVISTA",
+    cols.to.keep <- c('id.file', 'name','TITULO-DO-ARTIGO','ANO-DO-ARTIGO','IDIOMA',
+                      "TITULO-DO-PERIODICO-OU-REVISTA",
                       'PAIS-DE-PUBLICACAO','ISSN',
                       'order.aut', 'n.aut')
 

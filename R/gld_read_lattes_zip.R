@@ -84,26 +84,26 @@ gld_read_zip <- function(zip.in){
   if (is.null(GArea)) GArea <- NA
   if (is.null(AArea)) AArea <- NA
 
-  data.tpesq <- cbind(data.frame(t(LATTES.LOG)),
-                      data.frame(t(GRAD)),
-                      data.frame(t(MESTRADO)),
-                      data.frame(t(DOUTORADO)),
-                      data.frame(t(DADOS.GERAIS)),
-                      data.frame(GArea = GArea),
-                      data.frame(AArea= AArea))
+  data.tpesq <- dplyr::bind_cols(dplyr::as_tibble(t(LATTES.LOG)),
+                      dplyr::as_tibble(t(GRAD)),
+                      dplyr::as_tibble(t(MESTRADO)),
+                      dplyr::as_tibble(t(DOUTORADO)),
+                      dplyr::as_tibble(t(DADOS.GERAIS)),
+                      dplyr::tibble(GArea = GArea),
+                      dplyr::tibble(AArea= AArea) )
 
   # all cols (just for reference)
-  cols.to.keep <- c("NOME.COMPLETO" ,"NUMERO.IDENTIFICADOR","DATA.ATUALIZACAO","CODIGO.INSTITUICAO","NOME.INSTITUICAO" ,
-                    "ANO.DE.INICIO","ANO.DE.CONCLUSAO","FLAG.BOLSA","NOME.COMPLETO.DO.ORIENTADOR" ,
-                    "NUMERO.ID.ORIENTADOR", "CODIGO.INSTITUICAO.DOUT", "NOME.INSTITUICAO.DOUT", "PAIS.DE.NACIONALIDADE",
-                    "CODIGO.INSTITUICAO.SANDUICHE","PERMISSAO.DE.DIVULGACAO",'GArea','AArea')
+  cols.to.keep <- c("NOME-COMPLETO" ,"NUMERO-IDENTIFICADOR","DATA-ATUALIZACAO","CODIGO-INSTITUICAO","NOME-INSTITUICAO" ,
+                    "ANO-DE-INICIO","ANO-DE-CONCLUSAO","FLAG-BOLSA","NOME-COMPLETO-DO-ORIENTADOR" ,
+                    "NUMERO-ID-ORIENTADOR", "CODIGO-INSTITUICAO-DOUT", "NOME-INSTITUICAO-DOUT", "PAIS-DE-NACIONALIDADE",
+                    "CODIGO-INSTITUICAO-SANDUICHE","PERMISSAO-DE-DIVULGACAO",'GArea','AArea')
 
   # those to keep
-  cols.to.keep <- c("NOME.COMPLETO" ,"DATA.ATUALIZACAO",
-                    "GRAD.NOME.INSTITUICAO", "GRAD.ANO.DE.INICIO", "GRAD.ANO.DE.CONCLUSAO", "GRAD.NOME.CURSO",
-                    "MSC.NOME.INSTITUICAO","MSC.ANO.DE.INICIO", "MSC.ANO.DE.CONCLUSAO",
-                    "DOC.NOME.INSTITUICAO" ,"DOC.ANO.DE.INICIO","DOC.ANO.DE.CONCLUSAO",
-                    "PAIS.DE.NACIONALIDADE", 'GArea','AArea')
+  cols.to.keep <- c("NOME-COMPLETO" ,"DATA-ATUALIZACAO",
+                    "GRAD-NOME-INSTITUICAO", "GRAD-ANO-DE-INICIO", "GRAD-ANO-DE-CONCLUSAO", "GRAD-NOME-CURSO",
+                    "MSC-NOME-INSTITUICAO","MSC-ANO-DE-INICIO", "MSC-ANO-DE-CONCLUSAO",
+                    "DOC-NOME-INSTITUICAO" ,"DOC-ANO-DE-INICIO","DOC-ANO-DE-CONCLUSAO",
+                    "PAIS-DE-NACIONALIDADE", 'GArea','AArea')
 
   # set cols to change name
   better.names <- c('name', 'last.update',
@@ -138,7 +138,8 @@ gld_read_zip <- function(zip.in){
 
   published.papers <- my.l$`PRODUCAO-BIBLIOGRAFICA`$`ARTIGOS-PUBLICADOS`
 
-  data.tpublic.published <- gld.get.papers.info(published.papers, name.author = data.tpesq$name,
+  data.tpublic.published <- gld.get.papers.info(published.papers,
+                                                name.author = data.tpesq$name,
                                                 id.author = basename(zip.in))
 
   cat(paste0('\n\tFound ',nrow(data.tpublic.published), ' published papers'))
@@ -158,7 +159,7 @@ gld_read_zip <- function(zip.in){
 
   cat(paste0('\n\tFound ', length(ORIENTACOES), ' supervisions'))
 
-  data.supervisions <- data.frame()
+  data.supervisions <- dplyr::tibble()
   if (!is.null(ORIENTACOES)) {
 
     for (i.orient in ORIENTACOES) {
@@ -169,7 +170,7 @@ gld_read_zip <- function(zip.in){
       std.name <- i.orient[[2]]['NOME-DO-ORIENTADO']
       year.supervision <- as.numeric(i.orient[[1]]['ANO'])
 
-      temp.df <- data.frame(id.file = basename(zip.in),
+      temp.df <- dplyr::tibble(id.file = basename(zip.in),
                             name = data.tpesq$name,
                             situation = 'CONCLUIDA',
                             type.course,
@@ -184,7 +185,7 @@ gld_read_zip <- function(zip.in){
     }
   }
 
-  data.supervisions.active <- data.frame()
+  data.supervisions.active <- dplyr::tibble()
   if (!is.null(ORIENTACOES.active)) {
 
     for (i.orient in ORIENTACOES.active) {
@@ -194,7 +195,7 @@ gld_read_zip <- function(zip.in){
       std.name <- i.orient[[2]]['NOME-DO-ORIENTANDO']
       year.supervision <- as.numeric(i.orient[[1]]['ANO'])
 
-      temp.df <- data.frame(id.file = basename(zip.in),
+      temp.df <- dplyr::tibble(id.file = basename(zip.in),
                             name = data.tpesq$name,
                             situation = 'EM ANDAMENTO',
                             type.course,
@@ -218,12 +219,12 @@ gld_read_zip <- function(zip.in){
 
   cat(paste0('\n\tFound ',length(LIVROS.PUBLICADOS), ' published books'))
 
-  data.books.published <- data.frame()
+  data.books.published <- dplyr::tibble()
   if (!is.null(LIVROS.PUBLICADOS)) {
 
     for (i.book in LIVROS.PUBLICADOS) {
 
-      temp.df <- data.frame(id.file = basename(zip.in),
+      temp.df <- dplyr::tibble(id.file = basename(zip.in),
                             name = data.tpesq$name,
                             book.title = i.book$`DADOS-BASICOS-DO-LIVRO`['TITULO-DO-LIVRO'],
                             book.year = i.book$`DADOS-BASICOS-DO-LIVRO`['ANO'],
@@ -232,7 +233,7 @@ gld_read_zip <- function(zip.in){
                             book.issn = i.book$`DETALHAMENTO-DO-LIVRO`['ISBN'],
                             book.npages = i.book$`DETALHAMENTO-DO-LIVRO`['NUMERO-DE-PAGINAS'],
                             book.edition = i.book$`DETALHAMENTO-DO-LIVRO`['NUMERO-DA-EDICAO-REVISAO'],
-                            book.editor = i.book$`DETALHAMENTO-DO-LIVRO`['NOME-DA-EDITORA'], stringsAsFactors = F)
+                            book.editor = i.book$`DETALHAMENTO-DO-LIVRO`['NOME-DA-EDITORA'])
 
       rownames(temp.df) <-  NULL
 
@@ -246,12 +247,12 @@ gld_read_zip <- function(zip.in){
 
   cat(paste0('\n\tFound ',length(LIVROS.CAPITULOS), ' book chapters'))
 
-  data.books.chapters <- data.frame()
+  data.books.chapters <- dplyr::tibble()
   if (!is.null(LIVROS.CAPITULOS)) {
 
     for (i.book in LIVROS.CAPITULOS) {
 
-      temp.df <- data.frame(id.file = basename(zip.in),
+      temp.df <- dplyr::tibble(id.file = basename(zip.in),
                             name = data.tpesq$name,
                             book.title = i.book$`DETALHAMENTO-DO-CAPITULO`['TITULO-DO-LIVRO'],
                             book.chapter = i.book$`DADOS-BASICOS-DO-CAPITULO`['TITULO-DO-CAPITULO-DO-LIVRO'],
@@ -260,7 +261,7 @@ gld_read_zip <- function(zip.in){
                             book.lan   = i.book$`DADOS-BASICOS-DO-CAPITULO`['IDIOMA'],
                             book.issn = i.book$`DETALHAMENTO-DO-CAPITULO`['ISBN'],
                             book.edition = i.book$`DETALHAMENTO-DO-CAPITULO`['NUMERO-DA-EDICAO-REVISAO'],
-                            book.editor = i.book$`DETALHAMENTO-DO-CAPITULO`['NOME-DA-EDITORA'], stringsAsFactors = F)
+                            book.editor = i.book$`DETALHAMENTO-DO-CAPITULO`['NOME-DA-EDITORA'])
 
       rownames(temp.df) <-  NULL
 
@@ -278,20 +279,19 @@ gld_read_zip <- function(zip.in){
 
   cat(paste0('\n\tFound ',length(CONFERENCES), ' conference papers'))
 
-  data.conferences <- data.frame()
+  data.conferences <- dplyr::tibble()
   if (!is.null(CONFERENCES)) {
 
     for (i.conf in CONFERENCES) {
 
-      temp.df <- data.frame(id.file = basename(zip.in),
+      temp.df <- dplyr::tibble(id.file = basename(zip.in),
                             name = data.tpesq$name,
                             article.title = i.conf$`DADOS-BASICOS-DO-TRABALHO`['TITULO-DO-TRABALHO'],
                             article.year = i.conf$`DADOS-BASICOS-DO-TRABALHO`['ANO-DO-TRABALHO'],
                             event.classification = i.conf$`DETALHAMENTO-DO-TRABALHO`['CLASSIFICACAO-DO-EVENTO'],
                             event.name = i.conf$`DETALHAMENTO-DO-TRABALHO`['NOME-DO-EVENTO'],
                             event.isbn = i.conf$`DETALHAMENTO-DO-TRABALHO`['ISBN'],
-                            event.city = i.conf$`DETALHAMENTO-DO-TRABALHO`['CIDADE-DO-EVENTO'],
-                            stringsAsFactors = F)
+                            event.city = i.conf$`DETALHAMENTO-DO-TRABALHO`['CIDADE-DO-EVENTO'])
 
       rownames(temp.df) <-  NULL
 

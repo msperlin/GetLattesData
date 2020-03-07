@@ -43,6 +43,11 @@ gld_get_lattes_data_from_zip <- function(zip.files,
     stop('All files in zip.files input should be with .zip extension. Check your inputs..')
   }
 
+  # check if exists
+  if (any(!file.exists(zip.files))) {
+    stop('Some files in zip.files do not exist. Check your paths.')
+  }
+
   # read files
   my.l <- lapply(zip.files, gld_read_zip)
 
@@ -125,8 +130,6 @@ gld_get_lattes_data_from_zip <- function(zip.files,
 
   }
 
-  #browser()
-
   # fix datatypes
   suppressWarnings({
 
@@ -160,23 +163,17 @@ gld_get_lattes_data_from_zip <- function(zip.files,
     return(x)
   }
 
-  tpesq <- as.data.frame(lapply(tpesq, my.enc.fct),
-                         stringsAsFactors = F)
+  tpesq <- dplyr::as_tibble(lapply(tpesq, my.enc.fct))
 
-  tpublic.published <- as.data.frame(lapply(tpublic.published, my.enc.fct),
-                                     stringsAsFactors = F)
+  tpublic.published <- dplyr::as_tibble(lapply(tpublic.published, my.enc.fct))
 
-  tpublic.accepted <- as.data.frame(lapply(tpublic.accepted, my.enc.fct),
-                                    stringsAsFactors = F)
+  tpublic.accepted <- dplyr::as_tibble(lapply(tpublic.accepted, my.enc.fct))
 
-  tsupervisions <- as.data.frame(lapply(tsupervisions, my.enc.fct),
-                                 stringsAsFactors = F)
+  tsupervisions <- dplyr::as_tibble(lapply(tsupervisions, my.enc.fct))
 
-  tbooks <- as.data.frame(lapply(tbooks, my.enc.fct),
-                          stringsAsFactors = F)
+  tbooks <- dplyr::as_tibble(lapply(tbooks, my.enc.fct))
 
-  tconferences <- as.data.frame(lapply(tconferences, my.enc.fct),
-                                stringsAsFactors = F)
+  tconferences <- dplyr::as_tibble(lapply(tconferences, my.enc.fct))
 
   # return data
   l.out <- list(tpesq = tpesq,

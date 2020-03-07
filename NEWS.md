@@ -1,3 +1,7 @@
+## Version 1.4 (2020-03-07)
+
+- switched to dplyr::tibbles to avoid problems with CRAN (and not data.frame)
+
 ## Version 1.3.2 (2019-11-10)
 
 - Fixed another bug in df.tpublic$accepted.papers when CV had no paper.
@@ -10,7 +14,6 @@
 ## Version 1.3 (2019-03-25)
 
 - Added Msc titles to output
-
 
 ## Version 1.2 (2018-10-11)
 
