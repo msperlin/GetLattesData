@@ -16,7 +16,6 @@
 #'
 #' @examples
 #'
-#' \dontrun{
 #' # get files from pkg (you can download from other researchers in lattes website)
 #' f.in <- system.file('extdata/3262699324398819.zip', package = 'GetLattesData')
 #'
@@ -29,7 +28,6 @@
 #' # print it
 #' print(l.out$tpesq)
 #' print(l.out$tpublic.published)
-#' }
 gld_get_lattes_data_from_zip <- function(zip.files,
                                          field.qualis = NULL) {
 

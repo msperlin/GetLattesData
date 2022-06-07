@@ -7,7 +7,7 @@
 #'   \item{tpesq}{A dataframe with information about researchers}
 #'   \item{tpublic}{A dataframe with information about publications}
 #' }
-#' @export
+#' @noRd
 #' @examples
 #'
 #' f.in <- system.file('extdata/3262699324398819.zip', package = 'GetLattesData')
@@ -271,7 +271,6 @@ gld_read_zip <- function(zip.in){
   }
 
   data.books <- dplyr::bind_rows(data.books.published, data.books.chapters)
-
 
   # conferences
 

@@ -24,7 +24,6 @@ This function reads zipped files from Lattes, giving as output a list with sever
 }
 \examples{
 
-\dontrun{
 # get files from pkg (you can download from other researchers in lattes website)
 f.in <- system.file('extdata/3262699324398819.zip', package = 'GetLattesData')
 
@@ -37,5 +36,4 @@ l.out <- gld_get_lattes_data_from_zip(f.in, field.qualis = field.qualis )
 # print it
 print(l.out$tpesq)
 print(l.out$tpublic.published)
-}
 }

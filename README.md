@@ -1,7 +1,9 @@
-# Package GetLattesData
-
+<!-- badges: start -->
+[![R-CMD-check](https://github.com/msperlin/GetLattesData/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/msperlin/GetLattesData/actions/workflows/R-CMD-check.yaml)
 [![](http://cranlogs.r-pkg.org/badges/GetLattesData)](https://CRAN.R-project.org/package=GetLattesData)
+<!-- badges: end -->
 
+# Package GetLattesData
 
 [Lattes](http://lattes.cnpq.br/) is an unique and largest platform for academic curriculumns. There you can find information about the academic work of **all** Brazilian scholars. It includes institution of PhD, current employer, field of work, all publications metadata and more. It is an unique and reliable source of information for bibliometric studies. 
 

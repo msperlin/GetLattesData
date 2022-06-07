@@ -16,7 +16,7 @@
 #'   \item{tsupervisions}{A dataframe with information about all supervisions}
 #' }
 #'
-#' @export
+#' @noRd
 #'
 #' @examples
 #'

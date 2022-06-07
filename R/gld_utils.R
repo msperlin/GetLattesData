@@ -3,17 +3,7 @@
 #' Read Qualis data available within the package. The original data is downloaded from
 #' \url{https://sucupira.capes.gov.br/sucupira/public/index.xhtml}
 #'
-#' Latest Qualis: 2013-2016 | Latest Qualis update: 2017-09-04
-#'
-#' @inheritParams gld_get_lattes_data
-#'
-#' @return A dataframe with Qualis table, including columns for ISSN, field and ranking
-#' @export
-#'
-#' @examples
-#'
-#' df.qualis <- gld_get_qualis()
-#' df.qualis
+#' @noRd
 gld_get_qualis <- function(field.qualis = 'ALL') {
 
   # load data from csv
@@ -56,12 +46,7 @@ gld_get_qualis <- function(field.qualis = 'ALL') {
 #'
 #' Latest SJR: 2016 | Latest update: 2017-09-04
 #'
-#' @return A dataframe with SJR table
-#' @export
-#'
-#' @examples
-#' df.SJR <- gld_get_SJR()
-#' df.SJR
+#' @noRd
 gld_get_SJR <- function(){
 
   # get file
@@ -93,6 +78,7 @@ gld_get_SJR <- function(){
 #'
 #' @return The name of downloaded zip file
 #'
+#' @noRd
 #' @examples
 #'
 #' \dontrun{
