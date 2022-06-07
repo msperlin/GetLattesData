@@ -1,3 +1,7 @@
+## Version 1.4.1 (2022-06-07)
+
+- fixed cran notes
+
 ## Version 1.4 (2020-03-07)
 
 - switched to dplyr::tibbles to avoid problems with CRAN (and not data.frame)

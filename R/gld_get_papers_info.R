@@ -6,7 +6,7 @@
 #'
 #' @return A dataframe with several information about papers (published or accepted)
 #'
-#' @export
+#' @noRd
 #'
 #' @examples
 #'
