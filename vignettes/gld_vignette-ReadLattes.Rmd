@@ -14,18 +14,7 @@ knitr::opts_chunk$set(eval=TRUE)
 ```
 
 
-[Lattes](http://lattes.cnpq.br/) is an unique and largest platform for academic curriculumns. There you can find information about the academic work of **all** Brazilian scholars. It includes institution of PhD, current employer, field of work, all publications metadata and more. It is an unique and reliable source of information for bibliometric studies. 
-
-I've been working with Lattes data for some time. Here I present a short list of papers that have used this data.
-
-- Is predatory publishing a real threat? Evidence from a large database study. [Scientometrics](https://link.springer.com/article/10.1007/s11192-018-2750-6)
-
--  The Brazilian scientific output published in journals: A study based on a large CV database. [Journal of Informetrics](http://www.sciencedirect.com/science/article/pii/S1751157716301559)
-
-- The researchers, the publications and the journals of Finance in Brazil: An analysis based on resumes from the Lattes platform. [Brazilian Review of Finance](http://bibliotecadigital.fgv.br/ojs/index.php/rbfin/article/view/47157)    
-
-- Análise do Perfil dos Acadêmicos e de suas Publicações Científicas em Administração (in Portuguese. [RAC](http://www.scielo.br/scielo.php?script=sci_arttext&pid=S1415-65552017000100062)
-
+[Lattes](https://lattes.cnpq.br/) is an unique and largest platform for academic curriculumns. There you can find information about the academic work of **all** Brazilian scholars. It includes institution of PhD, current employer, field of work, all publications metadata and more. It is an unique and reliable source of information for bibliometric studies. 
 
 Package `GetLattesData` is a wrap up of functions I've been using for accessing the data. In the past, one could download the data directly, without any manual work. Currently, `r Sys.Date()`, a manual captcha break is necessary. Therefore, using this package requires the manual download of the zip files with the xml data.
 
@@ -34,11 +23,9 @@ Package `GetLattesData` is a wrap up of functions I've been using for accessing 
 
 Let's consider a simple example of accessing information about my academic CV and a coleague. Both zip files are available locally within the package as an example. If you want to run this example for other scholars, you will have to download their xml zip files from Lattes. After opening the Lattes website (see an example [here](http://buscatextual.cnpq.br/buscatextual/visualizacv.do?metodo=apresentar&id=K4713546D3)), click in the XML buttom in the top righ corner. Once the captcha is once again solved, you will download a zip file with the xml content.
 
-Since I work in the business department of UFRGS, the impact of my publications is localy set by the Qualis ranking of Management, Accounting and Tourism (`'ADMINISTRAÇÃO PÚBLICA E DE EMPRESAS, CIÊNCIAS CONTÁBEIS E TURISMO'`). Qualis is the local journal ranking in Brazil. You can read more about Qualis in [Wikipedia](https://en.wikipedia.org/wiki/Qualis_(CAPES)) and [here](http://www.sciencedirect.com/science/article/pii/S1751157716301559).
+Since I work in the business department of UFRGS, the impact of my publications is localy set by the Qualis ranking of Management, Accounting and Tourism (`'ADMINISTRAÇÃO PÚBLICA E DE EMPRESAS, CIÊNCIAS CONTÁBEIS E TURISMO'`). Qualis is the local journal ranking in Brazil. You can read more about Qualis in [Wikipedia](https://en.wikipedia.org/wiki/Qualis_(CAPES)) and [here](https://www.sciencedirect.com/science/article/pii/S1751157716301559).
 
-
-
-Now, based on the zip file locations and field of Qualis, we use `GetLattesData` to access information available in Lattes:
+Now, based on the zip file and field of Qualis, we use `GetLattesData` to access information available in Lattes:
 
 ```{r}
 library(GetLattesData)
@@ -76,6 +63,7 @@ dplyr::glimpse(l.out$tpublic.published)
 ```
 
 Other dataframes in `l.out` included information about accepted papers, supervisions, books and conferences.
+
 
 ## An application of  `GetLattesData`
 
