@@ -77,9 +77,8 @@ gld_get_lattes_data_from_zip <- function(zip.files,
   # fix for multiple issn (https://github.com/msperlin/GetLattesData/issues/6#issuecomment-412626175)
   idx <- unlist(sapply(stringr::str_replace_all(tpublic.published$ISSN, "-", "" ),
                        function(issn.in, df.sjr){
-                         temp.idx <- which(stringr::str_detect( df.sjr$Issn,issn.in))
-
                          if (stringr::str_trim(issn.in) == '') return(NA)
+                         temp.idx <- which(stringr::str_detect( df.sjr$Issn,issn.in))
 
                          if(length(temp.idx) == 0){
                            temp.idx <- NA
