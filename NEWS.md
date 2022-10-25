@@ -1,3 +1,7 @@
+## Version 1.4.2 (2022-10-25)
+
+- fixed stringr::str_detect() issue ([PR](https://github.com/msperlin/GetLattesData/pull/19))
+
 ## Version 1.4.1 (2022-06-07)
 
 - fixed cran notes
