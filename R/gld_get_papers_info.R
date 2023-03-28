@@ -62,14 +62,14 @@ gld.get.papers.info <- function(l.papers, name.author, id.author) {
     cols.to.keep <- c('id.file', 'name','TITULO-DO-ARTIGO','ANO-DO-ARTIGO','IDIOMA',
                       "TITULO-DO-PERIODICO-OU-REVISTA",
                       'PAIS-DE-PUBLICACAO','ISSN',
-                      'order.aut', 'n.aut')
+                      'order.aut', 'n.aut', 'DOI')
 
 
     idx <- cols.to.keep %in% names(data.public)
     data.public <- data.public[ , cols.to.keep[idx]]
 
     names(data.public) <- c('id.file', 'name', 'article.title', 'year', 'language','journal.title', 'contry.publication',
-                            'ISSN', 'order.aut', 'n.authors')[idx]
+                            'ISSN', 'order.aut', 'n.authors', 'DOI')[idx]
 
     # fix ISSN
     data.public$ISSN <- paste0(stringr::str_sub(data.public$ISSN, 1,4),
