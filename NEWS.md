@@ -1,3 +1,7 @@
+## Version 1.4.3 (2023-08-09)
+
+- added DOI information for publications 
+
 ## Version 1.4.2 (2022-10-25)
 
 - fixed stringr::str_detect() issue ([PR](https://github.com/msperlin/GetLattesData/pull/19))
