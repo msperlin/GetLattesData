@@ -13,7 +13,7 @@ I've been working with Lattes data for some time. Here I present a short list of
 
 -  The Brazilian scientific output published in journals: A study based on a large CV database. [Journal of Informetrics](https://www.sciencedirect.com/science/article/pii/S1751157716301559)
 
-- The researchers, the publications and the journals of Finance in Brazil: An analysis based on resumes from the Lattes platform. [Brazilian Review of Finance](https://bibliotecadigital.fgv.br/ojs/index.php/rbfin/article/view/47157)    
+- The researchers, the publications and the journals of Finance in Brazil: An analysis based on resumes from the Lattes platform. [Brazilian Review of Finance](https://periodicos.fgv.br/rbfin/article/view/47157)    
 
 - Análise do Perfil dos Acadêmicos e de suas Publicações Científicas em Administração (in Portuguese. [RAC](https://www.scielo.br/j/rac/a/BHg98Xqc3gQ3sPpXXP3hSzF/?lang=pt)
 
