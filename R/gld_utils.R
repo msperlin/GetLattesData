@@ -1,26 +1,32 @@
 #' Reads Qualis table
 #'
-#' Read Qualis data available within the package. The original data is downloaded from
+#' Read Qualis data available within the package, retrieved at 2023-11-27.
+#' The original data is downloaded from
 #' \url{https://sucupira.capes.gov.br/sucupira/public/index.xhtml}
 #'
 #' @noRd
 gld_get_qualis <- function(field.qualis = 'ALL') {
 
   # load data from csv
-  qualis.file <- system.file('extdata/Qualis_2013-2016.zip', package = 'GetLattesData')
+  qualis.file <- system.file('extdata/Qualis_2017-2020.xlsx',
+                             package = 'GetLattesData')
 
   # set readr cols and read it!
-  my.cols <- readr::cols(
-    issn    = readr::col_character(),
-    titulo  = readr::col_character(),
-    area    = readr::col_character(),
-    ranking = readr::col_character()
-  )
+  # my.cols <- readr::cols(
+  #   issn    = readr::col_character(),
+  #   titulo  = readr::col_character(),
+  #   area    = readr::col_character(),
+  #   ranking = readr::col_character()
+  # )
 
-  df.qualis <- readr::read_csv(qualis.file,
-                               locale = readr::locale(encoding = 'Latin1'),
-                               col_types = my.cols,
-                               progress = F)
+  my.cols <- c("issn", "titulo", "area", "ranking")
+
+  df.qualis <- readxl::read_excel(qualis.file, col_names = my.cols)
+
+  # df.qualis <- readr::read_csv(qualis.file,
+  #                              locale = readr::locale(encoding = 'Latin1'),
+  #                              col_types = my.cols,
+  #                              progress = F)
 
   # check area
   unique.fields <- c(unique(df.qualis$area), 'ALL')
@@ -44,13 +50,13 @@ gld_get_qualis <- function(field.qualis = 'ALL') {
 #'
 #' Reads localy available SJR table. Original data provided as an excel file in \url{http://scimagojr.com/journalrank.php}.
 #'
-#' Latest SJR: 2016 | Latest update: 2017-09-04
+#' Latest SJR: 2022 | Latest update: 2023-11-27
 #'
 #' @noRd
 gld_get_SJR <- function(){
 
   # get file
-  sjr.file <- system.file('extdata/scimagojr_2016_shortver.zip', package = 'GetLattesData')
+  sjr.file <- system.file('extdata/fixed_scimagojr_2022_csv.csv', package = 'GetLattesData')
 
   # set cols and read it!
   my.cols <- readr::cols(

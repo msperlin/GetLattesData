@@ -1,6 +1,7 @@
 ## Version 1.4.4 (2023-11-27)
 
 - added type of supervision
+- updated on qualis table for 2017-2020 and SJR for 2022
 
 ## Version 1.4.3 (2023-08-09)
 
