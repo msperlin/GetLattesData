@@ -16,7 +16,6 @@
 gld_read_zip <- function(zip.in){
 
   # error checking
-
   if (length(zip.in)>1) {
     stop('Function gld_read_zip  only reads one zip file at a time..')
   }
@@ -98,19 +97,18 @@ gld_read_zip <- function(zip.in){
                     "CODIGO-INSTITUICAO-SANDUICHE","PERMISSAO-DE-DIVULGACAO",'GArea','AArea')
 
   # those to keep
-  cols.to.keep <- c("NOME-COMPLETO" ,"DATA-ATUALIZACAO",
+  cols.to.keep <- c("NOME-COMPLETO" ,"NOME-EM-CITACOES-BIBLIOGRAFICAS", "DATA-ATUALIZACAO",
                     "GRAD-NOME-INSTITUICAO", "GRAD-ANO-DE-INICIO", "GRAD-ANO-DE-CONCLUSAO", "GRAD-NOME-CURSO",
                     "MSC-NOME-INSTITUICAO","MSC-ANO-DE-INICIO", "MSC-ANO-DE-CONCLUSAO",
                     "DOC-NOME-INSTITUICAO" ,"DOC-ANO-DE-INICIO","DOC-ANO-DE-CONCLUSAO",
                     "PAIS-DE-NACIONALIDADE", 'GArea','AArea')
 
   # set cols to change name
-  better.names <- c('name', 'last.update',
+  better.names <- c('name', "name_in_citations", 'last.update',
                     'bsc.institution', 'bsc.start.year', 'bsc.end.year', 'bsc.course',
                     'msc.institution', 'msc.start.year', 'msc.end.year',
                     'phd.institution', 'phd.start.year', 'phd.end.year',
                     'country.origin', 'major.field', 'minor.field')
-
 
   idx <- cols.to.keep %in% names(data.tpesq)
   data.tpesq <- data.tpesq[, cols.to.keep[idx]]
@@ -276,7 +274,6 @@ gld_read_zip <- function(zip.in){
   data.books <- dplyr::bind_rows(data.books.published, data.books.chapters)
 
   # conferences
-
   CONFERENCES <- my.l$`PRODUCAO-BIBLIOGRAFICA`$`TRABALHOS-EM-EVENTOS`
 
   cat(paste0('\n\tFound ',length(CONFERENCES), ' conference papers'))
@@ -303,7 +300,6 @@ gld_read_zip <- function(zip.in){
   }
 
   # output
-
   my.l <- list(tpesq = data.tpesq,
                tpublic.published = data.tpublic.published,
                tpublic.accepted = data.tpublic.accepted,
