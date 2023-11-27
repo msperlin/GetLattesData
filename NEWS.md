@@ -1,3 +1,7 @@
+## Version 1.4.4 (2023-11-27)
+
+- added type of supervision
+
 ## Version 1.4.3 (2023-08-09)
 
 - added DOI information for publications 

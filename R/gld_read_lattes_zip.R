@@ -80,7 +80,6 @@ gld_read_zip <- function(zip.in){
   AArea <- my.l$`DADOS-GERAIS`$`AREAS-DE-ATUACAO`[[1]][3]
 
   # fix for GArea and AArea
-
   if (is.null(GArea)) GArea <- NA
   if (is.null(AArea)) AArea <- NA
 
@@ -169,6 +168,7 @@ gld_read_zip <- function(zip.in){
       type.course <- i.orient[[1]]['TIPO']
       std.name <- i.orient[[2]]['NOME-DO-ORIENTADO']
       year.supervision <- as.numeric(i.orient[[1]]['ANO'])
+      type_supervision <- i.orient[[2]]["TIPO-DE-ORIENTACAO"]
 
       temp.df <- dplyr::tibble(id.file = basename(zip.in),
                             name = data.tpesq$name,
@@ -176,7 +176,8 @@ gld_read_zip <- function(zip.in){
                             type.course,
                             course,
                             std.name,
-                            year.supervision)
+                            year.supervision,
+                            type_supervision)
 
       rownames(temp.df) <-  NULL
 
@@ -194,6 +195,7 @@ gld_read_zip <- function(zip.in){
       type.course <- i.orient[[1]]['TIPO']
       std.name <- i.orient[[2]]['NOME-DO-ORIENTANDO']
       year.supervision <- as.numeric(i.orient[[1]]['ANO'])
+      type_supervision <- i.orient[[2]]["TIPO-DE-ORIENTACAO"]
 
       temp.df <- dplyr::tibble(id.file = basename(zip.in),
                             name = data.tpesq$name,
@@ -201,7 +203,8 @@ gld_read_zip <- function(zip.in){
                             type.course,
                             course,
                             std.name,
-                            year.supervision)
+                            year.supervision,
+                            type_supervision)
 
       rownames(temp.df) <-  NULL
 
