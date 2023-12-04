@@ -299,13 +299,34 @@ gld_read_zip <- function(zip.in){
     }
   }
 
+  # employment
+  if (!is.null(my.l$`DADOS-GERAIS`$`ATUACOES-PROFISSIONAIS`)) {
+
+    AT_PROF <- do.call(c, list(my.l$`DADOS-GERAIS`$`ATUACOES-PROFISSIONAIS`))
+
+
+    df_atprof <- dplyr::bind_rows(
+      lapply(AT_PROF, parse_at_prof)
+    )
+
+    df_atprof$name <- data.tpesq$name
+    df_atprof$id.file <- basename(zip.in)
+    #df <- dplyr::as_tibble(t(AT_PROF))
+  } else {
+    df_atprof <- dplyr::tibble()
+  }
+
+  cat(paste0('\n\tFound ', nrow(df_atprof), ' employment registries'))
+
+
   # output
   my.l <- list(tpesq = data.tpesq,
                tpublic.published = data.tpublic.published,
                tpublic.accepted = data.tpublic.accepted,
                tsupervisions = data.supervisions,
                tbooks = data.books,
-               tconferences = data.conferences)
+               tconferences = data.conferences,
+               t_df_atprof = df_atprof)
 
   return(my.l)
 

@@ -124,3 +124,24 @@ gld_download_lattes_files <- function(id, folder.dl = tempdir()) {
 
   return(dest.file)
 }
+
+
+parse_at_prof <- function(l_in) {
+
+  if (is.null(l_in$VINCULOS)) return(dplyr::tibble())
+
+  my_df <- dplyr::bind_cols(
+    dplyr::as_tibble(t(l_in$VINCULOS)),
+    dplyr::as_tibble(t(l_in$.attrs))
+  )
+
+  names(my_df)
+
+  cols_to_keep <- c("NOME-INSTITUICAO","ENQUADRAMENTO-FUNCIONAL" , "FLAG-DEDICACAO-EXCLUSIVA" ,
+                    "ANO-INICIO", "ANO-FIM" )
+
+  my_df <- my_df[ , cols_to_keep]
+
+  return(my_df)
+
+}
