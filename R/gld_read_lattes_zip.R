@@ -121,6 +121,9 @@ gld_read_zip <- function(zip.in){
   rownames(data.tpesq) <- NULL
   data.tpesq$id.file <- basename(zip.in)
 
+  last_update <- lubridate::dmy(my.l$.attrs["DATA-ATUALIZACAO"])
+  data.tpesq$last_update <- last_update
+
   # fix issue with no PhD
   if (is.null(data.tpesq$phd.institution)){
     data.tpesq$phd.institution <- NA

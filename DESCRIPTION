@@ -5,7 +5,7 @@ Authors@R: person("Marcelo", "Perlin", email = "marceloperlin@gmail.com", role =
 Description: A simple API for downloading and reading xml data directly from Lattes <http://lattes.cnpq.br/>.
 Depends:
     R (>= 3.3.0)
-Imports: stringr, XML, dplyr, readr, stringdist, curl, tools
+Imports: stringr, XML, dplyr, readr, stringdist, curl, tools, lubridate
 License: GPL-2
 Encoding: UTF-8
 BugReports: https://github.com/msperlin/GetLattesData/issues
