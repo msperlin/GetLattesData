@@ -169,7 +169,7 @@ gld_read_zip <- function(zip.in){
       type.course <- i.orient[[1]]['TIPO']
       std.name <- i.orient[[2]]['NOME-DO-ORIENTADO']
       year.supervision <- as.numeric(i.orient[[1]]['ANO'])
-      type_supervision <- i.orient[[2]]["TIPO-DE-ORIENTACAO"]
+      type_supervision <- as.character(i.orient[[2]]["TIPO-DE-ORIENTACAO"])
 
       temp.df <- dplyr::tibble(id.file = basename(zip.in),
                             name = data.tpesq$name,
@@ -196,7 +196,7 @@ gld_read_zip <- function(zip.in){
       type.course <- i.orient[[1]]['TIPO']
       std.name <- i.orient[[2]]['NOME-DO-ORIENTANDO']
       year.supervision <- as.numeric(i.orient[[1]]['ANO'])
-      type_supervision <- i.orient[[2]]["TIPO-DE-ORIENTACAO"]
+      type_supervision <- as.character(i.orient[[2]]["TIPO-DE-ORIENTACAO"])
 
       temp.df <- dplyr::tibble(id.file = basename(zip.in),
                             name = data.tpesq$name,
