@@ -12,7 +12,7 @@ f.in <- c(system.file('extdata/3262699324398819.zip', package = 'GetLattesData')
 field.qualis = 'ADMINISTRAÇÃO PÚBLICA E DE EMPRESAS, CIÊNCIAS CONTÁBEIS E TURISMO'
 
 # get data
-l.out <- gld_get_lattes_data_from_zip(f.in, 
+l.out <- gld_get_lattes_data_from_zip(f.in,
                                       field.qualis = field.qualis )
 
 
@@ -50,3 +50,5 @@ my.tab <- tpublic.published %>%
 
 knitr::kable(my.tab)
 
+tprojects <- l.out$tprojects
+dplyr::glimpse(tprojects)

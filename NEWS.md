@@ -1,3 +1,7 @@
+## Version 1.5 (2024-05-04)
+
+- added projects in output
+
 ## Version 1.4.4 (2023-11-27)
 
 - added date of last update
