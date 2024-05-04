@@ -59,6 +59,7 @@ gld_get_lattes_data_from_zip <- function(zip.files,
     tconferences <- do.call(args = lapply(my.l, function(x) x$tconferences), what = dplyr::bind_rows)
     t_df_atprof <-  do.call(args = lapply(my.l, function(x) x$t_df_atprof), what = dplyr::bind_rows)
     tprojects <- do.call(args = lapply(my.l, function(x) x$tprojects), what = dplyr::bind_rows)
+    tcoauthors <- do.call(args = lapply(my.l, function(x) x$tcoauthors), what = dplyr::bind_rows)
   })
 
   # do Qualis
@@ -181,6 +182,8 @@ gld_get_lattes_data_from_zip <- function(zip.files,
 
   tprojects <- dplyr::as_tibble(lapply(tprojects, my.enc.fct))
 
+  tcoauthors <- dplyr::as_tibble(lapply(tcoauthors, my.enc.fct))
+
   # return data
   l.out <- list(tpesq = tpesq,
                 tpublic.published = tpublic.published,
@@ -189,7 +192,8 @@ gld_get_lattes_data_from_zip <- function(zip.files,
                 tbooks = tbooks,
                 tconferences = tconferences,
                 t_atprof = t_df_atprof,
-                tprojects = tprojects)
+                tprojects = tprojects,
+                tcoauthors = tcoauthors)
 
   return(l.out)
 

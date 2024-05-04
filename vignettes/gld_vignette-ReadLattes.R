@@ -21,7 +21,9 @@ names(l.out)
 
 ## -----------------------------------------------------------------------------
 tpesq <- l.out$tpesq
-str(tpesq)
+str(l.out$tcoauthors)
+
+a = l.out$tcoauthors
 
 ## -----------------------------------------------------------------------------
 dplyr::glimpse(l.out$tpublic.published)

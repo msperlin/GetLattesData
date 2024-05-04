@@ -1,6 +1,7 @@
 ## Version 1.5 (2024-05-04)
 
 - added research and extension projects in output 
+- added coauthors in output (fixes issue number [16](https://github.com/msperlin/GetLattesData/issues/16))
 
 ## Version 1.4.4 (2023-11-27)
 
