@@ -18,5 +18,6 @@ Suggests: knitr,
     readxl,
     purrr,
     xml2,
-    tibble
+    tibble,
+    janitor
 VignetteBuilder: knitr
