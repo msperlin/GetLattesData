@@ -155,8 +155,8 @@ gld_get_lattes_data_from_zip <- function(zip.files,
     tpublic.accepted$order.aut    <- as.numeric(tpublic.accepted$order.aut)
     tpublic.accepted$n.authors    <- as.numeric(tpublic.accepted$n.authors)
 
-    tprojects$`ANO-INICIO` <- as.numeric(tprojects$`ANO-INICIO`)
-    tprojects$`ANO-FIM` <- as.numeric(tprojects$`ANO-FIM`)
+    tprojects$ano_inicio <- as.numeric(tprojects$ano_inicio)
+    tprojects$ano_fim <- as.numeric(tprojects$ano_fim)
 
   })
 

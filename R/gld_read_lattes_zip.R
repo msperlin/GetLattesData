@@ -344,13 +344,17 @@ gld_read_zip <- function(zip.in){
     #                "DESCRICAO-DO-PROJETO", "IDENTIFICADOR-PROJETO", "DESCRICAO-DO-PROJETO-INGLES",
     #                "NOME-DO-PROJETO-INGLES", "FLAG-POTENCIAL-INOVACAO", "NOME-COORDENADOR-CERTIFICACAO",
     #                "DATA-CERTIFICACAO", "NUMERO_TECNICO_NIVEL_MEDIO")
-    to_keep <- c("SEQUENCIA-PROJETO", "ANO-INICIO", "ANO-FIM", "NOME-DO-PROJETO",
+    to_keep <- c("name", "id.file", "SEQUENCIA-PROJETO", "ANO-INICIO", "ANO-FIM", "NOME-DO-PROJETO",
                  "SITUACAO", "NATUREZA", "NUMERO-GRADUACAO", "NUMERO-ESPECIALIZACAO",
                  "NUMERO-MESTRADO-ACADEMICO", "NUMERO-MESTRADO-PROF", "NUMERO-DOUTORADO",
                  "IDENTIFICADOR-PROJETO", "FLAG-POTENCIAL-INOVACAO", "NOME-COORDENADOR-CERTIFICACAO",
                  "DATA-CERTIFICACAO", "NUMERO_TECNICO_NIVEL_MEDIO")
 
     df_projects <- df_projects[, to_keep]
+
+    # fix names
+    df_projects <- df_projects |>
+      janitor::clean_names()
 
   } else {
     df_projects <- dplyr::tibble()
