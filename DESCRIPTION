@@ -19,5 +19,6 @@ Suggests: knitr,
     purrr,
     xml2,
     tibble,
-    janitor
+    janitor,
+    cli
 VignetteBuilder: knitr

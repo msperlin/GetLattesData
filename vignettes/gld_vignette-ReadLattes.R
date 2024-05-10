@@ -15,9 +15,11 @@ field.qualis = 'ADMINISTRAÇÃO PÚBLICA E DE EMPRESAS, CIÊNCIAS CONTÁBEIS E T
 l.out <- gld_get_lattes_data_from_zip(f.in,
                                       field.qualis = field.qualis )
 
+f <- "~/Desktop/2942897595873697.zip"
+l_out <- gld_read_zip2(f)
 
 ## -----------------------------------------------------------------------------
-names(l.out)
+dplyr::glimpse(l_out)
 
 ## -----------------------------------------------------------------------------
 tpesq <- l.out$tpesq
