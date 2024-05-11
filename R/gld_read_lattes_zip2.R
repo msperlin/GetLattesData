@@ -24,9 +24,18 @@ gld_read_zip2 <- function(f_zip){
     cli::cli_abort('File ', f_zip, ' does not exists..')
   }
 
+  cli::cli_h1('\nReading lattes file {basename(f_zip)}')
+
   my_xml <- xml2::read_xml(f_zip, encoding = "Latin1")
 
-  cli::cli_h1('\nReading lattes file {basename(f_zip)}')
+  text_xml <- xml2::xml_text(my_xml)
+
+  if (text_xml == "Erro ao recuperar o XML") {
+    cli::cli_alert_warning("cant read xml file {f_zip}, no data found. Returning empty list")
+    return(list())
+
+  }
+
 
   # cvitae ----
   fetch_df <- function(this_xml, xpath) {
