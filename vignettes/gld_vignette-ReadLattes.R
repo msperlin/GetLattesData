@@ -15,7 +15,7 @@ field.qualis = 'ADMINISTRAÇÃO PÚBLICA E DE EMPRESAS, CIÊNCIAS CONTÁBEIS E T
 l.out <- gld_get_lattes_data_from_zip(f.in,
                                       field.qualis = field.qualis )
 
-f <- "~/Desktop/2942897595873697.zip"
+f <- "~/Desktop/6915544029415506.zip"
 l_out <- gld_read_zip2(f)
 
 ## -----------------------------------------------------------------------------

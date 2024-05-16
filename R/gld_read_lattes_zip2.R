@@ -36,245 +36,82 @@ gld_read_zip2 <- function(f_zip){
 
   }
 
-
   # cvitae ----
-  fetch_df <- function(this_xml, xpath) {
-    this_nodes <- xml2::xml_find_all(this_xml, xpath)
-
-    if (length(this_nodes) == 0) {
-      df_out <- tibble::tibble()
-    } else {
-      df_out <- this_nodes |>
-        purrr::map_df(
-          .f = function(x) tibble::as_tibble(janitor::clean_names(t(xml2::xml_attrs(x))))
-        )
-    }
-
-    return(df_out)
-  }
-
-  cvitae <- fetch_df(my_xml, ".//DADOS-GERAIS")
-  extra_info <- fetch_df(my_xml, "//CURRICULO-VITAE")
-  areas <- fetch_df(my_xml, ".//AREA-DE-ATUACAO")
-  main_area <- areas[1, ] # only keep first area
-
-  cvitae <- cvitae |>
-    dplyr::bind_cols(main_area) |>
-    dplyr::bind_cols(extra_info)
+  cvitae <- get_cvitae(my_xml)
 
   cli::cli_alert_success("got general info for {cvitae$nome_completo}")
 
-
   # academic background ----
-  grad <- fetch_df(my_xml, ".//FORMACAO-ACADEMICA-TITULACAO//GRADUACAO")
-  mestrado <-  fetch_df(my_xml, ".//FORMACAO-ACADEMICA-TITULACAO//MESTRADO")
-  doutorado <-  fetch_df(my_xml, ".//FORMACAO-ACADEMICA-TITULACAO//DOUTORADO")
-  pos_doc <- fetch_df(my_xml, ".//FORMACAO-ACADEMICA-TITULACAO//POS-DOUTORADO")
+  l_acad_back <- get_acad_back(my_xml)
 
   cli::cli_alert_success(
-    "got information for {nrow(grad)} bsc, {nrow(mestrado)} msc, {nrow(doutorado)} Phd, {nrow(pos_doc)} pos-doc"
+    "got information for {nrow(l_acad_back$grad)} bsc, {nrow(l_acad_back$mestrado)} msc, {nrow(l_acad_back$doutorado)} Phd, {nrow(l_acad_back$pos_doc)} pos-doc"
   )
 
-  # papers ----
-  node_papers <- xml2::xml_find_all(my_xml, ".//ARTIGO-PUBLICADO")
-
-  papers <- tibble::tibble()
-  for (i_node  in node_papers) {
-
-    temp_attrs <- xml2::xml_find_all(i_node, "DADOS-BASICOS-DO-ARTIGO")[[1]] |>
-      xml2::xml_attrs() |>
-      t() |>
-      tibble::as_tibble() |>
-      janitor::clean_names()
-
-    nodes_detalhes <- xml2::xml_find_all(i_node, "DETALHAMENTO-DO-ARTIGO")[[1]] |>
-      xml2::xml_attrs() |>
-      t() |>
-      tibble::as_tibble() |>
-      janitor::clean_names()
-
-    papers <- dplyr::bind_rows(
-      papers,
-      dplyr::bind_cols(
-        temp_attrs,
-        nodes_detalhes
-      )
-    )
-
-  }
+  # published papers ----
+  published_papers <- get_published_papers(my_xml)
 
   cli::cli_alert_success(
-    "got {nrow(papers)} published papers"
+    "got {nrow(published_papers)} published papers"
   )
 
-  # books
-  book_1 <- fetch_df(my_xml, ".//LIVRO-PUBLICADO-OU-ORGANIZADO//DADOS-BASICOS-DO-LIVRO")
-  book_2 <- fetch_df(my_xml, ".//LIVRO-PUBLICADO-OU-ORGANIZADO//DETALHAMENTO-DO-LIVRO")
+  # accepted papers ----
+  accepted_papers <- get_accepted_papers(my_xml)
 
-  books <- dplyr::bind_cols(book_1, book_2)
+  cli::cli_alert_success(
+    "got {nrow(accepted_papers)} accepted papers"
+  )
+
+  # books ----
+  books <- get_books(my_xml)
 
   cli::cli_alert_success(
     "got {nrow(books)} books"
   )
 
   # supervisions MSC ----
-  superv_msc_1 <- fetch_df(
-    my_xml,
-    ".//ORIENTACOES-CONCLUIDAS//ORIENTACOES-CONCLUIDAS-PARA-MESTRADO//DADOS-BASICOS-DE-ORIENTACOES-CONCLUIDAS-PARA-MESTRADO"
-  )
-  superv_msc_2 <- fetch_df(
-    my_xml,
-    ".//ORIENTACOES-CONCLUIDAS//ORIENTACOES-CONCLUIDAS-PARA-MESTRADO//DETALHAMENTO-DE-ORIENTACOES-CONCLUIDAS-PARA-MESTRADO"
-  )
-
-  superv_msc <- dplyr::bind_cols(
-    superv_msc_1,
-    superv_msc_2
-  )
-
-  # supervisions MSC ----
-  superv_phd_1 <- fetch_df(
-    my_xml,
-    ".//ORIENTACOES-CONCLUIDAS//ORIENTACOES-CONCLUIDAS-PARA-DOUTORADO//DADOS-BASICOS-DE-ORIENTACOES-CONCLUIDAS-PARA-DOUTORADO"
-  )
-  superv_phd_2 <- fetch_df(
-    my_xml,
-    ".//ORIENTACOES-CONCLUIDAS//ORIENTACOES-CONCLUIDAS-PARA-DOUTORADO//DETALHAMENTO-DE-ORIENTACOES-CONCLUIDAS-PARA-DOUTORADO"
-  )
-
-  superv_phd <- dplyr::bind_cols(
-    superv_phd_1,
-    superv_phd_2
-  )
-
-  superv_others_1 <- fetch_df(
-    my_xml,
-    ".//ORIENTACOES-CONCLUIDAS//OUTRAS-ORIENTACOES-CONCLUIDAS//DADOS-BASICOS-DE-OUTRAS-ORIENTACOES-CONCLUIDAS"
-  )
-
-  superv_others_2 <- fetch_df(
-    my_xml,
-    ".//ORIENTACOES-CONCLUIDAS//OUTRAS-ORIENTACOES-CONCLUIDAS//DETALHAMENTO-DE-OUTRAS-ORIENTACOES-CONCLUIDAS"
-  )
-
-  superv_others <- dplyr::bind_cols(
-    superv_others_1,
-    superv_others_2
-  )
-
-  superv_all <- dplyr::bind_rows(
-    superv_others,
-    superv_msc,
-    superv_phd
-  )
+  superv_all <- get_superv(my_xml)
 
   cli::cli_alert_success(
     "got {nrow(superv_all)} supervisions"
   )
 
-
-  # employment
-  all_prof <- xml2::xml_find_all(my_xml,
-                                 ".//ATUACOES-PROFISSIONAIS//ATUACAO-PROFISSIONAL")
-
-  at_prof <- tibble::tibble()
-  for (i_node in all_prof) {
-
-    temp_attrs <- i_node |>
-      xml2::xml_attrs() |>
-      t() |>
-      tibble::as_tibble() |>
-      janitor::clean_names()
-
-    nodes_vinculos <- xml2::xml_find_all(i_node, ".//VINCULOS")
-
-    for (i_vinc in nodes_vinculos) {
-
-      temp_df <- xml2::xml_attrs(i_vinc) |>
-        t() |>
-        tibble::as_tibble() |>
-        janitor::clean_names() |>
-        dplyr::bind_cols(temp_attrs)
-
-      at_prof <- dplyr::bind_rows(
-        at_prof,
-        temp_df
-      )
-    }
-
-  }
+  # employment ----
+  at_prof <- get_employment(my_xml)
 
   cli::cli_alert_success(
     "got {nrow(at_prof)} employment/activity registries"
   )
 
   # research and extension projects
-  projs <- fetch_df(my_xml, ".//PROJETO-DE-PESQUISA") |>
-    dplyr::select(-dplyr::contains("descricao_do_projeto"))
+  projs <- get_projs(my_xml)
 
   cli::cli_alert_success(
     "got {nrow(projs)} projects"
   )
 
   # co-authors
-  all_papers <- xml2::xml_find_all(my_xml, ".//ARTIGO-PUBLICADO")
-
-  if (length(all_papers) != 0) {
-
-    df_coauthors <- tibble::tibble()
-    for (i_node in all_papers) {
-
-      dados_basicos <- xml2::xml_find_all(i_node, ".//DADOS-BASICOS-DO-ARTIGO")
-
-      paper_titulo <- dados_basicos |>
-        xml2::xml_attr("TITULO-DO-ARTIGO")
-      paper_ano <-  dados_basicos |>
-        xml2::xml_attr("ANO-DO-ARTIGO") |>
-        as.numeric()
-
-      paper_coauthors <- i_node |>
-        xml2::xml_find_all(".//AUTORES") |>
-        xml2::xml_attrs()
-
-      df_temp <- purrr::map_df(
-        paper_coauthors,
-        function(x) tibble::as_tibble(t(x))
-      ) |>
-        dplyr::mutate(
-          title = paper_titulo,
-          year = paper_ano
-        ) |>
-        janitor::clean_names()
-
-      df_coauthors <- dplyr::bind_rows(
-        df_coauthors,
-        df_temp
-      )
-
-    }
-
-  } else {
-    df_coauthors <- tibble::tibble()
-  }
+  coauthors <- get_coauthors(my_xml)
 
   cli::cli_alert_success(
-    "got {nrow(df_coauthors)} coauthors"
+    "got {nrow(coauthors)} coauthors"
   )
 
 
   # output
   l_out <- list(
     info = cvitae,
-    course_bachelors = grad,
-    course_msc = mestrado,
-    course_phd = doutorado,
-    pos_doc = pos_doc,
+    course_bachelors = l_acad_back$grad,
+    course_msc = l_acad_back$mestrado,
+    course_phd = l_acad_back$doutorado,
+    pos_doc = l_acad_back$pos_doc,
+    published_papers = published_papers,
+    accepted_papers = accepted_papers,
     books = books,
-    published_papers = papers,
     supervisions = superv_all,
     at_prof = at_prof,
     projects = projs,
-    coauthors = df_coauthors
+    coauthors = coauthors
   )
 
   # parse and fix list output
@@ -284,7 +121,9 @@ gld_read_zip2 <- function(f_zip){
     to_numeric <- which(stringr::str_detect(this_names, "ano|numero_|mes_|_pagina"))
 
     for (i in to_numeric) {
-      df_in[[ i]] <- as.numeric(df_in[[i]])
+      suppressWarnings({
+        df_in[[ i]] <- as.numeric(df_in[[i]])
+      })
     }
 
     # add info
