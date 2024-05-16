@@ -62,6 +62,13 @@ gld_read_zip2 <- function(f_zip){
     "got {nrow(accepted_papers)} accepted papers"
   )
 
+  # conference papers
+  conferences <- get_conferences(my_xml)
+
+  cli::cli_alert_success(
+    "got {nrow(conferences)} conferences"
+  )
+
   # books ----
   books <- get_books(my_xml)
 
@@ -111,7 +118,8 @@ gld_read_zip2 <- function(f_zip){
     supervisions = superv_all,
     at_prof = at_prof,
     projects = projs,
-    coauthors = coauthors
+    coauthors = coauthors,
+    conferences = conferences
   )
 
   # parse and fix list output
