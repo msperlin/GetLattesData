@@ -14,9 +14,8 @@ fetch_df <- function(this_xml, xpath) {
 }
 
 get_cvitae <- function(my_xml) {
+
   # cvitae ----
-
-
   cvitae <- fetch_df(my_xml, ".//DADOS-GERAIS")
   extra_info <- fetch_df(my_xml, "//CURRICULO-VITAE")
   areas <- fetch_df(my_xml, ".//AREA-DE-ATUACAO")

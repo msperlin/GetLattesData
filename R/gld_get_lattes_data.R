@@ -44,8 +44,16 @@ gld_get_lattes_data <- function(id.vec,
   my.message <- paste0('Function gld_get_lattes_data is deprecated.',
                        '\n\nDue to changes in lattes website, the automatic download of xml files no longer works without captcha. ',
                        '\nIn order to use the package, you must  download the xml zip files individually (see XML button on top right of lattes page) and use ',
-                       'function gld_get_lattes_data_from_zip to read all the data',
+                       'function gld_read_zip2() to read all the data',
                        '\n\nExiting Now..')
+
+  lifecycle::deprecate_stop(
+    when = "1.2",
+    what = "gld_get_lattes_data()",
+    with = "gld_read_zip2()",
+    details = my.message
+  )
+
 
   cat(my.message)
 

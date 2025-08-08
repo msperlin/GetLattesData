@@ -1,16 +1,18 @@
 Package: GetLattesData
 Title: Reading Bibliometric Data from Lattes Platform
-Version: 1.5
+Version: 1.5.1
 Authors@R: person("Marcelo", "Perlin", email = "marceloperlin@gmail.com", role = c("aut", "cre"))
 Description: A simple API for downloading and reading xml data directly from Lattes <http://lattes.cnpq.br/>.
 Depends:
-    R (>= 3.3.0)
-Imports: stringr, XML, dplyr, readr, stringdist, curl, tools, lubridate
+    R (>= 4.1.0)
+Imports: stringr, XML, dplyr, 
+         readr, stringdist, curl, 
+         tools, lubridate, lifecycle
 License: GPL-2
 Encoding: UTF-8
 BugReports: https://github.com/msperlin/GetLattesData/issues
 URL: https://github.com/msperlin/GetLattesData/
-RoxygenNote: 7.3.1
+RoxygenNote: 7.3.2
 Suggests: knitr,
     rmarkdown,
     testthat,

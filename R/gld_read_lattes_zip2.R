@@ -104,6 +104,13 @@ gld_read_zip2 <- function(f_zip){
     "got {nrow(coauthors)} coauthors"
   )
 
+  # awards
+  awards <- get_awards(my_xml)
+
+  cli::cli_alert_success(
+    "got {nrow(coauthors)} awards"
+  )
+
 
   # output
   l_out <- list(
@@ -119,7 +126,8 @@ gld_read_zip2 <- function(f_zip){
     at_prof = at_prof,
     projects = projs,
     coauthors = coauthors,
-    conferences = conferences
+    conferences = conferences,
+    awards = awards
   )
 
   # parse and fix list output

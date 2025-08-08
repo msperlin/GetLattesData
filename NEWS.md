@@ -1,6 +1,8 @@
 ## Version 1.5.1 (2025-08-08)
 
 - added awards in output 
+- added dependency on R > 4.1.0
+- deprecated unsupported functions gl_read_lattes_zip() and gld_get_lattes_data()
 
 ## Version 1.5 (2024-05-04)
 
