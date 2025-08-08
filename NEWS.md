@@ -1,3 +1,7 @@
+## Version 1.5.1 (2025-08-08)
+
+- added awards in output 
+
 ## Version 1.5 (2024-05-04)
 
 - added research and extension projects in output 
