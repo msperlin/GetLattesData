@@ -15,14 +15,6 @@
 #' my.l
 gld_read_zip <- function(zip.in){
 
-  # deprecate
-  lifecycle::deprecate_warn(
-    when = "1.5.1",
-    what = "gld_read_zip()",
-    with = "gld_read_zip2()",
-    details = "the new version uses the xml tree for parsing the data. Its faster and more complete."
-  )
-
   # error checking
   if (length(zip.in)>1) {
     stop('Function gld_read_zip  only reads one zip file at a time..')

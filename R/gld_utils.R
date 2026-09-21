@@ -126,6 +126,92 @@ gld_download_lattes_files <- function(id, folder.dl = tempdir()) {
 }
 
 
+#' Fetches attributes of child nodes of a single parent node into one row
+#'
+#' Missing children are simply skipped (instead of being column-bound as empty
+#' tibbles, which would drop the row via `dplyr::bind_cols`).
+#'
+#' @param node A single xml node
+#' @param xpaths Character vector of xpaths of the child nodes
+#'
+#' @return A one-row tibble (or an empty tibble when no child has attributes)
+#' @noRd
+fetch_node_df <- function(node, xpaths) {
+
+  parts <- lapply(xpaths, function(xp) fetch_df(node, xp))
+
+  # keep only parts that actually have columns
+  parts <- parts[vapply(parts, ncol, integer(1)) > 0]
+
+  if (length(parts) == 0) return(tibble::tibble())
+
+  dplyr::bind_cols(parts)
+}
+
+#' Parses a set of paper nodes (published or accepted) into a tibble
+#'
+#' Iterating over each parent node (instead of fetching the basic and detail
+#' node sets separately and column-binding them) avoids silently misaligning
+#' rows when a record is missing one of its sub-nodes.
+#'
+#' @param my_xml A xml document (xml2)
+#' @param parent_tag Tag of the parent node, e.g. 'ARTIGO-PUBLICADO'
+#'
+#' @return A tibble
+#' @noRd
+parse_papers <- function(my_xml, parent_tag) {
+
+  nodes <- xml2::xml_find_all(my_xml, paste0(".//", parent_tag))
+
+  if (length(nodes) == 0) return(tibble::tibble())
+
+  papers <- dplyr::bind_rows(
+    lapply(nodes, function(node) {
+      fetch_node_df(
+        node,
+        c(".//DADOS-BASICOS-DO-ARTIGO", ".//DETALHAMENTO-DO-ARTIGO")
+      )
+    })
+  )
+
+  return(papers)
+}
+
+#' Finds the row index of an ISSN in the SJR table
+#'
+#' Handles empty ISSNs and journals with multiple ISSNs. Returns one index
+#' (or NA) per element of `issn.vec`.
+#'
+#' @param issn.vec Vector of ISSNs (e.g. '1234-5678')
+#' @param df.sjr The SJR table (from gld_get_SJR)
+#'
+#' @return An integer vector with the matched row of df.sjr (NA if not found)
+#' @noRd
+match_sjr_idx <- function(issn.vec, df.sjr) {
+
+  if (length(issn.vec) == 0) return(integer(0))
+
+  idx <- vapply(
+    stringr::str_replace_all(issn.vec, "-", ""),
+    function(issn.in, df.sjr) {
+      issn.in <- stringr::str_trim(issn.in)
+
+      if (is.na(issn.in) || issn.in == '') return(NA_integer_)
+
+      temp.idx <- which(stringr::str_detect(df.sjr$Issn, issn.in))
+
+      if (length(temp.idx) == 0) return(NA_integer_)
+
+      return(as.integer(temp.idx[1]))
+    },
+    FUN.VALUE = integer(1),
+    df.sjr = df.sjr,
+    USE.NAMES = FALSE
+  )
+
+  return(idx)
+}
+
 parse_at_prof <- function(l_in) {
 
   if (is.null(l_in$VINCULOS)) return(dplyr::tibble())

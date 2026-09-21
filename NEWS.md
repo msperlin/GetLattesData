@@ -1,3 +1,16 @@
+## Version 1.5.2
+
+- fixed silent row misalignment in `gld_read_zip2()` when books, papers,
+  supervisions or conferences are missing optional sub-nodes
+- added `supervision_type` column (msc, phd, others) to supervisions
+- `gld_read_zip2()` no longer coerces identifiers (e.g. `numero_identificador`)
+  to numeric; page columns are now numeric
+- `gld_get_lattes_data_from_zip()` no longer emits a deprecation warning or
+  "Unknown or uninitialised column" warnings when there are no accepted papers
+- fixed wrong awards count in `gld_read_zip2()` status message
+- moved runtime dependencies (cli, xml2, tibble, janitor, purrr, readxl) from
+  Suggests to Imports and removed the unused curl dependency
+
 ## Version 1.5.1 (2025-08-08)
 
 - added awards in output 

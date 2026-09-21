@@ -108,7 +108,7 @@ gld_read_zip2 <- function(f_zip){
   awards <- get_awards(my_xml)
 
   cli::cli_alert_success(
-    "got {nrow(coauthors)} awards"
+    "got {nrow(awards)} awards"
   )
 
 
@@ -134,7 +134,18 @@ gld_read_zip2 <- function(f_zip){
   fix_df <- function(df_in) {
     this_names <- names(df_in)
 
-    to_numeric <- which(stringr::str_detect(this_names, "ano|numero_|mes_|_pagina"))
+    # convert only true count/year/month/page columns to numeric. Identifiers
+    # (e.g. numero_identificador, numero_id_orientado) must stay as character
+    # to avoid precision loss and scientific notation.
+    to_numeric <- which(stringr::str_detect(
+      this_names,
+      paste0(
+        "^(ano|mes)(_|$)",
+        "|^numero_(de|da|do)_",
+        "|^numero_(graduacao|especializacao|mestrado|doutorado|tecnico)",
+        "|^pagina_"
+      )
+    ))
 
     for (i in to_numeric) {
       suppressWarnings({

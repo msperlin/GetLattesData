@@ -62,73 +62,62 @@ gld_get_lattes_data_from_zip <- function(zip.files,
     tcoauthors <- do.call(args = lapply(my.l, function(x) x$tcoauthors), what = dplyr::bind_rows)
   })
 
+  # only enrich tables that actually have rows and an ISSN column. Otherwise
+  # `df$ISSN` on an empty tibble emits "Unknown or uninitialised column" warnings.
+  has_issn <- function(df) {
+    nrow(df) > 0 && "ISSN" %in% names(df)
+  }
+
   # do Qualis
   if (!(is.null(field.qualis ))) {
     df.qualis <- gld_get_qualis(field.qualis = field.qualis)
 
-    idx <- match(tpublic.published$ISSN, df.qualis$issn)
-    tpublic.published$qualis <- df.qualis$ranking[idx]
+    if (has_issn(tpublic.published)) {
+      idx <- match(tpublic.published$ISSN, df.qualis$issn)
+      tpublic.published$qualis <- df.qualis$ranking[idx]
+    }
 
-    idx <- match(tpublic.accepted$ISSN, df.qualis$issn)
-    tpublic.accepted$qualis <- df.qualis$ranking[idx]
+    if (has_issn(tpublic.accepted)) {
+      idx <- match(tpublic.accepted$ISSN, df.qualis$issn)
+      tpublic.accepted$qualis <- df.qualis$ranking[idx]
+    }
   }
 
   # do sjr
   df.sjr <- gld_get_SJR()
 
-  #idx <- match(tpublic.published$ISSN, df.sjr$Issn)
-  # fix for multiple issn (https://github.com/msperlin/GetLattesData/issues/6#issuecomment-412626175)
-  idx <- unlist(sapply(stringr::str_replace_all(tpublic.published$ISSN, "-", "" ),
-                       function(issn.in, df.sjr){
-                         if (stringr::str_trim(issn.in) == '') return(NA)
-                         temp.idx <- which(stringr::str_detect( df.sjr$Issn,issn.in))
+  # match_sjr_idx handles journals with multiple ISSNs and empty values
+  # (https://github.com/msperlin/GetLattesData/issues/6#issuecomment-412626175)
+  if (has_issn(tpublic.published)) {
 
-                         if(length(temp.idx) == 0){
-                           temp.idx <- NA
-                         }
-                         return(temp.idx[1])
-                       } ,
-                       df.sjr = df.sjr,
-                       USE.NAMES=F))
+    idx <- match_sjr_idx(tpublic.published$ISSN, df.sjr)
 
-  if (!all(is.na(idx))) {
+    if (!all(is.na(idx))) {
 
-    tpublic.published$SJR <- df.sjr$SJR[idx]
-    tpublic.published$H.SJR <- df.sjr$`H index`[idx]
+      tpublic.published$SJR <- df.sjr$SJR[idx]
+      tpublic.published$H.SJR <- df.sjr$`H index`[idx]
 
-  } else if (nrow(tpublic.published)!=0) {
+    } else {
 
-    tpublic.published$SJR <- NA
-    tpublic.published$H.SJR <- NA
+      tpublic.published$SJR <- NA
+      tpublic.published$H.SJR <- NA
+    }
   }
 
+  if (has_issn(tpublic.accepted)) {
 
+    idx <- match_sjr_idx(tpublic.accepted$ISSN, df.sjr)
 
-  #idx <- match(tpublic.accepted$ISSN, df.sjr$Issn)
-  # fix for multiple issn (https://github.com/msperlin/GetLattesData/issues/6#issuecomment-412626175)
-  idx <- unlist(sapply(stringr::str_replace_all(tpublic.accepted$ISSN, "-", "" ),
-                       function(issn.in, df.sjr){
-                         temp.idx <- which(stringr::str_detect(df.sjr$Issn, issn.in ))
+    if (!all(is.na(idx))) {
 
-                         if (stringr::str_trim(issn.in) == '') return(NA)
+      tpublic.accepted$SJR <- df.sjr$SJR[idx]
+      tpublic.accepted$H.SJR <- df.sjr$`H index`[idx]
 
-                         if(length(temp.idx) == 0){
-                           temp.idx <- NA
-                         }
-                         return(temp.idx[1])
-                       } ,
-                       df.sjr = df.sjr,
-                       USE.NAMES=F))
+    } else {
 
-  if (!all(is.na(idx))) {
-
-    tpublic.accepted$SJR <- df.sjr$SJR[idx]
-    tpublic.accepted$H.SJR <- df.sjr$`H index`[idx]
-
-  } else if (nrow(tpublic.accepted) != 0){
-    tpublic.accepted$SJR <- NA
-    tpublic.accepted$H.SJR <- NA
-
+      tpublic.accepted$SJR <- NA
+      tpublic.accepted$H.SJR <- NA
+    }
   }
 
   # fix datatypes
